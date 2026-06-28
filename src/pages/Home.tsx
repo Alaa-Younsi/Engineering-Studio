@@ -20,8 +20,9 @@ function HeroSection({ nav }: { nav: (path: string) => void }) {
         <p className="font-body text-secondary text-[10px] sm:text-xs uppercase tracking-widest mb-8 lg:mb-10 max-w-[44ch] leading-relaxed">
           ENGINEERING STUDIO, intervient sur tout type de projets et à n'importe quelle phase du projet, de l'étude à la modélisation BIM.
         </p>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 flex-wrap">
           <LogoButton onClick={() => nav('/devis')}>Obtenir un devis</LogoButton>
+          <LogoButton onClick={() => nav('/a-propos')}>Qui Sommes Nous</LogoButton>
         </div>
       </div>
 

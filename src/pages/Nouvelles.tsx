@@ -47,7 +47,7 @@ export default function Nouvelles() {
             <p className="font-display font-bold text-2xl sm:text-3xl text-white leading-tight mb-6">
               En cours de<br />construction
             </p>
-            <LogoButton onClick={() => nav('/')} aria-label="Retour à l'accueil" />
+            <LogoButton onClick={() => nav('/')}>Retour à l'accueil</LogoButton>
           </div>
         </div>
       </section>

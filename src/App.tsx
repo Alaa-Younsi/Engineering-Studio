@@ -15,6 +15,7 @@ const TopoStudio = lazy(() => import('./pages/TopoStudio'))
 const VrdStudio = lazy(() => import('./pages/VrdStudio'))
 const BimStudio = lazy(() => import('./pages/BimStudio'))
 const Devis = lazy(() => import('./pages/Devis'))
+const Reunion = lazy(() => import('./pages/Reunion'))
 const Portefeuille = lazy(() => import('./pages/Portefeuille'))
 const Clients = lazy(() => import('./pages/Clients'))
 const Nouvelles = lazy(() => import('./pages/Nouvelles'))
@@ -37,6 +38,7 @@ function AppShell() {
           <Route path="/prestations/vrd" element={<VrdStudio />} />
           <Route path="/prestations/bim" element={<BimStudio />} />
           <Route path="/devis" element={<Devis />} />
+          <Route path="/reunion" element={<Reunion />} />
           <Route path="/portefeuille" element={<Portefeuille />} />
           <Route path="/clients" element={<Clients />} />
           <Route path="/nouvelles" element={<Nouvelles />} />

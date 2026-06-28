@@ -1,6 +1,5 @@
-import { useState, useCallback, useRef } from 'react'
+import { useState, useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
-import { useTransition } from '../context/TransitionContext'
 import { LogoButton } from '../components/LogoButton'
 import { Footer } from '../components/Footer'
 
@@ -24,35 +23,41 @@ const faqs = [
 ]
 
 
-function CitySection({ nav }: { nav: (path: string) => void }) {
+function CitySection() {
   const ref = useRef<HTMLElement>(null)
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] })
-  const cityY = useTransform(scrollYProgress, [0, 1], ['30px', '-30px'])
+  const cityY = useTransform(scrollYProgress, [0, 1], ['40px', '-40px'])
 
   return (
-    <section ref={ref} className="border-t border-white/10 overflow-hidden">
-      <div className="text-center py-16 px-6">
-        <p className="font-body text-secondary text-xs mb-3 tracking-widest uppercase">Restez informé</p>
-        <h2 className="font-display font-bold text-3xl sm:text-4xl text-white mb-8 max-w-[30ch] mx-auto leading-tight">
-          Suivez notre actualité et découvrez nos dernières nouvelles
-        </h2>
-        <LogoButton onClick={() => nav('/nouvelles')}>Nos Nouvelles</LogoButton>
-      </div>
-      <motion.div style={{ y: cityY }} className="w-full opacity-60">
+    <section ref={ref} className="relative border-t border-white/10 overflow-hidden min-h-[55vh]">
+      <motion.div style={{ y: cityY }} className="absolute inset-0">
         <img
           src="/Assets/images/Contact-img linkedin.png"
           alt=""
-          className="w-full object-cover max-h-64 object-top"
+          className="w-full h-full object-cover object-top"
+          style={{ opacity: 0.85 }}
         />
       </motion.div>
+      <div className="relative z-10 flex items-center justify-end min-h-[55vh] px-8 sm:px-14 lg:px-20 py-16">
+        <div className="max-w-[320px]">
+          <h2 className="font-display font-bold text-2xl sm:text-3xl text-black leading-snug mb-6">
+            Suivez notre actualités et découvrez nos travaux récentes
+          </h2>
+          <a
+            href="https://linkedin.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-black text-white text-xs font-bold hover:bg-black/70 transition-colors"
+          >
+            in
+          </a>
+        </div>
+      </div>
     </section>
   )
 }
 
 export default function Contact() {
-  const { startTransition } = useTransition()
-  const nav = useCallback((path: string) => startTransition(path), [startTransition])
-
   const [form, setForm] = useState({ nom: '', email: '', sujet: '', message: '' })
   const [openFaq, setOpenFaq] = useState<number | null>(null)
   const [sent, setSent] = useState(false)
@@ -200,7 +205,7 @@ export default function Contact() {
       </section>
 
       {/* ── City illustration ───────────────────────────────────────────────── */}
-      <CitySection nav={nav} />
+      <CitySection />
 
       <Footer />
     </main>

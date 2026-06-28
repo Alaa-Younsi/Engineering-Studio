@@ -36,7 +36,7 @@ export function Footer() {
         {/* À propos */}
         <div className="px-10 sm:px-14 lg:px-20 py-16 sm:border-r border-white/10">
           <h3 className="font-display font-semibold text-white text-base mb-6">À propos</h3>
-          <p className="font-body text-secondary text-sm leading-relaxed mb-8 max-w-[40ch]">
+          <p className="font-body text-white/70 text-sm leading-relaxed mb-8 max-w-[40ch]">
             ENGINEERING STUDIO propose des études techniques pluridisciplinaire présent dans les domaines d'ingénieries du MEP/CET et VRD, actif dans la transition vers l'ère du BIM.
           </p>
           <div className="flex flex-col gap-4">
@@ -49,15 +49,15 @@ export function Footer() {
         <div className="px-10 sm:px-14 lg:px-20 py-16">
           <h3 className="font-display font-semibold text-white text-base mb-6">Contact</h3>
           <div className="mb-8 flex flex-col gap-1">
-            <p className="font-body text-secondary text-sm">Sétif, Alger</p>
-            <p className="font-body text-secondary text-sm">contact@engineering-studio.net</p>
-            <p className="font-body text-secondary text-sm">+213 (0) 773 87 62 14</p>
+            <p className="font-body text-white/70 text-sm">Sétif, Alger</p>
+            <p className="font-body text-white/70 text-sm">contact@engineering-studio.net</p>
+            <p className="font-body text-white/70 text-sm">+213 (0) 773 87 62 14</p>
           </div>
           <div className="flex flex-col gap-4 mb-8">
             <button onClick={() => nav('/clients')} className="font-body text-white text-sm hover:opacity-60 transition-opacity text-left">Clients</button>
             <button onClick={() => nav('/nouvelles')} className="font-body text-white text-sm hover:opacity-60 transition-opacity text-left">Nouvelles</button>
           </div>
-          <LogoButton onClick={() => nav('/contact')} />
+          <LogoButton onClick={() => nav('/contact')}>Nous contacter</LogoButton>
         </div>
 
       </div>

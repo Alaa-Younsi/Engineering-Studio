@@ -69,15 +69,22 @@ export function StudioPage({ logo, logoAlt, services }: StudioConfig) {
   return (
     <main className="min-h-screen bg-bg">
       {/* Hero */}
-      <section className="flex items-center justify-center h-screen">
-        <div className="w-72 h-72 sm:w-80 sm:h-80 lg:w-96 lg:h-96 xl:w-[28rem] xl:h-[28rem] rounded-full bg-surface flex items-center justify-center">
+      <section className="relative flex items-center justify-center h-screen overflow-hidden">
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
           <img
-            src={logo}
-            alt={logoAlt}
-            className="w-auto h-[55%] max-w-[72%] object-contain select-none"
+            src="/Assets/logo/Logo-seul.png"
+            alt=""
+            className="object-contain"
+            style={{ width: 'min(80vh, 80vw)', height: 'min(80vh, 80vw)', opacity: 0.40 }}
             draggable={false}
           />
         </div>
+        <img
+          src={logo}
+          alt={logoAlt}
+          className="relative z-10 w-16 h-16 sm:w-20 sm:h-20 object-contain select-none"
+          draggable={false}
+        />
       </section>
 
       {services.map((svc, i) => (

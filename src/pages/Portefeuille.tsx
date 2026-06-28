@@ -1,8 +1,12 @@
-import { useRef } from 'react'
+import { useCallback, useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
+import { useTransition } from '../context/TransitionContext'
+import { LogoButton } from '../components/LogoButton'
 import { Footer } from '../components/Footer'
 
 export default function Portefeuille() {
+  const { startTransition } = useTransition()
+  const nav = useCallback((path: string) => startTransition(path), [startTransition])
   const heroRef = useRef<HTMLElement>(null)
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] })
   const logoY = useTransform(scrollYProgress, [0, 1], ['0px', '-60px'])
@@ -35,15 +39,7 @@ export default function Portefeuille() {
             <p className="font-display font-bold text-[1.6rem] text-white text-center leading-tight">
               En cours de<br />construction
             </p>
-            <div className="w-7 h-7 rounded-full bg-white flex items-center justify-center flex-shrink-0">
-              <img
-                src="/Assets/logo/Logo-seul.png"
-                alt=""
-                className="w-4 h-4 object-contain"
-                style={{ filter: 'brightness(0)' }}
-                draggable={false}
-              />
-            </div>
+            <LogoButton onClick={() => nav('/contact')}>Nous contacter</LogoButton>
           </div>
         </div>
       </section>

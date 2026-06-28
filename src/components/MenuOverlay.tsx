@@ -41,6 +41,11 @@ export function MenuOverlay() {
     startTransition('/devis')
   }, [closeMenu, startTransition])
 
+  const handleReunion = useCallback(() => {
+    closeMenu()
+    startTransition('/reunion')
+  }, [closeMenu, startTransition])
+
   return (
     <AnimatePresence>
       {isMenuOpen && (
@@ -82,7 +87,8 @@ export function MenuOverlay() {
               <LogoFull size="lg" className="scale-75 origin-left sm:scale-90 lg:scale-100" />
               <div className="flex flex-wrap items-center gap-3">
                 <LogoButton variant="pill" onClick={handleDevis}>Devis</LogoButton>
-                <LogoButton variant="pill" onClick={handleDevis}>Demander un échange</LogoButton>
+                <LogoButton variant="pill" onClick={handleReunion}>Demander un échange</LogoButton>
+                <LogoButton variant="pill" onClick={handleReunion}>Plaquettes</LogoButton>
               </div>
             </div>
 
