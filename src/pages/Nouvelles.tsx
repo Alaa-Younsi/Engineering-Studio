@@ -15,7 +15,7 @@ export default function Nouvelles() {
   return (
     <main className="min-h-screen bg-bg pt-16">
       {/* Hero */}
-      <section ref={heroRef} className="relative min-h-screen flex items-end overflow-hidden pb-14">
+      <section ref={heroRef} className="relative min-h-screen flex items-center overflow-hidden">
         <div className="px-6 sm:px-10 lg:px-20 relative z-10">
           <h1 className="font-display font-bold text-6xl sm:text-7xl lg:text-8xl text-white leading-none">
             Nouvelles

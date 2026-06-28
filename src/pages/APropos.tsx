@@ -1,7 +1,6 @@
 import { useCallback, useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { useTransition } from '../context/TransitionContext'
-import { LogoFull } from '../components/LogoFull'
 import { LogoButton } from '../components/LogoButton'
 import { Footer } from '../components/Footer'
 
@@ -60,7 +59,7 @@ export default function APropos() {
     <main className="min-h-screen bg-bg pt-16">
 
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
-      <section ref={heroRef} className="relative min-h-screen flex items-end overflow-hidden pb-14">
+      <section ref={heroRef} className="relative min-h-screen flex items-center overflow-hidden">
         <div className="px-6 sm:px-10 lg:px-20 relative z-10">
           <h1 className="font-display font-bold text-6xl sm:text-7xl lg:text-8xl text-white leading-none">
             À propos
@@ -218,53 +217,74 @@ export default function APropos() {
         </div>
       </section>
 
-      {/* ── Company feature — beforeone design ───────────────────────────── */}
-      <section ref={featureRef} className="relative bg-surface py-28 overflow-hidden">
-        {/* Large logo circle — right side, partially off-screen */}
-        <div className="absolute top-0 h-full pointer-events-none select-none flex items-center" style={{ right: '-12%' }}>
-          <motion.div style={{ y: featureLogoY, width: '62vw', height: '62vw' }}>
+      {/* ── Prêts à travailler — centered circle CTA ─────────────────────── */}
+      <section ref={featureRef} className="relative bg-bg min-h-[90vh] flex items-center justify-center overflow-hidden py-24">
+        {/* Circle — centered background */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
+          <motion.div style={{ y: featureLogoY }}>
             <img
               src="/Assets/logo/Logo-seul.png"
               alt=""
-              className="w-full h-full object-contain"
+              className="w-[min(88vw,720px)] h-[min(88vw,720px)] object-contain"
               style={{ opacity: 0.35 }}
               draggable={false}
             />
           </motion.div>
         </div>
-        {/* Content — centered */}
-        <div className="relative z-10 flex flex-col items-center justify-center text-center px-6">
-          <p className="font-body text-secondary text-xs tracking-widest uppercase mb-8">
-            Pour vous permettre d'initier votre projet
+        {/* Content */}
+        <div className="relative z-10 flex flex-col items-center text-center px-6 gap-5 max-w-2xl">
+          <p className="font-body text-secondary text-xs tracking-widest uppercase">
+            Prêts à travailler ensemble
           </p>
-          <div className="mb-6">
-            <LogoFull size="lg" />
+          <h2 className="font-display font-bold text-5xl sm:text-6xl lg:text-7xl text-white leading-none">
+            Engineering Studio
+          </h2>
+          <p className="font-body text-secondary text-sm max-w-[50ch] leading-relaxed">
+            Que vous ayez un projet et que vous recherchiez un partenaire d'étude technique fiable ou que vous souhaitiez franchir une nouvelle étape dans votre projet, nous voulons vous entendre !
+          </p>
+          <div className="flex items-center gap-4 sm:gap-6 flex-wrap justify-center mt-2">
+            <button onClick={() => nav('/contact')} className="font-body text-white text-sm hover:opacity-60 transition-opacity">
+              Donnons vie à votre projet
+            </button>
+            <LogoButton onClick={() => nav('/contact')} />
+            <button onClick={() => nav('/contact')} className="font-body text-white text-sm hover:opacity-60 transition-opacity">
+              Appelez pour un rendez-vous
+            </button>
           </div>
-          <p className="font-body text-secondary text-sm max-w-[42ch] leading-relaxed mb-8">
-            Une équipe pluridisciplinaire dédiée à l'excellence des études techniques, au service de votre réussite.
-          </p>
-          <LogoButton onClick={() => nav('/devis')} />
         </div>
       </section>
 
       {/* ── Points forts — overlapping circles ───────────────────────────── */}
-      <section className="py-24 border-t border-white/10 overflow-hidden">
+      <section className="py-24 border-t border-white/10">
         <div className="text-center px-6 sm:px-10 lg:px-20 mb-16">
           <h2 className="font-display font-bold text-4xl sm:text-5xl lg:text-6xl text-white mb-6">Nos points forts</h2>
           <p className="font-body text-secondary text-sm leading-relaxed max-w-[80ch] mx-auto">
             Notre connaissance des contraintes des chargés d'affaires, maîtres d'œuvre et bureaux d'études nous permet d'être réactifs et efficaces pour satisfaire au mieux à vos attentes. Quelles que soient vos exigences, vous pouvez faire appel à ENGINEERING STUDIO pour vous aider à réussir vos projets les plus complexes. Le tout en répondant aux différents enjeux liés au délai, au coût et à la qualité.
           </p>
         </div>
-        {/* Overlapping circles row */}
-        <div className="flex justify-center">
+
+        {/* Mobile: wrapped circle grid */}
+        <div className="lg:hidden flex flex-wrap justify-center gap-4 px-6">
+          {strengths.map((s) => (
+            <div
+              key={s}
+              className="w-36 h-36 sm:w-40 sm:h-40 rounded-full border border-white/20 bg-bg flex items-center justify-center"
+            >
+              <span className="font-display font-medium text-white text-xs text-center leading-tight px-3">{s}</span>
+            </div>
+          ))}
+        </div>
+
+        {/* Desktop: overlapping circles row */}
+        <div className="hidden lg:flex justify-center">
           <div className="flex items-center">
             {strengths.map((s, i) => (
               <div
                 key={s}
-                className="w-[268px] h-[268px] rounded-full border border-white/20 bg-bg flex items-center justify-center flex-shrink-0"
-                style={{ marginLeft: i === 0 ? 0 : '-88px' }}
+                className="w-[220px] h-[220px] rounded-full border border-white/20 bg-bg flex items-center justify-center flex-shrink-0"
+                style={{ marginLeft: i === 0 ? 0 : '-50px' }}
               >
-                <span className="font-display font-medium text-white text-sm text-center leading-tight px-8">{s}</span>
+                <span className="font-display font-medium text-white text-xs text-center leading-tight px-4">{s}</span>
               </div>
             ))}
           </div>
@@ -279,8 +299,8 @@ export default function APropos() {
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
             {softwareCards.map(sw => (
-              <div key={`${sw.name}-${sw.category}`} className="bg-[#1a1a1a] rounded-3xl p-6 flex flex-col justify-between min-h-[180px] lg:min-h-[200px]">
-                <p className="font-display font-bold text-white text-lg leading-snug">{sw.name}</p>
+              <div key={`${sw.name}-${sw.category}`} className="bg-[#1a1a1a] rounded-2xl p-5 flex flex-col gap-8">
+                <p className="font-display font-bold text-white text-base leading-snug">{sw.name}</p>
                 <p className="font-body text-secondary text-xs">{sw.category}</p>
               </div>
             ))}
