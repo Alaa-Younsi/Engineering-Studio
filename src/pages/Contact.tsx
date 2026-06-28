@@ -67,10 +67,10 @@ export default function Contact() {
   }
 
   return (
-    <main className="min-h-screen bg-bg pt-16">
+    <main className="min-h-screen bg-bg">
 
       {/* ── Hero ────────────────────────────────────────────────────────────── */}
-      <section ref={heroRef} className="relative min-h-screen flex items-center overflow-hidden">
+      <section ref={heroRef} className="relative h-screen flex items-center overflow-hidden">
         <div className="px-6 sm:px-10 lg:px-20 relative z-10">
           <h1 className="font-display font-bold text-6xl sm:text-7xl lg:text-8xl text-white leading-none">
             Contact

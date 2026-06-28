@@ -67,7 +67,7 @@ function ServiceRow({ service, index }: { service: Service; index: number }) {
 
 export function StudioPage({ logo, logoAlt, services }: StudioConfig) {
   return (
-    <main className="min-h-screen bg-bg pt-16">
+    <main className="min-h-screen bg-bg">
       {/* Hero */}
       <section className="flex items-center justify-center h-screen">
         <div className="w-72 h-72 sm:w-80 sm:h-80 lg:w-96 lg:h-96 xl:w-[28rem] xl:h-[28rem] rounded-full bg-surface flex items-center justify-center">

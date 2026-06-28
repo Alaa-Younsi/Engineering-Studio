@@ -7,21 +7,22 @@ export function Footer() {
   const nav = useCallback((path: string) => startTransition(path), [startTransition])
 
   return (
-    <footer className="bg-surface">
+    <footer className="relative bg-surface overflow-hidden">
 
-      {/* ── Top: large circle + title + CTA ─────────────────────────────────── */}
-      <div className="relative flex flex-col items-center justify-center text-center overflow-hidden py-24 min-h-[65vh] border-t border-white/10">
-        {/* Circle fills the section */}
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
-          <img
-            src="/Assets/logo/Logo-seul.png"
-            alt=""
-            className="object-contain"
-            style={{ width: 'min(85vw, 720px)', height: 'min(85vw, 720px)', opacity: 0.35 }}
-            draggable={false}
-          />
-        </div>
-        <div className="relative z-10 flex flex-col items-center gap-7">
+      {/* ── Logo circle spans the ENTIRE footer as background ─────────────── */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none z-0">
+        <img
+          src="/Assets/logo/Logo-seul.png"
+          alt=""
+          className="object-contain"
+          style={{ width: 'min(95vw, 900px)', height: 'min(95vw, 900px)', opacity: 0.35 }}
+          draggable={false}
+        />
+      </div>
+
+      {/* ── Top: title + CTA ─────────────────────────────────────────────── */}
+      <div className="relative z-10 flex flex-col items-center justify-center text-center py-32 min-h-[72vh] border-t border-white/10">
+        <div className="flex flex-col items-center gap-8">
           <h2 className="font-display font-bold text-5xl sm:text-6xl lg:text-7xl xl:text-8xl text-white leading-none tracking-tight">
             Engineering Studio
           </h2>
@@ -29,11 +30,11 @@ export function Footer() {
         </div>
       </div>
 
-      {/* ── Info grid ────────────────────────────────────────────────────────── */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 border-t border-white/10">
+      {/* ── Info grid ────────────────────────────────────────────────────── */}
+      <div className="relative z-10 grid grid-cols-1 sm:grid-cols-2 border-t border-white/10">
 
         {/* À propos */}
-        <div className="px-10 sm:px-14 lg:px-20 py-14 sm:border-r border-white/10">
+        <div className="px-10 sm:px-14 lg:px-20 py-16 sm:border-r border-white/10">
           <h3 className="font-display font-semibold text-white text-base mb-6">À propos</h3>
           <p className="font-body text-secondary text-sm leading-relaxed mb-8 max-w-[40ch]">
             ENGINEERING STUDIO propose des études techniques pluridisciplinaire présent dans les domaines d'ingénieries du MEP/CET et VRD, actif dans la transition vers l'ère du BIM.
@@ -45,7 +46,7 @@ export function Footer() {
         </div>
 
         {/* Contact */}
-        <div className="px-10 sm:px-14 lg:px-20 py-14">
+        <div className="px-10 sm:px-14 lg:px-20 py-16">
           <h3 className="font-display font-semibold text-white text-base mb-6">Contact</h3>
           <div className="mb-8 flex flex-col gap-1">
             <p className="font-body text-secondary text-sm">Sétif, Alger</p>
@@ -61,8 +62,8 @@ export function Footer() {
 
       </div>
 
-      {/* ── Bottom bar ────────────────────────────────────────────────────────── */}
-      <div className="flex flex-wrap items-center justify-between gap-4 px-10 sm:px-14 lg:px-20 py-5 border-t border-white/10">
+      {/* ── Bottom bar ────────────────────────────────────────────────────── */}
+      <div className="relative z-10 flex flex-wrap items-center justify-between gap-4 px-10 sm:px-14 lg:px-20 py-6 border-t border-white/10">
         <div className="flex items-center gap-8">
           <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="font-body text-secondary text-xs hover:text-white transition-colors">Facebook</a>
           <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="font-body text-secondary text-xs hover:text-white transition-colors">Linkedin</a>
