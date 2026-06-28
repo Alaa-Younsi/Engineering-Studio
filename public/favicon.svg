@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <style>
+    path { fill: #000000; }
+    @media (prefers-color-scheme: dark) { path { fill: #ffffff; } }
+  </style>
+  <path fill-rule="evenodd" d="
+    M 50 0 A 50 50 0 0 1 100 50 A 50 50 0 0 1 50 100 A 50 50 0 0 1 0 50 A 50 50 0 0 1 50 0 Z
+    M 50 50 Q 82.5 17.5 50 0 A 50 50 0 0 1 100 50 Q 82.5 17.5 50 50 Z
+    M 50 50 Q 82.5 82.5 100 50 A 50 50 0 0 1 50 100 Q 82.5 82.5 50 50 Z
+    M 50 50 Q 17.5 82.5 50 100 A 50 50 0 0 1 0 50 Q 17.5 82.5 50 50 Z
+    M 50 50 Q 17.5 17.5 0 50 A 50 50 0 0 1 50 0 Q 17.5 17.5 50 50 Z
+  " />
+</svg>
