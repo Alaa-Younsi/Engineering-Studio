@@ -1,7 +1,9 @@
 import { useState, useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { LogoButton } from '../components/LogoButton'
+import { LinkedInButton } from '../components/LinkedInButton'
 import { Footer } from '../components/Footer'
+import { Reveal } from '../components/Reveal'
 
 const faqs = [
   {
@@ -38,21 +40,14 @@ function CitySection() {
           style={{ opacity: 0.85 }}
         />
       </motion.div>
-      <div className="relative z-10 flex items-center justify-end min-h-[55vh] px-8 sm:px-14 lg:px-20 py-16">
+      <Reveal className="relative z-10 flex items-center justify-end min-h-[55vh] px-8 sm:px-14 lg:px-20 py-16">
         <div className="max-w-[320px]">
           <h2 className="font-display font-bold text-2xl sm:text-3xl text-black leading-snug mb-6">
             Suivez notre actualités et découvrez nos travaux récentes
           </h2>
-          <a
-            href="https://linkedin.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-black text-white text-xs font-bold hover:bg-black/70 transition-colors"
-          >
-            in
-          </a>
+          <LinkedInButton />
         </div>
-      </div>
+      </Reveal>
     </section>
   )
 }
@@ -81,17 +76,19 @@ export default function Contact() {
             Contact
           </h1>
         </div>
-        <motion.div
-          style={{ y: heroLogoY, width: 'min(52vw, 52vh)', height: 'min(52vw, 52vh)' }}
+        <div
           className="absolute -right-12 top-1/2 -translate-y-1/2 pointer-events-none select-none"
+          style={{ width: 'min(52vw, 52vh)', height: 'min(52vw, 52vh)' }}
         >
-          <img src="/Assets/logo/Logo-seul.png" alt="" className="w-full h-full object-contain" style={{ opacity: 0.15 }} draggable={false} />
-        </motion.div>
+          <motion.div style={{ y: heroLogoY }} className="w-full h-full">
+            <img src="/Assets/logo/Logo-seul.png" alt="" className="w-full h-full object-contain" style={{ opacity: 0.15 }} draggable={false} />
+          </motion.div>
+        </div>
       </section>
 
       {/* ── Form section ────────────────────────────────────────────────────── */}
       <section className="px-6 sm:px-10 lg:px-20 py-20 border-t border-white/10">
-        <div className="max-w-screen-xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
+        <Reveal className="max-w-screen-xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
 
           {/* Left */}
           <div className="flex flex-col justify-center gap-8">
@@ -165,17 +162,17 @@ export default function Contact() {
                   />
                 </div>
                 <div className="pt-2">
-                  <LogoButton onClick={() => {}}>Envoyer le message</LogoButton>
+                  <LogoButton variant="pill">Envoyer le message</LogoButton>
                 </div>
               </form>
             )}
           </div>
-        </div>
+        </Reveal>
       </section>
 
       {/* ── FAQ ─────────────────────────────────────────────────────────────── */}
       <section className="px-6 sm:px-10 lg:px-20 py-20 border-t border-white/10">
-        <div className="max-w-screen-xl mx-auto">
+        <Reveal className="max-w-screen-xl mx-auto">
           <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-5xl text-white mb-12 text-center">
             Voici les questions fréquemment posées.
           </h2>
@@ -201,7 +198,7 @@ export default function Contact() {
               </div>
             ))}
           </div>
-        </div>
+        </Reveal>
       </section>
 
       {/* ── City illustration ───────────────────────────────────────────────── */}

@@ -3,6 +3,7 @@ import { motion, useScroll, useTransform } from 'framer-motion'
 import { useTransition } from '../context/TransitionContext'
 import { LogoButton } from '../components/LogoButton'
 import { Footer } from '../components/Footer'
+import { Reveal } from '../components/Reveal'
 
 const softwareGroups = [
   { category: 'Conception',           items: ['Autodesk Revit', 'AutoCAD', 'ArchiCAD', 'SketchUp Pro', 'Rhinoceros 3D', '3DS Max'] },
@@ -60,17 +61,19 @@ export default function APropos() {
             À propos
           </h1>
         </div>
-        <motion.div
-          style={{ y: heroLogoY, width: 'min(60vw, 60vh)', height: 'min(60vw, 60vh)' }}
+        <div
           className="absolute -right-[6%] top-1/2 -translate-y-1/2 pointer-events-none select-none"
+          style={{ width: 'min(60vw, 60vh)', height: 'min(60vw, 60vh)' }}
         >
-          <img src="/Assets/logo/Logo-seul.png" alt="" className="w-full h-full object-contain" style={{ opacity: 0.18 }} draggable={false} />
-        </motion.div>
+          <motion.div style={{ y: heroLogoY }} className="w-full h-full">
+            <img src="/Assets/logo/Logo-seul.png" alt="" className="w-full h-full object-contain" style={{ opacity: 0.18 }} draggable={false} />
+          </motion.div>
+        </div>
       </section>
 
       {/* ── Stats ────────────────────────────────────────────────────────── */}
       <section className="px-6 sm:px-10 lg:px-20 py-32 border-t border-white/10">
-        <div className="max-w-screen-xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
+        <Reveal className="max-w-screen-xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
           <div>
             <p className="font-body text-secondary text-xs tracking-widest uppercase mb-6">Solutions globale en ingénierie</p>
             <h2 className="font-display font-bold text-4xl sm:text-5xl lg:text-6xl text-white leading-tight mb-14">
@@ -99,12 +102,12 @@ export default function APropos() {
               Forts d'expériences significatives, Nous vous accompagnons tout au long de vos projets et offrent des prestations conduites par le triax Coût – Délai – Qualité.
             </p>
           </div>
-        </div>
+        </Reveal>
       </section>
 
       {/* ── Études clé en main ───────────────────────────────────────────── */}
       <section className="px-6 sm:px-10 lg:px-20 py-32 border-t border-white/10">
-        <div className="max-w-screen-xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-10">
+        <Reveal className="max-w-screen-xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-10">
           <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-5xl text-white leading-tight">
             Études clé en main
           </h2>
@@ -114,12 +117,12 @@ export default function APropos() {
             </p>
             <LogoButton onClick={() => nav('/devis')}>Obtenir un devis</LogoButton>
           </div>
-        </div>
+        </Reveal>
       </section>
 
       {/* ── Services — circle+number ──────────────────────────────────────── */}
       <section className="px-6 sm:px-10 lg:px-20 py-32 border-t border-white/10">
-        <div className="max-w-screen-xl mx-auto">
+        <Reveal className="max-w-screen-xl mx-auto">
           <p className="font-body text-secondary text-sm leading-relaxed max-w-[60ch] mb-20">
             Nous fournissons à nos clients un large éventail de compétences pour assurer la prestation d'ingénierie la plus exhaustive et la mieux adaptée à leurs projets.
           </p>
@@ -130,7 +133,7 @@ export default function APropos() {
               { num: '03', title: 'Topographie' },
               { num: '04', title: 'Modélisation BIM' },
             ].map(s => (
-              <div key={s.num} className="flex flex-col items-center gap-5">
+              <div key={s.num} className="flex flex-col items-center gap-5 hover:opacity-70 transition-opacity">
                 <div className="relative w-24 h-24 rounded-full bg-surface overflow-hidden flex-shrink-0">
                   <img src="/Assets/logo/Logo-seul.png" alt="" className="absolute inset-0 w-full h-full object-contain" style={{ opacity: 0.35 }} draggable={false} />
                   <div className="absolute inset-0 flex items-center justify-center">
@@ -141,22 +144,22 @@ export default function APropos() {
               </div>
             ))}
           </div>
-        </div>
+        </Reveal>
       </section>
 
       {/* ── BIM highlight ─────────────────────────────────────────────────── */}
       <section className="bg-surface px-6 sm:px-10 lg:px-20 py-36">
-        <div className="max-w-screen-xl mx-auto">
+        <Reveal className="max-w-screen-xl mx-auto">
           <p className="font-body text-secondary text-xs tracking-widest uppercase mb-8">Notre expertise digitale</p>
           <h2 className="font-display font-bold text-4xl sm:text-5xl lg:text-6xl xl:text-7xl text-white leading-tight max-w-[22ch]">
             Boostez vos projets avec le BIM &amp; BTP numérique
           </h2>
-        </div>
+        </Reveal>
       </section>
 
       {/* ── BIM expertise ─────────────────────────────────────────────────── */}
       <section className="px-6 sm:px-10 lg:px-20 py-32 border-t border-white/10">
-        <div className="max-w-screen-xl mx-auto">
+        <Reveal className="max-w-screen-xl mx-auto">
           <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-[2.8rem] text-white leading-tight max-w-[30ch] mb-16">
             Modélisation BIM : réalisez vos ouvrages en 3D grâce à notre expertise
           </h2>
@@ -170,12 +173,12 @@ export default function APropos() {
               </span>
             ))}
           </div>
-        </div>
+        </Reveal>
       </section>
 
       {/* ── Process — circle+number ───────────────────────────────────────── */}
       <section className="px-6 sm:px-10 lg:px-20 py-40 border-t border-white/10">
-        <div className="max-w-screen-xl mx-auto">
+        <Reveal className="max-w-screen-xl mx-auto">
           <h2 className="font-display font-bold text-5xl sm:text-6xl lg:text-7xl text-white leading-tight mb-6">
             Comment se déroule<br />le processus d'étude
           </h2>
@@ -189,7 +192,7 @@ export default function APropos() {
               { num: '03', title: 'Installation\ndu système' },
               { num: '04', title: 'Remise\nau client' },
             ].map(p => (
-              <div key={p.num} className="flex flex-col items-center gap-5">
+              <div key={p.num} className="flex flex-col items-center gap-5 hover:opacity-70 transition-opacity">
                 <div className="relative w-24 h-24 rounded-full bg-surface overflow-hidden flex-shrink-0">
                   <img src="/Assets/logo/Logo-seul.png" alt="" className="absolute inset-0 w-full h-full object-contain" style={{ opacity: 0.35 }} draggable={false} />
                   <div className="absolute inset-0 flex items-center justify-center">
@@ -200,7 +203,7 @@ export default function APropos() {
               </div>
             ))}
           </div>
-        </div>
+        </Reveal>
       </section>
 
       {/* ── Prêts à travailler — centered circle CTA ─────────────────────── */}
@@ -218,7 +221,7 @@ export default function APropos() {
           </motion.div>
         </div>
         {/* Content */}
-        <div className="relative z-10 flex flex-col items-center text-center px-6 gap-6 max-w-2xl">
+        <Reveal className="relative z-10 flex flex-col items-center text-center px-6 gap-6 max-w-2xl">
           <p className="font-body text-white text-xs tracking-widest uppercase">
             Prêts à travailler ensemble
           </p>
@@ -237,80 +240,81 @@ export default function APropos() {
               Appelez pour un rendez-vous
             </button>
           </div>
-        </div>
+        </Reveal>
       </section>
 
       {/* ── Points forts — overlapping circles ───────────────────────────── */}
       <section className="py-32 border-t border-white/10">
-        <div className="text-center px-6 sm:px-10 lg:px-20 mb-20">
+        <Reveal className="text-center px-6 sm:px-10 lg:px-20 mb-20">
           <h2 className="font-display font-bold text-4xl sm:text-5xl lg:text-6xl text-white mb-8">Nos points forts</h2>
           <p className="font-body text-secondary text-sm leading-relaxed max-w-[80ch] mx-auto">
             Notre connaissance des contraintes des chargés d'affaires, maîtres d'œuvre et bureaux d'études nous permet d'être réactifs et efficaces pour satisfaire au mieux à vos attentes. Quelles que soient vos exigences, vous pouvez faire appel à ENGINEERING STUDIO pour vous aider à réussir vos projets les plus complexes. Le tout en répondant aux différents enjeux liés au délai, au coût et à la qualité.
           </p>
-        </div>
+        </Reveal>
 
         {/* Mobile: wrapped circle grid */}
-        <div className="lg:hidden flex flex-wrap justify-center gap-4 px-6">
+        <Reveal className="lg:hidden flex flex-wrap justify-center gap-4 px-6">
           {strengths.map((s) => (
             <div
               key={s}
-              className="w-36 h-36 sm:w-40 sm:h-40 rounded-full border border-white/20 bg-bg flex items-center justify-center"
+              className="w-36 h-36 sm:w-40 sm:h-40 rounded-full border border-white/20 bg-bg flex items-center justify-center hover:opacity-70 transition-opacity"
             >
               <span className="font-display font-medium text-white text-xs text-center leading-tight px-3">{s}</span>
             </div>
           ))}
-        </div>
+        </Reveal>
 
         {/* Desktop: overlapping circles row */}
-        <div className="hidden lg:flex justify-center">
+        <Reveal className="hidden lg:flex justify-center">
           <div className="flex items-center">
             {strengths.map((s, i) => (
               <div
                 key={s}
-                className="w-[220px] h-[220px] rounded-full border border-white/20 bg-bg flex items-center justify-center flex-shrink-0"
+                className="w-[220px] h-[220px] rounded-full border border-white/20 bg-bg flex items-center justify-center flex-shrink-0 hover:opacity-70 transition-opacity"
                 style={{ marginLeft: i === 0 ? 0 : '-50px' }}
               >
                 <span className="font-display font-medium text-white text-xs text-center leading-tight px-4">{s}</span>
               </div>
             ))}
           </div>
-        </div>
+        </Reveal>
       </section>
 
       {/* ── Software — card grid ──────────────────────────────────────────── */}
       <section className="border-t border-white/10 px-6 sm:px-10 lg:px-20 py-32">
-        <div className="max-w-screen-xl mx-auto">
+        <Reveal className="max-w-screen-xl mx-auto">
           <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-5xl text-white text-center leading-tight max-w-[28ch] mx-auto mb-16">
             Utilisés les logiciels d'ingénierie couvrent la conception, calculs, simulation et la gestion de projets
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
             {softwareCards.map(sw => (
-              <div key={`${sw.name}-${sw.category}`} className="bg-[#1a1a1a] rounded-2xl p-5 flex flex-col gap-8">
+              <div key={`${sw.name}-${sw.category}`} className="bg-[#1a1a1a] rounded-2xl p-5 flex flex-col gap-8 hover:opacity-70 transition-opacity">
                 <p className="font-display font-bold text-white text-base leading-snug">{sw.name}</p>
                 <p className="font-body text-secondary text-xs">{sw.category}</p>
               </div>
             ))}
           </div>
-        </div>
+        </Reveal>
       </section>
 
       {/* ── Nos garanties — radial wheel ─────────────────────────────────── */}
       <section className="border-t border-white/10 py-16">
 
         {/* Mobile */}
-        <div className="lg:hidden px-6 sm:px-10 py-16">
+        <Reveal className="lg:hidden px-6 sm:px-10 py-16">
           <h2 className="font-display font-bold text-4xl text-white mb-10 text-center">Nos garanties</h2>
           <div className="grid grid-cols-2 gap-3">
             {radialItems.map((g, i) => (
-              <div key={i} className="border border-white/10 rounded-2xl p-5">
+              <div key={i} className="border border-white/10 rounded-2xl p-5 hover:opacity-70 transition-opacity">
                 <p className="font-display font-medium text-white text-sm">{g.label.join(' ')}</p>
               </div>
             ))}
           </div>
-        </div>
+        </Reveal>
 
         {/* Desktop: SVG radial diagram */}
-        <div className="hidden lg:block relative w-full" style={{ paddingBottom: '50%' }}>
+        <Reveal className="hidden lg:block relative w-full" y={0}>
+          <div style={{ paddingBottom: '50%' }}>
           <svg
             className="absolute inset-0 w-full h-full"
             viewBox="0 0 1200 600"
@@ -345,7 +349,8 @@ export default function APropos() {
               ))
             )}
           </svg>
-        </div>
+          </div>
+        </Reveal>
       </section>
 
       <Footer />

@@ -3,6 +3,7 @@ import { motion, useScroll, useTransform } from 'framer-motion'
 import { useTransition } from '../context/TransitionContext'
 import { LogoButton } from '../components/LogoButton'
 import { Footer } from '../components/Footer'
+import { Reveal } from '../components/Reveal'
 
 export default function Portefeuille() {
   const { startTransition } = useTransition()
@@ -21,17 +22,19 @@ export default function Portefeuille() {
             Portefeuille
           </h1>
         </div>
-        <motion.div
-          style={{ y: logoY, width: 'min(56vw, 56vh)', height: 'min(56vw, 56vh)' }}
+        <div
           className="absolute -right-[6%] top-1/2 -translate-y-1/2 pointer-events-none select-none"
+          style={{ width: 'min(56vw, 56vh)', height: 'min(56vw, 56vh)' }}
         >
-          <img src="/Assets/logo/Logo-seul.png" alt="" className="w-full h-full object-contain" style={{ opacity: 0.15 }} draggable={false} />
-        </motion.div>
+          <motion.div style={{ y: logoY }} className="w-full h-full">
+            <img src="/Assets/logo/Logo-seul.png" alt="" className="w-full h-full object-contain" style={{ opacity: 0.15 }} draggable={false} />
+          </motion.div>
+        </div>
       </section>
 
       {/* ── En cours ── */}
       <section className="py-28 flex items-center justify-center">
-        <div className="relative w-72 h-72 rounded-full bg-surface overflow-hidden flex flex-col items-center justify-center gap-3">
+        <Reveal className="relative w-72 h-72 rounded-full bg-surface overflow-hidden flex flex-col items-center justify-center gap-3">
           <div className="absolute inset-0 flex items-center justify-center">
             <img src="/Assets/logo/Logo-seul.png" alt="" className="w-full h-full object-contain" style={{ opacity: 0.12 }} draggable={false} />
           </div>
@@ -41,7 +44,7 @@ export default function Portefeuille() {
             </p>
             <LogoButton onClick={() => nav('/contact')}>Nous contacter</LogoButton>
           </div>
-        </div>
+        </Reveal>
       </section>
 
       <Footer />

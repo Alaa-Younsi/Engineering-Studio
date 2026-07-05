@@ -4,6 +4,7 @@ import { useMenu } from '../context/MenuContext'
 import { useTransition } from '../context/TransitionContext'
 import { LogoFull } from './LogoFull'
 import { LogoButton } from './LogoButton'
+import { LinkedInButton } from './LinkedInButton'
 import { navLinks } from '../data/navLinks'
 
 const overlayVariants = {
@@ -86,9 +87,8 @@ export function MenuOverlay() {
             <div className="flex flex-col justify-center px-6 sm:px-10 lg:px-16 py-8 lg:py-0 gap-6 lg:gap-10 lg:w-[42%] lg:flex-shrink-0 border-b border-white/10 lg:border-b-0 lg:border-r lg:border-white/10">
               <LogoFull size="lg" className="scale-75 origin-left sm:scale-90 lg:scale-100" />
               <div className="flex flex-wrap items-center gap-3">
-                <LogoButton variant="pill" onClick={handleDevis}>Devis</LogoButton>
-                <LogoButton variant="pill" onClick={handleReunion}>Demander un échange</LogoButton>
-                <LogoButton variant="pill" onClick={handleReunion}>Plaquettes</LogoButton>
+                <LogoButton onClick={handleDevis}>Devis</LogoButton>
+                <LogoButton onClick={handleReunion}>Demander un échange</LogoButton>
               </div>
             </div>
 
@@ -124,14 +124,7 @@ export function MenuOverlay() {
               >
                 Facebook
               </a>
-              <a
-                href="https://linkedin.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-body text-sm text-white hover:opacity-60 transition-opacity"
-              >
-                LinkedIn
-              </a>
+              <LinkedInButton />
             </div>
             <span className="hidden md:block font-body text-sm text-white text-center">
               Solutions Globales en Ingénierie

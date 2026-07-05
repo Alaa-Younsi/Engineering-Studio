@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { motion, useAnimation } from 'framer-motion'
 import { LogoFull } from './LogoFull'
-import { LogoMark } from './LogoMark'
 
 interface Frame {
   id: number
@@ -9,30 +8,28 @@ interface Frame {
   content: React.ReactNode
 }
 
-function LoadingMark() {
+const LOGO_SEUL = '/Assets/logo/Logo-seul.png'
+
+export function LoadingMark() {
   return (
-    <div className="relative flex items-center justify-center">
-      <LogoMark size={100} />
-      <span
-        className="absolute rounded-full border border-white/20"
-        style={{
-          width: 160, height: 160,
-          animation: 'ring-expand 1.6s ease-out infinite',
-        }}
+    <div className="relative" style={{ width: 170, height: 170 }}>
+      <img
+        src={LOGO_SEUL}
+        alt=""
+        className="absolute inset-0 m-auto"
+        style={{ width: 170, height: 170, filter: 'brightness(0.1)' }}
       />
-      <span
-        className="absolute rounded-full border border-white/12"
-        style={{
-          width: 160, height: 160,
-          animation: 'ring-expand 1.6s ease-out 0.5s infinite',
-        }}
+      <img
+        src={LOGO_SEUL}
+        alt=""
+        className="absolute inset-0 m-auto"
+        style={{ width: 99, height: 99, filter: 'brightness(0.3)' }}
       />
-      <span
-        className="absolute rounded-full border border-white/8"
-        style={{
-          width: 160, height: 160,
-          animation: 'ring-expand 1.6s ease-out 1s infinite',
-        }}
+      <img
+        src={LOGO_SEUL}
+        alt=""
+        className="absolute inset-0 m-auto"
+        style={{ width: 51, height: 51 }}
       />
     </div>
   )
@@ -152,31 +149,23 @@ export function IntroSequence() {
   const isCentered = frame.placement === 'center'
 
   return (
-    <>
-      <style>{`
-        @keyframes ring-expand {
-          0%   { transform: scale(1);   opacity: 0.6; }
-          100% { transform: scale(2.4); opacity: 0; }
-        }
-      `}</style>
+    <motion.div
+      className="fixed inset-0 z-[60] bg-bg"
+      animate={overlayControls}
+      initial={{ opacity: 1 }}
+    >
       <motion.div
-        className="fixed inset-0 z-[60] bg-bg"
-        animate={overlayControls}
-        initial={{ opacity: 1 }}
+        className="absolute"
+        animate={frameControls}
+        initial={{ opacity: 0 }}
+        style={
+          isCentered
+            ? { top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }
+            : { left: '13%', top: '50%', transform: 'translateY(-50%)' }
+        }
       >
-        <motion.div
-          className="absolute"
-          animate={frameControls}
-          initial={{ opacity: 0 }}
-          style={
-            isCentered
-              ? { top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }
-              : { left: '13%', top: '50%', transform: 'translateY(-50%)' }
-          }
-        >
-          {frame.content}
-        </motion.div>
+        {frame.content}
       </motion.div>
-    </>
+    </motion.div>
   )
 }

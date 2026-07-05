@@ -6,6 +6,7 @@ import { Navbar } from './components/Navbar'
 import { MenuOverlay } from './components/MenuOverlay'
 import { PageTransition } from './components/PageTransition'
 import { IntroSequence } from './components/IntroSequence'
+import { ScrollToTop } from './components/ScrollToTop'
 
 const Home = lazy(() => import('./pages/Home'))
 const APropos = lazy(() => import('./pages/APropos'))
@@ -24,6 +25,7 @@ const Contact = lazy(() => import('./pages/Contact'))
 function AppShell() {
   return (
     <>
+      <ScrollToTop />
       <IntroSequence />
       <Navbar />
       <MenuOverlay />

@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useTransition } from '../context/TransitionContext'
+import { LoadingMark } from './IntroSequence'
 
 export function PageTransition() {
   const { isTransitioning, onTransitionPeak, onTransitionDone } = useTransition()
@@ -40,9 +41,7 @@ export function PageTransition() {
           exit={{ opacity: 0, transition: { duration: 0.2, ease: 'easeIn' } }}
           transition={{ duration: 0.2, ease: 'easeOut' }}
         >
-          <span className="font-body text-white text-sm font-light">
-            Bienvenue chez nous&nbsp;!
-          </span>
+          <LoadingMark />
         </motion.div>
       )}
     </AnimatePresence>

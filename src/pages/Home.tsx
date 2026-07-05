@@ -3,6 +3,7 @@ import { motion, useScroll, useTransform } from 'framer-motion'
 import { useTransition } from '../context/TransitionContext'
 import { LogoButton } from '../components/LogoButton'
 import { Footer } from '../components/Footer'
+import { Reveal } from '../components/Reveal'
 
 // ── Hero Section ───────────────────────────────────────────────────────────────
 
@@ -26,12 +27,11 @@ function HeroSection({ nav }: { nav: (path: string) => void }) {
         </div>
       </div>
 
-      <motion.div
-        style={{ y: logoY }}
-        className="absolute right-[-5vw] top-[-8vh] pointer-events-none select-none hidden md:block"
-      >
-        <img src="/Assets/logo/Logo-seul.png" alt="" className="w-[500px] h-[500px] object-contain" style={{ opacity: 0.15 }} draggable={false} />
-      </motion.div>
+      <div className="absolute right-[-5vw] top-1/2 -translate-y-1/2 pointer-events-none select-none hidden md:block">
+        <motion.div style={{ y: logoY }}>
+          <img src="/Assets/logo/Logo-seul.png" alt="" className="w-[500px] h-[500px] object-contain" style={{ opacity: 0.15 }} draggable={false} />
+        </motion.div>
+      </div>
     </section>
   )
 }
@@ -62,6 +62,7 @@ function ServiceSection({ title, description, imageSrc, imageAlt, imageLeft, onL
           lg:w-72 lg:h-72
           xl:w-80 xl:h-80
           rounded-full overflow-hidden border border-white/10
+          hover:opacity-80 transition-opacity
         ">
           <img src={imageSrc} alt={imageAlt} className="w-full h-full object-cover" />
         </div>
@@ -87,7 +88,7 @@ function ServiceSection({ title, description, imageSrc, imageAlt, imageLeft, onL
 
         {/* Mobile: always stack, image on top */}
         <div className="flex flex-col gap-8 items-center text-center md:hidden">
-          <div className="w-48 h-48 rounded-full overflow-hidden border border-white/10">
+          <div className="w-48 h-48 rounded-full overflow-hidden border border-white/10 hover:opacity-80 transition-opacity">
             <img src={imageSrc} alt={imageAlt} className="w-full h-full object-cover" />
           </div>
           <div className="flex flex-col items-center gap-4">
@@ -98,9 +99,9 @@ function ServiceSection({ title, description, imageSrc, imageAlt, imageLeft, onL
         </div>
 
         {/* Tablet / Desktop: two columns */}
-        <div className="hidden md:grid grid-cols-2 gap-10 lg:gap-20 xl:gap-28 items-center">
+        <Reveal className="hidden md:grid grid-cols-2 gap-10 lg:gap-20 xl:gap-28 items-center">
           {imageLeft ? <>{imgBlock}{textBlock}</> : <>{textBlock}{imgBlock}</>}
-        </div>
+        </Reveal>
 
       </div>
     </section>
@@ -123,7 +124,7 @@ export default function Home() {
         imageSrc="/Assets/images/Accueil-MEP.png"
         imageAlt="Installations MEP"
         imageLeft
-        onLearnMore={() => nav('/prestations')}
+        onLearnMore={() => nav('/prestations/mep')}
       />
 
       <ServiceSection
@@ -132,7 +133,7 @@ export default function Home() {
         imageSrc="/Assets/images/Accueil-VRD.png"
         imageAlt="VRD et Aménagement"
         imageLeft={false}
-        onLearnMore={() => nav('/prestations')}
+        onLearnMore={() => nav('/prestations/vrd')}
       />
 
       <ServiceSection
@@ -141,7 +142,7 @@ export default function Home() {
         imageSrc="/Assets/images/Accueil-TOPO.png"
         imageAlt="Travaux topographique"
         imageLeft
-        onLearnMore={() => nav('/prestations')}
+        onLearnMore={() => nav('/prestations/topo')}
       />
 
       <ServiceSection
@@ -150,7 +151,7 @@ export default function Home() {
         imageSrc="/Assets/images/Accueil-BIM.png"
         imageAlt="Modélisation BIM"
         imageLeft={false}
-        onLearnMore={() => nav('/prestations')}
+        onLearnMore={() => nav('/prestations/bim')}
       />
 
       <Footer />

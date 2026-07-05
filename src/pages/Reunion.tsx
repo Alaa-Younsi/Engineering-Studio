@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useTransition } from '../context/TransitionContext'
 import { LogoFull } from '../components/LogoFull'
+import { LogoButton } from '../components/LogoButton'
 
 interface FormData {
   nom: string
@@ -122,15 +123,7 @@ export default function Reunion() {
         <button onClick={() => nav('/')} className="cursor-pointer">
           <LogoFull size="sm" />
         </button>
-        <button
-          onClick={() => nav('/')}
-          className="text-white hover:opacity-60 transition-opacity"
-          aria-label="Retour à l'accueil"
-        >
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <path d="M5 12h14M13 6l6 6-6 6" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </button>
+        <LogoButton onClick={() => nav('/')}>Retour à l'accueil</LogoButton>
       </div>
 
       {/* Centered card area */}
@@ -201,12 +194,7 @@ export default function Reunion() {
                   </svg>
                   Retour
                 </button>
-                <button
-                  onClick={next}
-                  className="bg-transparent hover:bg-white/5 text-white rounded-full px-8 py-2.5 text-sm font-body border border-white/30 hover:border-white/60 transition-colors"
-                >
-                  Prendre une réunion
-                </button>
+                <LogoButton onClick={next}>Prendre une réunion</LogoButton>
               </div>
             </motion.div>
           )}

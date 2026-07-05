@@ -3,6 +3,7 @@ import { motion, useScroll, useTransform } from 'framer-motion'
 import { useTransition } from '../context/TransitionContext'
 import { LogoButton } from '../components/LogoButton'
 import { Footer } from '../components/Footer'
+import { Reveal } from '../components/Reveal'
 
 export default function Nouvelles() {
   const { startTransition } = useTransition()
@@ -23,17 +24,19 @@ export default function Nouvelles() {
         </div>
 
         {/* Decorative circle top-right */}
-        <motion.div
-          style={{ y: heroLogoY, width: 'min(52vw, 52vh)', height: 'min(52vw, 52vh)' }}
+        <div
           className="absolute -right-12 top-1/2 -translate-y-1/2 pointer-events-none select-none"
+          style={{ width: 'min(52vw, 52vh)', height: 'min(52vw, 52vh)' }}
         >
-          <img src="/Assets/logo/Logo-seul.png" alt="" className="w-full h-full object-contain" style={{ opacity: 0.15 }} draggable={false} />
-        </motion.div>
+          <motion.div style={{ y: heroLogoY }} className="w-full h-full">
+            <img src="/Assets/logo/Logo-seul.png" alt="" className="w-full h-full object-contain" style={{ opacity: 0.15 }} draggable={false} />
+          </motion.div>
+        </div>
       </section>
 
       {/* Under construction */}
       <section className="flex flex-col items-center justify-center py-16 px-6">
-        <div
+        <Reveal
           className="relative rounded-full bg-[#111] flex flex-col items-center justify-center overflow-hidden"
           style={{ width: 'min(72vw, 380px)', height: 'min(72vw, 380px)' }}
         >
@@ -49,7 +52,7 @@ export default function Nouvelles() {
             </p>
             <LogoButton onClick={() => nav('/')}>Retour à l'accueil</LogoButton>
           </div>
-        </div>
+        </Reveal>
       </section>
 
       <Footer />
