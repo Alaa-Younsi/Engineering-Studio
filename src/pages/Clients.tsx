@@ -3,7 +3,7 @@ import { motion, useScroll, useTransform } from 'framer-motion'
 import { useTransition } from '../context/TransitionContext'
 import { LogoButton } from '../components/LogoButton'
 import { Footer } from '../components/Footer'
-import { Reveal } from '../components/Reveal'
+import { Reveal, RevealText } from '../components/Reveal'
 
 const sectors = [
   'Bureaux d\'études pluridisciplinaires',
@@ -70,13 +70,13 @@ export default function Clients() {
       {/* ── Hero ────────────────────────────────────────────────────────────── */}
       <section ref={heroRef} className="relative h-screen flex items-center overflow-hidden">
         <div className="px-6 sm:px-10 lg:px-20 relative z-10">
-          <h1 className="font-display font-bold text-6xl sm:text-7xl lg:text-8xl text-white leading-none">
+          <h1 className="font-display font-bold text-4xl sm:text-6xl md:text-7xl lg:text-8xl text-white leading-none">
             Clients
           </h1>
         </div>
         <div
           className="absolute -right-12 top-1/2 -translate-y-1/2 pointer-events-none select-none"
-          style={{ width: 'min(52vw, 52vh)', height: 'min(52vw, 52vh)' }}
+          style={{ width: 'clamp(200px, 52vw, 540px)', height: 'clamp(200px, 52vw, 540px)' }}
         >
           <motion.div style={{ y: heroLogoY }} className="w-full h-full">
             <img src="/Assets/logo/Logo-seul.png" alt="" className="w-full h-full object-contain" style={{ opacity: 0.15 }} draggable={false} />
@@ -86,7 +86,7 @@ export default function Clients() {
 
       {/* ── Intro ───────────────────────────────────────────────────────────── */}
       <section className="px-6 sm:px-10 lg:px-20 py-20 border-t border-white/10">
-        <Reveal className="max-w-screen-xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <RevealText className="max-w-screen-xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <div>
             <p className="font-body text-secondary text-xs tracking-widest uppercase mb-6">Nos clients</p>
             <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-[2.8rem] text-white leading-tight">
@@ -101,24 +101,24 @@ export default function Clients() {
               Nous travaillons avec des maîtres d'ouvrage publics et privés, des architectes, des promoteurs immobiliers et des entreprises de construction à travers toute l'Algérie. Notre approche collaborative et notre adaptabilité font de nous un partenaire de choix pour tout type de projet.
             </p>
           </div>
-        </Reveal>
+        </RevealText>
       </section>
 
       {/* ── Mission statement ───────────────────────────────────────────────── */}
       <section className="px-6 sm:px-10 lg:px-20 py-20 bg-surface">
-        <Reveal className="max-w-screen-xl mx-auto text-center">
+        <RevealText className="max-w-screen-xl mx-auto text-center">
           <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-5xl text-white leading-tight max-w-[32ch] mx-auto">
             Des missions variées et des solutions adaptées à chaque client
           </h2>
           <p className="font-body text-secondary text-sm mt-6 max-w-[50ch] mx-auto leading-relaxed">
             Chaque projet est unique. Nous adaptons notre approche, nos outils et notre équipe pour répondre précisément à vos besoins et contraintes spécifiques.
           </p>
-        </Reveal>
+        </RevealText>
       </section>
 
       {/* ── Engagement ──────────────────────────────────────────────────────── */}
       <section className="px-6 sm:px-10 lg:px-20 py-20 border-t border-white/10">
-        <Reveal className="max-w-screen-xl mx-auto">
+        <RevealText className="max-w-screen-xl mx-auto">
           <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-5xl text-white mb-14">
             Notre engagement envers nos clients
           </h2>
@@ -130,12 +130,12 @@ export default function Clients() {
               </div>
             ))}
           </div>
-        </Reveal>
+        </RevealText>
       </section>
 
       {/* ── Sectors ─────────────────────────────────────────────────────────── */}
       <section className="px-6 sm:px-10 lg:px-20 py-20 border-t border-white/10">
-        <Reveal className="max-w-screen-xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16">
+        <RevealText className="max-w-screen-xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16">
           <div>
             <p className="font-body text-secondary text-xs tracking-widest uppercase mb-3">Domaines d'intervention</p>
             <h2 className="font-display font-bold text-3xl sm:text-4xl text-white leading-tight">
@@ -150,35 +150,37 @@ export default function Clients() {
               </div>
             ))}
           </div>
-        </Reveal>
+        </RevealText>
       </section>
 
       {/* ── Client examples intro ───────────────────────────────────────────── */}
       <section className="px-6 sm:px-10 lg:px-20 py-20 border-t border-white/10">
-        <Reveal className="max-w-screen-xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          <div>
+        <div className="max-w-screen-xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <RevealText>
             <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-[2.6rem] text-white leading-tight">
               Voici quelques exemples de clients avec lesquels nous avons eu le plaisir de collaborer
             </h2>
-          </div>
-          <div ref={midRef} className="flex items-center justify-center">
-            <motion.div
-              style={{ y: midLogoY, width: 'min(55vw, 300px)', height: 'min(55vw, 300px)' }}
-              className="rounded-full overflow-hidden border border-white/10 hover:opacity-80 transition-opacity"
-            >
-              <img
-                src="/Assets/images/Clients-Clients.png"
-                alt="Nos clients"
-                className="w-full h-full object-cover"
-              />
-            </motion.div>
-          </div>
-        </Reveal>
+          </RevealText>
+          <Reveal direction="right">
+            <div ref={midRef} className="flex items-center justify-center">
+              <motion.div
+                style={{ y: midLogoY, width: 'min(55vw, 300px)', height: 'min(55vw, 300px)' }}
+                className="rounded-full overflow-hidden border border-white/10 hover:opacity-80 transition-opacity"
+              >
+                <img
+                  src="/Assets/images/Clients-Clients.png"
+                  alt="Nos clients"
+                  className="w-full h-full object-cover"
+                />
+              </motion.div>
+            </div>
+          </Reveal>
+        </div>
       </section>
 
       {/* ── Client grid ─────────────────────────────────────────────────────── */}
       <section className="px-6 sm:px-10 lg:px-20 pb-20 border-t border-white/10 pt-12">
-        <Reveal className="max-w-screen-xl mx-auto">
+        <RevealText className="max-w-screen-xl mx-auto">
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-px bg-white/10">
             {clients.map(([name, type]) => (
               <div key={name} className="bg-bg px-5 py-6 flex flex-col gap-1 hover:opacity-60 transition-opacity">
@@ -187,22 +189,22 @@ export default function Clients() {
               </div>
             ))}
           </div>
-        </Reveal>
+        </RevealText>
       </section>
 
       {/* ── Thank you ───────────────────────────────────────────────────────── */}
       <section className="px-6 sm:px-10 lg:px-20 py-24 bg-surface text-center">
-        <Reveal className="max-w-screen-xl mx-auto">
+        <RevealText className="max-w-screen-xl mx-auto">
           <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-5xl text-white leading-tight max-w-[28ch] mx-auto mb-8">
             Un grand merci à tous nos clients pour leur fidélité et leur confiance
           </h2>
           <LogoButton onClick={() => nav('/contact')}>Rejoignez-nous</LogoButton>
-        </Reveal>
+        </RevealText>
       </section>
 
       {/* ── Testimonials ────────────────────────────────────────────────────── */}
       <section className="px-6 sm:px-10 lg:px-20 py-20 border-t border-white/10">
-        <Reveal className="max-w-screen-xl mx-auto">
+        <RevealText className="max-w-screen-xl mx-auto">
           <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-5xl text-white mb-14">
             Écoutez ce que nos clients ont à dire
           </h2>
@@ -217,7 +219,7 @@ export default function Clients() {
               </div>
             ))}
           </div>
-        </Reveal>
+        </RevealText>
       </section>
 
       <Footer />

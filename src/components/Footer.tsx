@@ -2,7 +2,7 @@ import { useCallback } from 'react'
 import { useTransition } from '../context/TransitionContext'
 import { LogoButton } from './LogoButton'
 import { LinkedInButton } from './LinkedInButton'
-import { Reveal } from './Reveal'
+import { RevealText } from './Reveal'
 
 export function Footer() {
   const { startTransition } = useTransition()
@@ -23,17 +23,17 @@ export function Footer() {
       </div>
 
       {/* ── Top: title + CTA ─────────────────────────────────────────────── */}
-      <Reveal className="relative z-10 flex flex-col items-center justify-center text-center py-32 min-h-[72vh] border-t border-white/10">
+      <RevealText className="relative z-10 flex flex-col items-center justify-center text-center py-32 min-h-[72vh] border-t border-white/10">
         <div className="flex flex-col items-center gap-8">
           <h2 className="font-display font-bold text-5xl sm:text-6xl lg:text-7xl xl:text-8xl text-white leading-none tracking-tight">
             Engineering Studio
           </h2>
           <LogoButton onClick={() => nav('/contact')}>Écrivez-nous</LogoButton>
         </div>
-      </Reveal>
+      </RevealText>
 
       {/* ── Info grid ────────────────────────────────────────────────────── */}
-      <Reveal className="relative z-10 grid grid-cols-1 sm:grid-cols-2 border-t border-white/10">
+      <RevealText className="relative z-10 grid grid-cols-1 sm:grid-cols-2 border-t border-white/10">
 
         {/* À propos */}
         <div className="px-10 sm:px-14 lg:px-20 py-16 sm:border-r border-white/10">
@@ -62,7 +62,7 @@ export function Footer() {
           <LogoButton onClick={() => nav('/contact')}>Nous contacter</LogoButton>
         </div>
 
-      </Reveal>
+      </RevealText>
 
       {/* ── Bottom bar ────────────────────────────────────────────────────── */}
       <div className="relative z-10 flex flex-wrap items-center justify-between gap-4 px-10 sm:px-14 lg:px-20 py-6 border-t border-white/10">

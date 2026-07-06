@@ -1,7 +1,7 @@
 import { useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { Footer } from './Footer'
-import { Reveal } from './Reveal'
+import { Reveal, RevealText } from './Reveal'
 
 interface Service {
   name: string
@@ -46,22 +46,34 @@ function ServiceRow({ service, index }: { service: Service; index: number }) {
   return (
     <section ref={ref} className="border-t border-white/10">
       {/* Mobile: stack, image above */}
-      <Reveal className="md:hidden flex flex-col gap-8 items-center text-center px-6 py-16">
-        <div className="w-52 h-52 rounded-full overflow-hidden border border-white/10 hover:opacity-80 transition-opacity">
-          <img src={service.image} alt={service.name} className="w-full h-full object-cover" />
-        </div>
-        <div className="flex flex-col gap-2">
+      <div className="md:hidden flex flex-col gap-8 items-center text-center px-6 py-16">
+        <Reveal direction={imageLeft ? 'left' : 'right'}>
+          <div className="w-52 h-52 rounded-full overflow-hidden border border-white/10 hover:opacity-80 transition-opacity">
+            <img src={service.image} alt={service.name} className="w-full h-full object-cover" />
+          </div>
+        </Reveal>
+        <RevealText className="flex flex-col gap-2">
           <span className="font-body text-secondary text-xs tracking-widest">
             {String(index + 1).padStart(2, '0')}.
           </span>
           <h2 className="font-display font-bold text-2xl text-white leading-tight">{service.name}</h2>
-        </div>
-      </Reveal>
+        </RevealText>
+      </div>
 
       {/* Desktop: alternating two-column */}
-      <Reveal className="hidden md:grid grid-cols-2 gap-16 lg:gap-24 xl:gap-32 items-center max-w-screen-xl mx-auto px-10 lg:px-20 py-24 lg:py-32 xl:py-40">
-        {imageLeft ? <>{circle}{label}</> : <>{label}{circle}</>}
-      </Reveal>
+      <div className="hidden md:grid grid-cols-2 gap-16 lg:gap-24 xl:gap-32 items-center max-w-screen-xl mx-auto px-10 lg:px-20 py-24 lg:py-32 xl:py-40">
+        {imageLeft ? (
+          <>
+            <Reveal direction="left">{circle}</Reveal>
+            <RevealText>{label}</RevealText>
+          </>
+        ) : (
+          <>
+            <RevealText>{label}</RevealText>
+            <Reveal direction="right">{circle}</Reveal>
+          </>
+        )}
+      </div>
     </section>
   )
 }
@@ -83,7 +95,7 @@ export function StudioPage({ logo, logoAlt, services }: StudioConfig) {
         <img
           src={logo}
           alt={logoAlt}
-          className="relative z-10 w-16 h-16 sm:w-20 sm:h-20 object-contain select-none"
+          className="relative z-10 w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 xl:w-56 xl:h-56 object-contain select-none"
           draggable={false}
         />
       </section>

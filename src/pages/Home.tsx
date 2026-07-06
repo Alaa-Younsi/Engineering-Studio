@@ -3,7 +3,7 @@ import { motion, useScroll, useTransform } from 'framer-motion'
 import { useTransition } from '../context/TransitionContext'
 import { LogoButton } from '../components/LogoButton'
 import { Footer } from '../components/Footer'
-import { Reveal } from '../components/Reveal'
+import { Reveal, RevealText } from '../components/Reveal'
 
 // ── Hero Section ───────────────────────────────────────────────────────────────
 
@@ -88,20 +88,32 @@ function ServiceSection({ title, description, imageSrc, imageAlt, imageLeft, onL
 
         {/* Mobile: always stack, image on top */}
         <div className="flex flex-col gap-8 items-center text-center md:hidden">
-          <div className="w-48 h-48 rounded-full overflow-hidden border border-white/10 hover:opacity-80 transition-opacity">
-            <img src={imageSrc} alt={imageAlt} className="w-full h-full object-cover" />
-          </div>
-          <div className="flex flex-col items-center gap-4">
+          <Reveal direction={imageLeft ? 'left' : 'right'}>
+            <div className="w-48 h-48 rounded-full overflow-hidden border border-white/10 hover:opacity-80 transition-opacity">
+              <img src={imageSrc} alt={imageAlt} className="w-full h-full object-cover" />
+            </div>
+          </Reveal>
+          <RevealText className="flex flex-col items-center gap-4">
             <h2 className="font-display font-bold text-2xl text-white leading-tight">{title}</h2>
             <p className="font-body text-secondary text-sm leading-relaxed max-w-[38ch]">{description}</p>
             <LogoButton onClick={onLearnMore}>En savoir plus</LogoButton>
-          </div>
+          </RevealText>
         </div>
 
         {/* Tablet / Desktop: two columns */}
-        <Reveal className="hidden md:grid grid-cols-2 gap-10 lg:gap-20 xl:gap-28 items-center">
-          {imageLeft ? <>{imgBlock}{textBlock}</> : <>{textBlock}{imgBlock}</>}
-        </Reveal>
+        <div className="hidden md:grid grid-cols-2 gap-10 lg:gap-20 xl:gap-28 items-center">
+          {imageLeft ? (
+            <>
+              <Reveal direction="left">{imgBlock}</Reveal>
+              <RevealText>{textBlock}</RevealText>
+            </>
+          ) : (
+            <>
+              <RevealText>{textBlock}</RevealText>
+              <Reveal direction="right">{imgBlock}</Reveal>
+            </>
+          )}
+        </div>
 
       </div>
     </section>

@@ -3,7 +3,7 @@ import { motion, useScroll, useTransform } from 'framer-motion'
 import { useTransition } from '../context/TransitionContext'
 import { LogoButton } from '../components/LogoButton'
 import { Footer } from '../components/Footer'
-import { Reveal } from '../components/Reveal'
+import { RevealText } from '../components/Reveal'
 
 export default function Nouvelles() {
   const { startTransition } = useTransition()
@@ -18,7 +18,7 @@ export default function Nouvelles() {
       {/* Hero */}
       <section ref={heroRef} className="relative h-screen flex items-center overflow-hidden">
         <div className="px-6 sm:px-10 lg:px-20 relative z-10">
-          <h1 className="font-display font-bold text-6xl sm:text-7xl lg:text-8xl text-white leading-none">
+          <h1 className="font-display font-bold text-4xl sm:text-6xl md:text-7xl lg:text-8xl text-white leading-none">
             Nouvelles
           </h1>
         </div>
@@ -26,7 +26,7 @@ export default function Nouvelles() {
         {/* Decorative circle top-right */}
         <div
           className="absolute -right-12 top-1/2 -translate-y-1/2 pointer-events-none select-none"
-          style={{ width: 'min(52vw, 52vh)', height: 'min(52vw, 52vh)' }}
+          style={{ width: 'clamp(200px, 52vw, 540px)', height: 'clamp(200px, 52vw, 540px)' }}
         >
           <motion.div style={{ y: heroLogoY }} className="w-full h-full">
             <img src="/Assets/logo/Logo-seul.png" alt="" className="w-full h-full object-contain" style={{ opacity: 0.15 }} draggable={false} />
@@ -36,7 +36,7 @@ export default function Nouvelles() {
 
       {/* Under construction */}
       <section className="flex flex-col items-center justify-center py-16 px-6">
-        <Reveal
+        <RevealText
           className="relative rounded-full bg-[#111] flex flex-col items-center justify-center overflow-hidden"
           style={{ width: 'min(72vw, 380px)', height: 'min(72vw, 380px)' }}
         >
@@ -52,7 +52,7 @@ export default function Nouvelles() {
             </p>
             <LogoButton onClick={() => nav('/')}>Retour à l'accueil</LogoButton>
           </div>
-        </Reveal>
+        </RevealText>
       </section>
 
       <Footer />

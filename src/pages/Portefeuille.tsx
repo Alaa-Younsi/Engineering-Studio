@@ -3,7 +3,7 @@ import { motion, useScroll, useTransform } from 'framer-motion'
 import { useTransition } from '../context/TransitionContext'
 import { LogoButton } from '../components/LogoButton'
 import { Footer } from '../components/Footer'
-import { Reveal } from '../components/Reveal'
+import { RevealText } from '../components/Reveal'
 
 export default function Portefeuille() {
   const { startTransition } = useTransition()
@@ -18,13 +18,13 @@ export default function Portefeuille() {
       {/* ── Hero ── */}
       <section ref={heroRef} className="relative h-screen flex items-center overflow-hidden">
         <div className="px-6 sm:px-10 lg:px-20 relative z-10">
-          <h1 className="font-display font-bold text-6xl sm:text-7xl lg:text-8xl text-white leading-none">
+          <h1 className="font-display font-bold text-4xl sm:text-6xl md:text-7xl lg:text-8xl text-white leading-none">
             Portefeuille
           </h1>
         </div>
         <div
           className="absolute -right-[6%] top-1/2 -translate-y-1/2 pointer-events-none select-none"
-          style={{ width: 'min(56vw, 56vh)', height: 'min(56vw, 56vh)' }}
+          style={{ width: 'clamp(210px, 56vw, 580px)', height: 'clamp(210px, 56vw, 580px)' }}
         >
           <motion.div style={{ y: logoY }} className="w-full h-full">
             <img src="/Assets/logo/Logo-seul.png" alt="" className="w-full h-full object-contain" style={{ opacity: 0.15 }} draggable={false} />
@@ -34,7 +34,7 @@ export default function Portefeuille() {
 
       {/* ── En cours ── */}
       <section className="py-28 flex items-center justify-center">
-        <Reveal className="relative w-72 h-72 rounded-full bg-surface overflow-hidden flex flex-col items-center justify-center gap-3">
+        <RevealText className="relative w-72 h-72 rounded-full bg-surface overflow-hidden flex flex-col items-center justify-center gap-3">
           <div className="absolute inset-0 flex items-center justify-center">
             <img src="/Assets/logo/Logo-seul.png" alt="" className="w-full h-full object-contain" style={{ opacity: 0.12 }} draggable={false} />
           </div>
@@ -44,7 +44,7 @@ export default function Portefeuille() {
             </p>
             <LogoButton onClick={() => nav('/contact')}>Nous contacter</LogoButton>
           </div>
-        </Reveal>
+        </RevealText>
       </section>
 
       <Footer />

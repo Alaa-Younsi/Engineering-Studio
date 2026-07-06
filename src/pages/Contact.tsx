@@ -3,7 +3,7 @@ import { motion, useScroll, useTransform } from 'framer-motion'
 import { LogoButton } from '../components/LogoButton'
 import { LinkedInButton } from '../components/LinkedInButton'
 import { Footer } from '../components/Footer'
-import { Reveal } from '../components/Reveal'
+import { RevealText } from '../components/Reveal'
 
 const faqs = [
   {
@@ -40,14 +40,14 @@ function CitySection() {
           style={{ opacity: 0.85 }}
         />
       </motion.div>
-      <Reveal className="relative z-10 flex items-center justify-end min-h-[55vh] px-8 sm:px-14 lg:px-20 py-16">
+      <RevealText className="relative z-10 flex items-center justify-end min-h-[55vh] px-8 sm:px-14 lg:px-20 py-16">
         <div className="max-w-[320px]">
           <h2 className="font-display font-bold text-2xl sm:text-3xl text-black leading-snug mb-6">
             Suivez notre actualités et découvrez nos travaux récentes
           </h2>
           <LinkedInButton />
         </div>
-      </Reveal>
+      </RevealText>
     </section>
   )
 }
@@ -72,13 +72,13 @@ export default function Contact() {
       {/* ── Hero ────────────────────────────────────────────────────────────── */}
       <section ref={heroRef} className="relative h-screen flex items-center overflow-hidden">
         <div className="px-6 sm:px-10 lg:px-20 relative z-10">
-          <h1 className="font-display font-bold text-6xl sm:text-7xl lg:text-8xl text-white leading-none">
+          <h1 className="font-display font-bold text-4xl sm:text-6xl md:text-7xl lg:text-8xl text-white leading-none">
             Contact
           </h1>
         </div>
         <div
           className="absolute -right-12 top-1/2 -translate-y-1/2 pointer-events-none select-none"
-          style={{ width: 'min(52vw, 52vh)', height: 'min(52vw, 52vh)' }}
+          style={{ width: 'clamp(200px, 52vw, 540px)', height: 'clamp(200px, 52vw, 540px)' }}
         >
           <motion.div style={{ y: heroLogoY }} className="w-full h-full">
             <img src="/Assets/logo/Logo-seul.png" alt="" className="w-full h-full object-contain" style={{ opacity: 0.15 }} draggable={false} />
@@ -88,7 +88,7 @@ export default function Contact() {
 
       {/* ── Form section ────────────────────────────────────────────────────── */}
       <section className="px-6 sm:px-10 lg:px-20 py-20 border-t border-white/10">
-        <Reveal className="max-w-screen-xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
+        <RevealText className="max-w-screen-xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
 
           {/* Left */}
           <div className="flex flex-col justify-center gap-8">
@@ -167,12 +167,12 @@ export default function Contact() {
               </form>
             )}
           </div>
-        </Reveal>
+        </RevealText>
       </section>
 
       {/* ── FAQ ─────────────────────────────────────────────────────────────── */}
       <section className="px-6 sm:px-10 lg:px-20 py-20 border-t border-white/10">
-        <Reveal className="max-w-screen-xl mx-auto">
+        <RevealText className="max-w-screen-xl mx-auto">
           <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-5xl text-white mb-12 text-center">
             Voici les questions fréquemment posées.
           </h2>
@@ -198,7 +198,7 @@ export default function Contact() {
               </div>
             ))}
           </div>
-        </Reveal>
+        </RevealText>
       </section>
 
       {/* ── City illustration ───────────────────────────────────────────────── */}

@@ -3,7 +3,7 @@ import { motion, useScroll, useTransform } from 'framer-motion'
 import { useTransition } from '../context/TransitionContext'
 import { LogoButton } from '../components/LogoButton'
 import { Footer } from '../components/Footer'
-import { Reveal } from '../components/Reveal'
+import { RevealText } from '../components/Reveal'
 
 const softwareGroups = [
   { category: 'Conception',           items: ['Autodesk Revit', 'AutoCAD', 'ArchiCAD', 'SketchUp Pro', 'Rhinoceros 3D', '3DS Max'] },
@@ -57,13 +57,13 @@ export default function APropos() {
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
       <section ref={heroRef} className="relative h-screen flex items-center overflow-hidden">
         <div className="px-6 sm:px-10 lg:px-20 relative z-10">
-          <h1 className="font-display font-bold text-6xl sm:text-7xl lg:text-8xl text-white leading-none">
+          <h1 className="font-display font-bold text-4xl sm:text-6xl md:text-7xl lg:text-8xl text-white leading-none">
             À propos
           </h1>
         </div>
         <div
           className="absolute -right-[6%] top-1/2 -translate-y-1/2 pointer-events-none select-none"
-          style={{ width: 'min(60vw, 60vh)', height: 'min(60vw, 60vh)' }}
+          style={{ width: 'clamp(220px, 60vw, 620px)', height: 'clamp(220px, 60vw, 620px)' }}
         >
           <motion.div style={{ y: heroLogoY }} className="w-full h-full">
             <img src="/Assets/logo/Logo-seul.png" alt="" className="w-full h-full object-contain" style={{ opacity: 0.18 }} draggable={false} />
@@ -73,7 +73,7 @@ export default function APropos() {
 
       {/* ── Stats ────────────────────────────────────────────────────────── */}
       <section className="px-6 sm:px-10 lg:px-20 py-32 border-t border-white/10">
-        <Reveal className="max-w-screen-xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
+        <RevealText className="max-w-screen-xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
           <div>
             <p className="font-body text-secondary text-xs tracking-widest uppercase mb-6">Solutions globale en ingénierie</p>
             <h2 className="font-display font-bold text-4xl sm:text-5xl lg:text-6xl text-white leading-tight mb-14">
@@ -102,12 +102,12 @@ export default function APropos() {
               Forts d'expériences significatives, Nous vous accompagnons tout au long de vos projets et offrent des prestations conduites par le triax Coût – Délai – Qualité.
             </p>
           </div>
-        </Reveal>
+        </RevealText>
       </section>
 
       {/* ── Études clé en main ───────────────────────────────────────────── */}
       <section className="px-6 sm:px-10 lg:px-20 py-32 border-t border-white/10">
-        <Reveal className="max-w-screen-xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-10">
+        <RevealText className="max-w-screen-xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-10">
           <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-5xl text-white leading-tight">
             Études clé en main
           </h2>
@@ -117,12 +117,12 @@ export default function APropos() {
             </p>
             <LogoButton onClick={() => nav('/devis')}>Obtenir un devis</LogoButton>
           </div>
-        </Reveal>
+        </RevealText>
       </section>
 
       {/* ── Services — circle+number ──────────────────────────────────────── */}
       <section className="px-6 sm:px-10 lg:px-20 py-32 border-t border-white/10">
-        <Reveal className="max-w-screen-xl mx-auto">
+        <RevealText className="max-w-screen-xl mx-auto">
           <p className="font-body text-secondary text-sm leading-relaxed max-w-[60ch] mb-20">
             Nous fournissons à nos clients un large éventail de compétences pour assurer la prestation d'ingénierie la plus exhaustive et la mieux adaptée à leurs projets.
           </p>
@@ -144,22 +144,22 @@ export default function APropos() {
               </div>
             ))}
           </div>
-        </Reveal>
+        </RevealText>
       </section>
 
       {/* ── BIM highlight ─────────────────────────────────────────────────── */}
       <section className="bg-surface px-6 sm:px-10 lg:px-20 py-36">
-        <Reveal className="max-w-screen-xl mx-auto">
+        <RevealText className="max-w-screen-xl mx-auto">
           <p className="font-body text-secondary text-xs tracking-widest uppercase mb-8">Notre expertise digitale</p>
           <h2 className="font-display font-bold text-4xl sm:text-5xl lg:text-6xl xl:text-7xl text-white leading-tight max-w-[22ch]">
             Boostez vos projets avec le BIM &amp; BTP numérique
           </h2>
-        </Reveal>
+        </RevealText>
       </section>
 
       {/* ── BIM expertise ─────────────────────────────────────────────────── */}
       <section className="px-6 sm:px-10 lg:px-20 py-32 border-t border-white/10">
-        <Reveal className="max-w-screen-xl mx-auto">
+        <RevealText className="max-w-screen-xl mx-auto">
           <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-[2.8rem] text-white leading-tight max-w-[30ch] mb-16">
             Modélisation BIM : réalisez vos ouvrages en 3D grâce à notre expertise
           </h2>
@@ -173,12 +173,12 @@ export default function APropos() {
               </span>
             ))}
           </div>
-        </Reveal>
+        </RevealText>
       </section>
 
       {/* ── Process — circle+number ───────────────────────────────────────── */}
       <section className="px-6 sm:px-10 lg:px-20 py-40 border-t border-white/10">
-        <Reveal className="max-w-screen-xl mx-auto">
+        <RevealText className="max-w-screen-xl mx-auto">
           <h2 className="font-display font-bold text-5xl sm:text-6xl lg:text-7xl text-white leading-tight mb-6">
             Comment se déroule<br />le processus d'étude
           </h2>
@@ -203,7 +203,7 @@ export default function APropos() {
               </div>
             ))}
           </div>
-        </Reveal>
+        </RevealText>
       </section>
 
       {/* ── Prêts à travailler — centered circle CTA ─────────────────────── */}
@@ -221,7 +221,7 @@ export default function APropos() {
           </motion.div>
         </div>
         {/* Content */}
-        <Reveal className="relative z-10 flex flex-col items-center text-center px-6 gap-6 max-w-2xl">
+        <RevealText className="relative z-10 flex flex-col items-center text-center px-6 gap-6 max-w-2xl">
           <p className="font-body text-white text-xs tracking-widest uppercase">
             Prêts à travailler ensemble
           </p>
@@ -240,20 +240,20 @@ export default function APropos() {
               Appelez pour un rendez-vous
             </button>
           </div>
-        </Reveal>
+        </RevealText>
       </section>
 
       {/* ── Points forts — overlapping circles ───────────────────────────── */}
       <section className="py-32 border-t border-white/10">
-        <Reveal className="text-center px-6 sm:px-10 lg:px-20 mb-20">
+        <RevealText className="text-center px-6 sm:px-10 lg:px-20 mb-20">
           <h2 className="font-display font-bold text-4xl sm:text-5xl lg:text-6xl text-white mb-8">Nos points forts</h2>
           <p className="font-body text-secondary text-sm leading-relaxed max-w-[80ch] mx-auto">
             Notre connaissance des contraintes des chargés d'affaires, maîtres d'œuvre et bureaux d'études nous permet d'être réactifs et efficaces pour satisfaire au mieux à vos attentes. Quelles que soient vos exigences, vous pouvez faire appel à ENGINEERING STUDIO pour vous aider à réussir vos projets les plus complexes. Le tout en répondant aux différents enjeux liés au délai, au coût et à la qualité.
           </p>
-        </Reveal>
+        </RevealText>
 
         {/* Mobile: wrapped circle grid */}
-        <Reveal className="lg:hidden flex flex-wrap justify-center gap-4 px-6">
+        <RevealText className="lg:hidden flex flex-wrap justify-center gap-4 px-6">
           {strengths.map((s) => (
             <div
               key={s}
@@ -262,10 +262,10 @@ export default function APropos() {
               <span className="font-display font-medium text-white text-xs text-center leading-tight px-3">{s}</span>
             </div>
           ))}
-        </Reveal>
+        </RevealText>
 
         {/* Desktop: overlapping circles row */}
-        <Reveal className="hidden lg:flex justify-center">
+        <RevealText className="hidden lg:flex justify-center">
           <div className="flex items-center">
             {strengths.map((s, i) => (
               <div
@@ -277,12 +277,12 @@ export default function APropos() {
               </div>
             ))}
           </div>
-        </Reveal>
+        </RevealText>
       </section>
 
       {/* ── Software — card grid ──────────────────────────────────────────── */}
       <section className="border-t border-white/10 px-6 sm:px-10 lg:px-20 py-32">
-        <Reveal className="max-w-screen-xl mx-auto">
+        <RevealText className="max-w-screen-xl mx-auto">
           <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-5xl text-white text-center leading-tight max-w-[28ch] mx-auto mb-16">
             Utilisés les logiciels d'ingénierie couvrent la conception, calculs, simulation et la gestion de projets
           </h2>
@@ -294,14 +294,14 @@ export default function APropos() {
               </div>
             ))}
           </div>
-        </Reveal>
+        </RevealText>
       </section>
 
       {/* ── Nos garanties — radial wheel ─────────────────────────────────── */}
       <section className="border-t border-white/10 py-16">
 
         {/* Mobile */}
-        <Reveal className="lg:hidden px-6 sm:px-10 py-16">
+        <RevealText className="lg:hidden px-6 sm:px-10 py-16">
           <h2 className="font-display font-bold text-4xl text-white mb-10 text-center">Nos garanties</h2>
           <div className="grid grid-cols-2 gap-3">
             {radialItems.map((g, i) => (
@@ -310,10 +310,10 @@ export default function APropos() {
               </div>
             ))}
           </div>
-        </Reveal>
+        </RevealText>
 
         {/* Desktop: SVG radial diagram */}
-        <Reveal className="hidden lg:block relative w-full" y={0}>
+        <RevealText className="hidden lg:block relative w-full">
           <div style={{ paddingBottom: '50%' }}>
           <svg
             className="absolute inset-0 w-full h-full"
@@ -350,7 +350,7 @@ export default function APropos() {
             )}
           </svg>
           </div>
-        </Reveal>
+        </RevealText>
       </section>
 
       <Footer />
