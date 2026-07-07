@@ -5,15 +5,51 @@ import { LogoButton } from '../components/LogoButton'
 import { Footer } from '../components/Footer'
 import { RevealText } from '../components/Reveal'
 
-const softwareGroups = [
-  { category: 'Conception',           items: ['Autodesk Revit', 'AutoCAD', 'ArchiCAD', 'SketchUp Pro', 'Rhinoceros 3D', '3DS Max'] },
-  { category: 'Calculs structurels',  items: ['Robot Structural', 'ETABS', 'SAP2000', 'CYPECAD', 'RFEM', 'PLAXIS'] },
-  { category: 'Simulation',           items: ['DIALux EVO', 'DesignBuilder', 'EnergyPlus', 'Ansys Fluent', 'OpenStudio', 'IDA ICE'] },
-  { category: 'Gestion de projets',   items: ['BIM 360', 'Navisworks', 'MS Project', 'Primavera P6', 'BIMcollab', 'Procore'] },
-  { category: 'Topographie',          items: ['AutoCAD Civil 3D', 'Trimble Business Center', 'QGIS', 'ArcGIS', 'Leica Geo Office', 'SurvCE'] },
-  { category: 'VRD & Hydraulique',    items: ['EPANET', 'SWMM', 'HEC-RAS', 'WaterGEMS', 'SewerGEMS', 'COVADIS'] },
-  { category: 'Électricité',          items: ['CANECO BT', 'ELEC CALC', 'AutoCAD Electrical', 'DIALux', 'ETAP', 'COMECA'] },
-  { category: 'Thermique & Énergie',  items: ['EnergyPlus', 'TRNSYS', 'IDA ICE', 'ThermExcel', 'Pleiades', 'OpenStudio'] },
+const softwareItems = [
+  { name: 'Sogelink Mensura',                category: 'VRD, Infrastructures' },
+  { name: 'Sogelink Covadis',                category: 'VRD, Infrastructures' },
+  { name: 'Sogelink Autopiste',              category: 'Travaux publics' },
+  { name: 'Bentley WaterCAD',                category: 'Alimentation en eau potable' },
+  { name: 'Bentley SewerCAD',                category: 'Assainissement' },
+  { name: 'Esri ArcGIS',                     category: 'SIG' },
+  { name: 'Global Mapper',                   category: 'SIG' },
+  { name: 'Caneco BT',                       category: 'Electricité CFO' },
+  { name: 'Caneco EP',                       category: 'Eclairage public' },
+  { name: 'Caneco IMP',                      category: 'Electricité CFO' },
+  { name: 'Caneco HT',                       category: 'Electricité CFO' },
+  { name: 'PVsyst',                          category: 'Photovoltaïque' },
+  { name: 'Dialux EVO',                      category: 'Eclairage' },
+  { name: 'Relux',                           category: 'Eclairage' },
+  { name: 'Legrand XLPRO',                   category: 'Electricité CFO' },
+  { name: 'Autodesk AutoCAD',                category: 'DAO, 2D/3D' },
+  { name: 'Autodesk Revit',                  category: 'MEP, Architecture' },
+  { name: 'Autodesk AutoCAD MEP',            category: 'MEP' },
+  { name: 'Autodesk Navisworks',             category: 'Révision 3D/BIM' },
+  { name: 'Autodesk Civil 3D',               category: 'VRD, Infrastructures' },
+  { name: 'Autodesk Infraworks',             category: 'VRD, Infrastructures' },
+  { name: 'Autodesk Robot Structural Analysis', category: 'Structure' },
+  { name: 'Cypecad MEP',                     category: 'MEP, Bilan thermique' },
+  { name: 'Cype HVAC',                       category: 'MEP' },
+  { name: 'Cype PLUMBING',                   category: 'Plomberie, Evacuation' },
+  { name: 'Cype FIRE Hydraulic Systems',     category: 'Anti-incendie' },
+  { name: 'Cype Thermloads',                 category: 'Bilan thermique' },
+  { name: 'Cype ELEC',                       category: 'Electricité CFO' },
+  { name: 'Cype LUX',                        category: 'Eclairage' },
+  { name: 'Traceo Autofluid',                category: 'MEP' },
+  { name: 'Cype HVAC Schematics',            category: 'Schémas de principe' },
+  { name: 'Cype HVAC Radiant floor',         category: 'Plancher chauffant' },
+  { name: 'Open BIM MIDEA',                  category: 'Système VRF, Aérothermie' },
+  { name: 'Open BIM DAIKIN',                 category: 'Système VRF, Aérothermie' },
+  { name: 'Cype ELEC PV Systems',            category: 'Photovoltaïque' },
+  { name: 'Eplan Electric',                  category: 'Electricité CFO' },
+  { name: 'Open BIM Switchboard',            category: 'Tableaux électriques' },
+  { name: 'Cype TEL Wireless',               category: 'Réseaux sans fil' },
+  { name: 'Fine GEO 5',                      category: 'Géotechnique' },
+  { name: 'Tekla Structure',                 category: 'Structure' },
+  { name: 'ArchiCAD',                        category: 'Architecture' },
+  { name: 'Lumion',                          category: 'Rendus 3D' },
+  { name: 'Twinmotion',                      category: 'Rendus 3D' },
+  { name: 'Microsoft Project',               category: 'Gestion de projets' },
 ]
 
 const strengths = ['Réactivité', 'Expertise', 'Expérience', 'Professionnalisme', 'Compétences']
@@ -49,21 +85,19 @@ export default function APropos() {
   const heroLogoY    = useTransform(heroProgress,    [0, 1], ['0px', '-120px'])
   const featureLogoY = useTransform(featureProgress, [0, 1], ['60px', '-60px'])
 
-  const softwareCards = softwareGroups.flatMap(g => g.items.map(name => ({ name, category: g.category })))
-
   return (
     <main className="min-h-screen bg-bg">
 
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
       <section ref={heroRef} className="relative h-screen flex items-center overflow-hidden">
         <div className="px-6 sm:px-10 lg:px-20 relative z-10">
-          <h1 className="font-display font-bold text-4xl sm:text-6xl md:text-7xl lg:text-8xl text-white leading-none">
+          <h1 className="font-display font-bold text-3xl sm:text-5xl md:text-6xl lg:text-7xl text-white leading-none">
             À propos
           </h1>
         </div>
         <div
-          className="absolute -right-[6%] top-1/2 -translate-y-1/2 pointer-events-none select-none"
-          style={{ width: 'clamp(220px, 60vw, 620px)', height: 'clamp(220px, 60vw, 620px)' }}
+          className="absolute -right-[4%] top-1/2 -translate-y-1/2 pointer-events-none select-none"
+          style={{ width: 'clamp(170px, 40vw, 460px)', height: 'clamp(170px, 40vw, 460px)' }}
         >
           <motion.div style={{ y: heroLogoY }} className="w-full h-full">
             <img src="/Assets/logo/Logo-seul.png" alt="" className="w-full h-full object-contain" style={{ opacity: 0.18 }} draggable={false} />
@@ -79,7 +113,7 @@ export default function APropos() {
             <h2 className="font-display font-bold text-4xl sm:text-5xl lg:text-6xl text-white leading-tight mb-14">
               Etudes techniques<br />pluridisciplinaire
             </h2>
-            <div className="grid grid-cols-3 gap-8 max-w-sm">
+            <div className="grid grid-cols-3 gap-8 sm:gap-12 max-w-lg">
               {[['120+', 'Études totales'], ['60+', 'Clients Totales'], ['13+', "Années d'expérience"]].map(([num, label]) => (
                 <div key={label}>
                   <p className="font-display font-bold text-4xl sm:text-5xl text-white leading-none mb-1">{num}</p>
@@ -109,13 +143,16 @@ export default function APropos() {
       <section className="px-6 sm:px-10 lg:px-20 py-32 border-t border-white/10">
         <RevealText className="max-w-screen-xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-10">
           <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-5xl text-white leading-tight">
-            Études clé en main
+            Etudes<br />clé en main
           </h2>
           <div className="max-w-[40ch]">
-            <p className="font-body text-secondary text-sm leading-relaxed mb-8">
-              De l'avant-projet jusqu'à la réception des travaux, nous assurons un suivi rigoureux et une coordination complète de l'ensemble des disciplines techniques.
+            <p className="font-body text-secondary text-sm leading-relaxed mb-6">
+              Notre objectif est de maintenir le plus haut niveau de professionnalisme, d'intégrité, de satisfaction client.
             </p>
-            <LogoButton onClick={() => nav('/devis')}>Obtenir un devis</LogoButton>
+            <p className="font-body text-secondary text-sm leading-relaxed mb-8">
+              Notre offre clé en main permet au client de n'avoir qu'un seul interlocuteur vers qui se tourner. Nous nous engageons sur un contrat de résultat.
+            </p>
+            <LogoButton onClick={() => nav('/devis')} />
           </div>
         </RevealText>
       </section>
@@ -123,15 +160,19 @@ export default function APropos() {
       {/* ── Services — circle+number ──────────────────────────────────────── */}
       <section className="px-6 sm:px-10 lg:px-20 py-32 border-t border-white/10">
         <RevealText className="max-w-screen-xl mx-auto">
-          <p className="font-body text-secondary text-sm leading-relaxed max-w-[60ch] mb-20">
-            Nous fournissons à nos clients un large éventail de compétences pour assurer la prestation d'ingénierie la plus exhaustive et la mieux adaptée à leurs projets.
+          <p className="font-body text-secondary text-xs tracking-widest uppercase mb-6">Présentation</p>
+          <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-5xl text-white leading-tight max-w-[38ch] mb-8">
+            Nous fournissons à nos clients un large éventail de compétences pour assurer la prestation d'ingénierie la plus exhaustive
+          </h2>
+          <p className="font-body text-secondary text-sm leading-relaxed max-w-[80ch] mb-20">
+            La synergie entre les différentes expertises permet de maximiser les résultats en combinant les forces de nos équipes d'ingénieurs, en évitant les doublons d'efforts et en tirant parti des complémentarités.
           </p>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-12">
             {[
-              { num: '01', title: 'Installations MEP' },
-              { num: '02', title: 'VRD & Aménagement' },
+              { num: '01', title: 'MEP' },
+              { num: '02', title: 'VRD' },
               { num: '03', title: 'Topographie' },
-              { num: '04', title: 'Modélisation BIM' },
+              { num: '04', title: 'BIM' },
             ].map(s => (
               <div key={s.num} className="flex flex-col items-center gap-5 hover:opacity-70 transition-opacity">
                 <div className="relative w-24 h-24 rounded-full bg-surface overflow-hidden flex-shrink-0">
@@ -149,26 +190,28 @@ export default function APropos() {
 
       {/* ── BIM highlight ─────────────────────────────────────────────────── */}
       <section className="bg-surface px-6 sm:px-10 lg:px-20 py-36">
-        <RevealText className="max-w-screen-xl mx-auto">
-          <p className="font-body text-secondary text-xs tracking-widest uppercase mb-8">Notre expertise digitale</p>
+        <RevealText className="max-w-screen-xl mx-auto flex flex-col items-center text-center gap-8">
+          <p className="font-body text-secondary text-xs tracking-widest uppercase">Pour mieux construire</p>
           <h2 className="font-display font-bold text-4xl sm:text-5xl lg:text-6xl xl:text-7xl text-white leading-tight max-w-[22ch]">
             Boostez vos projets avec le BIM &amp; BTP numérique
           </h2>
+          <LogoButton variant="pill" onClick={() => nav('/contact')}>Contactez-nous</LogoButton>
         </RevealText>
       </section>
 
       {/* ── BIM expertise ─────────────────────────────────────────────────── */}
       <section className="px-6 sm:px-10 lg:px-20 py-32 border-t border-white/10">
         <RevealText className="max-w-screen-xl mx-auto">
-          <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-[2.8rem] text-white leading-tight max-w-[30ch] mb-16">
+          <p className="font-body text-secondary text-xs tracking-widest uppercase mb-6">La modélisation BIM au cœur de nos projets</p>
+          <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-[2.8rem] text-white leading-tight max-w-[30ch] mb-8">
             Modélisation BIM : réalisez vos ouvrages en 3D grâce à notre expertise
           </h2>
-          <div className="flex flex-wrap gap-3">
-            {['Autodesk', 'Revit', 'Navisworks', 'BIM 360', 'AutoCAD', 'Civil 3D', 'Infraworks'].map(name => (
-              <span
-                key={name}
-                className="font-body text-sm text-white/80 border border-white/30 rounded-full px-5 py-2 bg-white/5 hover:border-white hover:text-white hover:bg-white/10 transition-all cursor-default"
-              >
+          <p className="font-body text-secondary text-sm leading-relaxed max-w-[90ch] mb-16">
+            Les projets en modélisation BIM sont devenus une habitude au cœur de notre société. Cette transformation numérique qui concerne un acteur sur deux dans l'univers du bâtiment est une compétence acquise. Tout comme nous développons la E-réputation de notre société d'études, la modélisation du bâtiment via est une discipline que nous maîtrisons. A vrai dire, elle est devenue indispensable pour répondre aux besoins de nos clients.
+          </p>
+          <div className="flex flex-wrap gap-x-16 gap-y-6">
+            {['Logiciel Revit', 'Maquette BIM', 'Processus CAO', 'Plan en 2D et 3D'].map(name => (
+              <span key={name} className="font-display font-bold text-white text-base">
                 {name}
               </span>
             ))}
@@ -178,28 +221,28 @@ export default function APropos() {
 
       {/* ── Process — circle+number ───────────────────────────────────────── */}
       <section className="px-6 sm:px-10 lg:px-20 py-40 border-t border-white/10">
-        <RevealText className="max-w-screen-xl mx-auto">
-          <h2 className="font-display font-bold text-5xl sm:text-6xl lg:text-7xl text-white leading-tight mb-6">
+        <RevealText className="max-w-screen-xl mx-auto text-center">
+          <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-5xl text-white leading-tight mb-6">
             Comment se déroule<br />le processus d'étude
           </h2>
-          <p className="font-body text-secondary text-sm mb-24">
+          <p className="font-body text-secondary text-sm mb-16">
             Nos prestations d'études sur l'ensemble des techniques de construction
           </p>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-12">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-10 max-w-3xl mx-auto">
             {[
               { num: '01', title: 'Planification\ndu projet' },
               { num: '02', title: 'Préparation\ndu plan' },
               { num: '03', title: 'Installation\ndu système' },
               { num: '04', title: 'Remise\nau client' },
             ].map(p => (
-              <div key={p.num} className="flex flex-col items-center gap-5 hover:opacity-70 transition-opacity">
-                <div className="relative w-24 h-24 rounded-full bg-surface overflow-hidden flex-shrink-0">
+              <div key={p.num} className="flex flex-col items-center gap-4 hover:opacity-70 transition-opacity">
+                <div className="relative w-16 h-16 rounded-full bg-surface overflow-hidden flex-shrink-0">
                   <img src="/Assets/logo/Logo-seul.png" alt="" className="absolute inset-0 w-full h-full object-contain" style={{ opacity: 0.35 }} draggable={false} />
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="font-display font-bold text-4xl text-white leading-none">{p.num}</span>
+                    <span className="font-display font-bold text-xl text-white leading-none">{p.num}</span>
                   </div>
                 </div>
-                <p className="font-display font-bold text-white text-center text-sm sm:text-base whitespace-pre-line">{p.title}</p>
+                <p className="font-display font-bold text-white text-center text-xs sm:text-sm whitespace-pre-line">{p.title}</p>
               </div>
             ))}
           </div>
@@ -283,11 +326,11 @@ export default function APropos() {
       {/* ── Software — card grid ──────────────────────────────────────────── */}
       <section className="border-t border-white/10 px-6 sm:px-10 lg:px-20 py-32">
         <RevealText className="max-w-screen-xl mx-auto">
-          <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-5xl text-white text-center leading-tight max-w-[28ch] mx-auto mb-16">
+          <h2 className="font-display font-bold text-2xl sm:text-3xl lg:text-4xl text-white text-left leading-snug max-w-[32ch] ml-auto mb-16">
             Utilisés les logiciels d'ingénierie couvrent la conception, calculs, simulation et la gestion de projets
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-            {softwareCards.map(sw => (
+            {softwareItems.map(sw => (
               <div key={`${sw.name}-${sw.category}`} className="bg-[#1a1a1a] rounded-2xl p-5 flex flex-col gap-8 hover:opacity-70 transition-opacity">
                 <p className="font-display font-bold text-white text-base leading-snug">{sw.name}</p>
                 <p className="font-body text-secondary text-xs">{sw.category}</p>

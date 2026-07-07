@@ -18,13 +18,13 @@ export default function Portefeuille() {
       {/* ── Hero ── */}
       <section ref={heroRef} className="relative h-screen flex items-center overflow-hidden">
         <div className="px-6 sm:px-10 lg:px-20 relative z-10">
-          <h1 className="font-display font-bold text-4xl sm:text-6xl md:text-7xl lg:text-8xl text-white leading-none">
+          <h1 className="font-display font-bold text-3xl sm:text-5xl md:text-6xl lg:text-7xl text-white leading-none">
             Portefeuille
           </h1>
         </div>
         <div
-          className="absolute -right-[6%] top-1/2 -translate-y-1/2 pointer-events-none select-none"
-          style={{ width: 'clamp(210px, 56vw, 580px)', height: 'clamp(210px, 56vw, 580px)' }}
+          className="absolute -right-[4%] top-1/2 -translate-y-1/2 pointer-events-none select-none"
+          style={{ width: 'clamp(160px, 38vw, 430px)', height: 'clamp(160px, 38vw, 430px)' }}
         >
           <motion.div style={{ y: logoY }} className="w-full h-full">
             <img src="/Assets/logo/Logo-seul.png" alt="" className="w-full h-full object-contain" style={{ opacity: 0.15 }} draggable={false} />
