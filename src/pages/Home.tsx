@@ -22,14 +22,14 @@ function HeroSection({ nav }: { nav: (path: string) => void }) {
           ENGINEERING STUDIO, intervient sur tout type de projets et à n'importe quelle phase du projet, de l'étude à la modélisation BIM.
         </p>
         <div className="flex items-center gap-3 flex-wrap">
-          <LogoButton onClick={() => nav('/devis')}>Obtenir un devis</LogoButton>
+          <LogoButton variant="pill" onClick={() => nav('/devis')}>Obtenir un devis</LogoButton>
           <LogoButton onClick={() => nav('/a-propos')}>Qui Sommes Nous</LogoButton>
         </div>
       </div>
 
-      <div className="absolute right-[-5vw] top-1/2 -translate-y-1/2 pointer-events-none select-none hidden md:block">
+      <div className="absolute right-[-8vw] top-[46%] -translate-y-1/2 pointer-events-none select-none hidden md:block">
         <motion.div style={{ y: logoY }}>
-          <img src="/Assets/logo/Logo-seul.png" alt="" className="w-[500px] h-[500px] object-contain" style={{ opacity: 0.15 }} draggable={false} />
+          <img src="/Assets/logo/Logo-seul.png" alt="" className="w-[560px] h-[560px] lg:w-[680px] lg:h-[680px] xl:w-[760px] xl:h-[760px] object-contain" style={{ opacity: 0.15 }} draggable={false} />
         </motion.div>
       </div>
     </section>
