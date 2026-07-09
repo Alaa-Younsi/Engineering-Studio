@@ -33,7 +33,7 @@ export function LogoButton({
     <button
       onClick={onClick}
       aria-label={ariaLabel ?? (typeof children === 'string' ? children : undefined)}
-      className={`group inline-flex items-center h-10 rounded-full bg-white overflow-hidden max-w-[40px] hover:max-w-[18rem] transition-[max-width] duration-300 ease-out ${className}`}
+      className={`group inline-flex items-center h-10 w-fit max-w-full rounded-full bg-white overflow-hidden ${className}`}
     >
       <span className="flex-shrink-0 w-10 h-10 flex items-center justify-center">
         <img
@@ -45,8 +45,10 @@ export function LogoButton({
         />
       </span>
       {children && (
-        <span className="whitespace-nowrap font-body text-sm text-black pr-4">
-          {children}
+        <span className="grid [grid-template-columns:0fr] group-hover:[grid-template-columns:1fr] transition-[grid-template-columns] duration-300 ease-out">
+          <span className="overflow-hidden whitespace-nowrap font-body text-sm text-black">
+            <span className="block pr-4">{children}</span>
+          </span>
         </span>
       )}
     </button>

@@ -3,6 +3,7 @@ import { motion, useScroll, useTransform } from 'framer-motion'
 import { LogoButton } from '../components/LogoButton'
 import { LinkedInButton } from '../components/LinkedInButton'
 import { Footer } from '../components/Footer'
+import { HeroShape } from '../components/HeroShape'
 import { RevealText } from '../components/Reveal'
 
 const faqs = [
@@ -31,7 +32,7 @@ function CitySection() {
   const cityY = useTransform(scrollYProgress, [0, 1], ['40px', '-40px'])
 
   return (
-    <section ref={ref} className="relative border-t border-white/10 overflow-hidden min-h-[55vh]">
+    <section ref={ref} className="relative border-t border-white/10 overflow-hidden min-h-screen">
       <motion.div style={{ y: cityY }} className="absolute inset-0">
         <img
           src="/Assets/images/Contact-img linkedin.png"
@@ -40,7 +41,7 @@ function CitySection() {
           style={{ opacity: 0.85 }}
         />
       </motion.div>
-      <RevealText className="relative z-10 flex items-center justify-end min-h-[55vh] px-8 sm:px-14 lg:px-20 py-16">
+      <RevealText className="relative z-10 flex items-center justify-end min-h-screen px-8 sm:px-14 lg:px-20 py-16">
         <div className="max-w-[320px]">
           <h2 className="font-display font-bold text-2xl sm:text-3xl text-black leading-snug mb-6">
             Suivez notre actualités et découvrez nos travaux récentes
@@ -76,14 +77,7 @@ export default function Contact() {
             Contact
           </h1>
         </div>
-        <div
-          className="absolute -right-8 top-1/2 -translate-y-1/2 pointer-events-none select-none"
-          style={{ width: 'clamp(150px, 36vw, 400px)', height: 'clamp(150px, 36vw, 400px)' }}
-        >
-          <motion.div style={{ y: heroLogoY }} className="w-full h-full">
-            <img src="/Assets/logo/Logo-seul.png" alt="" className="w-full h-full object-contain" style={{ opacity: 0.15 }} draggable={false} />
-          </motion.div>
-        </div>
+        <HeroShape y={heroLogoY} />
       </section>
 
       {/* ── Form section ────────────────────────────────────────────────────── */}
@@ -98,10 +92,26 @@ export default function Contact() {
             </h2>
             <a
               href="tel:+213773876214"
-              className="flex items-center gap-3 font-body text-white text-sm hover:opacity-70 transition-opacity"
+              className="flex items-center gap-5 text-white hover:opacity-70 transition-opacity self-start"
             >
-              <span className="w-8 h-8 rounded-full border border-white/30 flex items-center justify-center text-xs">✆</span>
-              +213 (0) 773 87 62 14
+              <svg
+                width="30"
+                height="30"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="flex-shrink-0"
+                aria-hidden
+              >
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92Z" />
+              </svg>
+              <span className="flex flex-col gap-0.5">
+                <span className="font-body text-secondary text-xs">Appelez-nous au&nbsp;:</span>
+                <span className="font-display font-bold text-white text-lg">+213 (0) 773 87 62 14</span>
+              </span>
             </a>
           </div>
 

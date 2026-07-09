@@ -3,6 +3,7 @@ import { motion, useScroll, useTransform } from 'framer-motion'
 import { useTransition } from '../context/TransitionContext'
 import { LogoButton } from '../components/LogoButton'
 import { Footer } from '../components/Footer'
+import { HeroShape } from '../components/HeroShape'
 import { Reveal, RevealText } from '../components/Reveal'
 
 // ── Hero Section ───────────────────────────────────────────────────────────────
@@ -27,11 +28,7 @@ function HeroSection({ nav }: { nav: (path: string) => void }) {
         </div>
       </div>
 
-      <div className="absolute right-[-8vw] top-[46%] -translate-y-1/2 pointer-events-none select-none hidden md:block">
-        <motion.div style={{ y: logoY }}>
-          <img src="/Assets/logo/Logo-seul.png" alt="" className="w-[560px] h-[560px] lg:w-[680px] lg:h-[680px] xl:w-[760px] xl:h-[760px] object-contain" style={{ opacity: 0.15 }} draggable={false} />
-        </motion.div>
-      </div>
+      <HeroShape y={logoY} className="hidden md:block" />
     </section>
   )
 }

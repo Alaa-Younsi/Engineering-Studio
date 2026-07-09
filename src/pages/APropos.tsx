@@ -3,6 +3,7 @@ import { motion, useScroll, useTransform } from 'framer-motion'
 import { useTransition } from '../context/TransitionContext'
 import { LogoButton } from '../components/LogoButton'
 import { Footer } from '../components/Footer'
+import { HeroShape } from '../components/HeroShape'
 import { RevealText } from '../components/Reveal'
 
 const softwareItems = [
@@ -95,14 +96,7 @@ export default function APropos() {
             À propos
           </h1>
         </div>
-        <div
-          className="absolute -right-[4%] top-1/2 -translate-y-1/2 pointer-events-none select-none"
-          style={{ width: 'clamp(170px, 40vw, 460px)', height: 'clamp(170px, 40vw, 460px)' }}
-        >
-          <motion.div style={{ y: heroLogoY }} className="w-full h-full">
-            <img src="/Assets/logo/Logo-seul.png" alt="" className="w-full h-full object-contain" style={{ opacity: 0.18 }} draggable={false} />
-          </motion.div>
-        </div>
+        <HeroShape y={heroLogoY} />
       </section>
 
       {/* ── Stats ────────────────────────────────────────────────────────── */}
@@ -152,40 +146,44 @@ export default function APropos() {
             <p className="font-body text-secondary text-sm leading-relaxed mb-8">
               Notre offre clé en main permet au client de n'avoir qu'un seul interlocuteur vers qui se tourner. Nous nous engageons sur un contrat de résultat.
             </p>
-            <LogoButton onClick={() => nav('/devis')} />
+            <LogoButton onClick={() => nav('/devis')}>Obtenir un devis</LogoButton>
           </div>
         </RevealText>
       </section>
 
       {/* ── Services — circle+number ──────────────────────────────────────── */}
       <section className="px-6 sm:px-10 lg:px-20 py-32 border-t border-white/10">
-        <RevealText className="max-w-screen-xl mx-auto">
-          <p className="font-body text-secondary text-xs tracking-widest uppercase mb-6">Présentation</p>
-          <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-5xl text-white leading-tight max-w-[38ch] mb-8">
-            Nous fournissons à nos clients un large éventail de compétences pour assurer la prestation d'ingénierie la plus exhaustive
-          </h2>
-          <p className="font-body text-secondary text-sm leading-relaxed max-w-[80ch] mb-20">
-            La synergie entre les différentes expertises permet de maximiser les résultats en combinant les forces de nos équipes d'ingénieurs, en évitant les doublons d'efforts et en tirant parti des complémentarités.
-          </p>
+        <div className="max-w-screen-xl mx-auto">
+          <RevealText>
+            <p className="font-body text-secondary text-xs tracking-widest uppercase mb-6">Présentation</p>
+            <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-5xl text-white leading-tight max-w-[38ch] mb-8">
+              Nous fournissons à nos clients un large éventail de compétences pour assurer la prestation d'ingénierie la plus exhaustive
+            </h2>
+            <p className="font-body text-secondary text-sm leading-relaxed max-w-[80ch] mb-20">
+              La synergie entre les différentes expertises permet de maximiser les résultats en combinant les forces de nos équipes d'ingénieurs, en évitant les doublons d'efforts et en tirant parti des complémentarités.
+            </p>
+          </RevealText>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-12">
             {[
               { num: '01', title: 'MEP' },
               { num: '02', title: 'VRD' },
               { num: '03', title: 'Topographie' },
               { num: '04', title: 'BIM' },
-            ].map(s => (
-              <div key={s.num} className="flex flex-col items-center gap-5 hover:opacity-70 transition-opacity">
-                <div className="relative w-24 h-24 rounded-full bg-surface overflow-hidden flex-shrink-0">
-                  <img src="/Assets/logo/Logo-seul.png" alt="" className="absolute inset-0 w-full h-full object-contain" style={{ opacity: 0.35 }} draggable={false} />
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="font-display font-bold text-4xl text-white leading-none">{s.num}</span>
+            ].map((s, i) => (
+              <RevealText key={s.num} delay={i * 0.08}>
+                <div className="flex flex-col items-center gap-5 hover:opacity-70 transition-opacity">
+                  <div className="relative w-24 h-24 rounded-full bg-surface overflow-hidden flex-shrink-0">
+                    <img src="/Assets/logo/Logo-seul.png" alt="" className="absolute inset-0 w-full h-full object-contain" style={{ opacity: 0.35 }} draggable={false} />
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <span className="font-display font-bold text-4xl text-white leading-none">{s.num}</span>
+                    </div>
                   </div>
+                  <p className="font-display font-bold text-white text-center text-sm sm:text-base">{s.title}</p>
                 </div>
-                <p className="font-display font-bold text-white text-center text-sm sm:text-base">{s.title}</p>
-              </div>
+              </RevealText>
             ))}
           </div>
-        </RevealText>
+        </div>
       </section>
 
       {/* ── BIM highlight ─────────────────────────────────────────────────── */}
@@ -221,32 +219,36 @@ export default function APropos() {
 
       {/* ── Process — circle+number ───────────────────────────────────────── */}
       <section className="px-6 sm:px-10 lg:px-20 py-40 border-t border-white/10">
-        <RevealText className="max-w-screen-xl mx-auto text-center">
-          <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-5xl text-white leading-tight mb-6">
-            Comment se déroule<br />le processus d'étude
-          </h2>
-          <p className="font-body text-secondary text-sm mb-16">
-            Nos prestations d'études sur l'ensemble des techniques de construction
-          </p>
+        <div className="max-w-screen-xl mx-auto text-center">
+          <RevealText>
+            <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-5xl text-white leading-tight mb-6">
+              Comment se déroule<br />le processus d'étude
+            </h2>
+            <p className="font-body text-secondary text-sm mb-16">
+              Nos prestations d'études sur l'ensemble des techniques de construction
+            </p>
+          </RevealText>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-10 max-w-3xl mx-auto">
             {[
               { num: '01', title: 'Planification\ndu projet' },
               { num: '02', title: 'Préparation\ndu plan' },
               { num: '03', title: 'Installation\ndu système' },
               { num: '04', title: 'Remise\nau client' },
-            ].map(p => (
-              <div key={p.num} className="flex flex-col items-center gap-4 hover:opacity-70 transition-opacity">
-                <div className="relative w-16 h-16 rounded-full bg-surface overflow-hidden flex-shrink-0">
-                  <img src="/Assets/logo/Logo-seul.png" alt="" className="absolute inset-0 w-full h-full object-contain" style={{ opacity: 0.35 }} draggable={false} />
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="font-display font-bold text-xl text-white leading-none">{p.num}</span>
+            ].map((p, i) => (
+              <RevealText key={p.num} delay={i * 0.08}>
+                <div className="flex flex-col items-center gap-4 hover:opacity-70 transition-opacity">
+                  <div className="relative w-16 h-16 rounded-full bg-surface overflow-hidden flex-shrink-0">
+                    <img src="/Assets/logo/Logo-seul.png" alt="" className="absolute inset-0 w-full h-full object-contain" style={{ opacity: 0.35 }} draggable={false} />
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <span className="font-display font-bold text-xl text-white leading-none">{p.num}</span>
+                    </div>
                   </div>
+                  <p className="font-display font-bold text-white text-center text-xs sm:text-sm whitespace-pre-line">{p.title}</p>
                 </div>
-                <p className="font-display font-bold text-white text-center text-xs sm:text-sm whitespace-pre-line">{p.title}</p>
-              </div>
+              </RevealText>
             ))}
           </div>
-        </RevealText>
+        </div>
       </section>
 
       {/* ── Prêts à travailler — centered circle CTA ─────────────────────── */}
@@ -278,7 +280,7 @@ export default function APropos() {
             <button onClick={() => nav('/contact')} className="font-body text-white text-sm hover:opacity-60 transition-opacity">
               Donnons vie à votre projet
             </button>
-            <LogoButton onClick={() => nav('/contact')} />
+            <LogoButton onClick={() => nav('/reunion')}>Demande un échange</LogoButton>
             <button onClick={() => nav('/contact')} className="font-body text-white text-sm hover:opacity-60 transition-opacity">
               Appelez pour un rendez-vous
             </button>
@@ -296,64 +298,74 @@ export default function APropos() {
         </RevealText>
 
         {/* Mobile: wrapped circle grid */}
-        <RevealText className="lg:hidden flex flex-wrap justify-center gap-4 px-6">
-          {strengths.map((s) => (
-            <div
-              key={s}
-              className="w-36 h-36 sm:w-40 sm:h-40 rounded-full border border-white/20 bg-bg flex items-center justify-center hover:opacity-70 transition-opacity"
-            >
-              <span className="font-display font-medium text-white text-xs text-center leading-tight px-3">{s}</span>
-            </div>
+        <div className="lg:hidden flex flex-wrap justify-center gap-4 px-6">
+          {strengths.map((s, i) => (
+            <RevealText key={s} delay={Math.min(i, 6) * 0.08}>
+              <div className="w-36 h-36 sm:w-40 sm:h-40 rounded-full border border-white/20 bg-bg flex items-center justify-center hover:opacity-70 transition-opacity">
+                <span className="font-display font-medium text-white text-xs text-center leading-tight px-3">{s}</span>
+              </div>
+            </RevealText>
           ))}
-        </RevealText>
+        </div>
 
         {/* Desktop: overlapping circles row */}
-        <RevealText className="hidden lg:flex justify-center">
+        <div className="hidden lg:flex justify-center">
           <div className="flex items-center">
             {strengths.map((s, i) => (
-              <div
+              <RevealText
                 key={s}
-                className="w-[220px] h-[220px] rounded-full border border-white/20 bg-bg flex items-center justify-center flex-shrink-0 hover:opacity-70 transition-opacity"
+                delay={Math.min(i, 6) * 0.08}
                 style={{ marginLeft: i === 0 ? 0 : '-50px' }}
+                className="flex-shrink-0"
               >
-                <span className="font-display font-medium text-white text-xs text-center leading-tight px-4">{s}</span>
-              </div>
+                <div className="w-[220px] h-[220px] rounded-full border border-white/20 bg-bg flex items-center justify-center hover:opacity-70 transition-opacity">
+                  <span className="font-display font-medium text-white text-xs text-center leading-tight px-4">{s}</span>
+                </div>
+              </RevealText>
             ))}
           </div>
-        </RevealText>
+        </div>
       </section>
 
       {/* ── Software — card grid ──────────────────────────────────────────── */}
       <section className="border-t border-white/10 px-6 sm:px-10 lg:px-20 py-32">
-        <RevealText className="max-w-screen-xl mx-auto">
-          <h2 className="font-display font-bold text-2xl sm:text-3xl lg:text-4xl text-white text-left leading-snug max-w-[32ch] ml-auto mb-16">
-            Utilisés les logiciels d'ingénierie couvrent la conception, calculs, simulation et la gestion de projets
-          </h2>
+        <div className="max-w-screen-xl mx-auto">
+          <RevealText>
+            <h2 className="font-display font-bold text-2xl sm:text-3xl lg:text-4xl text-white text-left leading-snug max-w-[32ch] ml-auto mb-16">
+              Utilisés les logiciels d'ingénierie couvrent la conception, calculs, simulation et la gestion de projets
+            </h2>
+          </RevealText>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-            {softwareItems.map(sw => (
-              <div key={`${sw.name}-${sw.category}`} className="bg-[#1a1a1a] rounded-2xl p-5 flex flex-col gap-8 hover:opacity-70 transition-opacity">
-                <p className="font-display font-bold text-white text-base leading-snug">{sw.name}</p>
-                <p className="font-body text-secondary text-xs">{sw.category}</p>
-              </div>
+            {softwareItems.map((sw, i) => (
+              <RevealText key={`${sw.name}-${sw.category}`} delay={Math.min(i, 6) * 0.08}>
+                <div className="bg-[#1a1a1a] rounded-2xl p-5 h-full flex flex-col gap-8 hover:opacity-70 transition-opacity">
+                  <p className="font-display font-bold text-white text-base leading-snug">{sw.name}</p>
+                  <p className="font-body text-secondary text-xs">{sw.category}</p>
+                </div>
+              </RevealText>
             ))}
           </div>
-        </RevealText>
+        </div>
       </section>
 
       {/* ── Nos garanties — radial wheel ─────────────────────────────────── */}
       <section className="border-t border-white/10 py-16">
 
         {/* Mobile */}
-        <RevealText className="lg:hidden px-6 sm:px-10 py-16">
-          <h2 className="font-display font-bold text-4xl text-white mb-10 text-center">Nos garanties</h2>
+        <div className="lg:hidden px-6 sm:px-10 py-16">
+          <RevealText>
+            <h2 className="font-display font-bold text-4xl text-white mb-10 text-center">Nos garanties</h2>
+          </RevealText>
           <div className="grid grid-cols-2 gap-3">
             {radialItems.map((g, i) => (
-              <div key={i} className="border border-white/10 rounded-2xl p-5 hover:opacity-70 transition-opacity">
-                <p className="font-display font-medium text-white text-sm">{g.label.join(' ')}</p>
-              </div>
+              <RevealText key={i} delay={Math.min(i, 6) * 0.08}>
+                <div className="border border-white/10 rounded-2xl p-5 h-full hover:opacity-70 transition-opacity">
+                  <p className="font-display font-medium text-white text-sm">{g.label.join(' ')}</p>
+                </div>
+              </RevealText>
             ))}
           </div>
-        </RevealText>
+        </div>
 
         {/* Desktop: SVG radial diagram */}
         <RevealText className="hidden lg:block relative w-full">

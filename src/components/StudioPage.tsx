@@ -33,7 +33,7 @@ function ServiceRow({ service, index }: { service: Service; index: number }) {
   )
 
   const label = (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col items-center text-center gap-4">
       <span className="font-body text-secondary text-xs tracking-widest">
         {String(index + 1).padStart(2, '0')}.
       </span>
@@ -61,14 +61,16 @@ function ServiceRow({ service, index }: { service: Service; index: number }) {
       </div>
 
       {/* Desktop: alternating two-column */}
-      <div className="hidden md:grid grid-cols-2 gap-16 lg:gap-24 xl:gap-32 items-center max-w-screen-xl mx-auto px-10 lg:px-20 py-24 lg:py-32 xl:py-40">
+      <div className="hidden md:grid grid-cols-3 gap-10 lg:gap-16 xl:gap-20 items-center max-w-screen-xl mx-auto px-10 lg:px-20 py-24 lg:py-32 xl:py-40">
         {imageLeft ? (
           <>
             <Reveal direction="left">{circle}</Reveal>
             <RevealText>{label}</RevealText>
+            <div aria-hidden />
           </>
         ) : (
           <>
+            <div aria-hidden />
             <RevealText>{label}</RevealText>
             <Reveal direction="right">{circle}</Reveal>
           </>

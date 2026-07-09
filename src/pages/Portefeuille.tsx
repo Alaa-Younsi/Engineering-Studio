@@ -1,8 +1,9 @@
 import { useCallback, useRef } from 'react'
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { useScroll, useTransform } from 'framer-motion'
 import { useTransition } from '../context/TransitionContext'
 import { LogoButton } from '../components/LogoButton'
 import { Footer } from '../components/Footer'
+import { HeroShape } from '../components/HeroShape'
 import { RevealText } from '../components/Reveal'
 
 export default function Portefeuille() {
@@ -22,14 +23,7 @@ export default function Portefeuille() {
             Portefeuille
           </h1>
         </div>
-        <div
-          className="absolute -right-[4%] top-1/2 -translate-y-1/2 pointer-events-none select-none"
-          style={{ width: 'clamp(160px, 38vw, 430px)', height: 'clamp(160px, 38vw, 430px)' }}
-        >
-          <motion.div style={{ y: logoY }} className="w-full h-full">
-            <img src="/Assets/logo/Logo-seul.png" alt="" className="w-full h-full object-contain" style={{ opacity: 0.15 }} draggable={false} />
-          </motion.div>
-        </div>
+        <HeroShape y={logoY} />
       </section>
 
       {/* ── En cours ── */}

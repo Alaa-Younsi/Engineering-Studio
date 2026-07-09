@@ -3,52 +3,97 @@ import { motion, useScroll, useTransform } from 'framer-motion'
 import { useTransition } from '../context/TransitionContext'
 import { LogoButton } from '../components/LogoButton'
 import { Footer } from '../components/Footer'
+import { HeroShape } from '../components/HeroShape'
 import { Reveal, RevealText } from '../components/Reveal'
 
 const sectors = [
-  'Bureaux d\'études pluridisciplinaires',
-  'Entreprises de réalisation et de construction',
+  "Bureaux d'études",
+  'Entreprises de réalisation',
+  'Bailleurs sociaux',
+  'Immobiliers de commerces',
+  'Bâtiments industriels',
+  'Immobiliers de bureaux',
   'Promoteurs immobiliers',
-  'Architectes et bureaux d\'ingénierie',
-  'Collectivités locales et organismes publics',
-  'Industrie et structures hospitalières',
+  'Bâtiments administratifs',
+  'Structure hospitalières',
 ]
 
 const engagements = [
-  { title: 'Écoute active', desc: 'Nous accordons une attention particulière aux besoins spécifiques de chaque client pour proposer les solutions les plus adaptées.' },
-  { title: 'Réactivité', desc: 'Nous adaptons d\'option notre planning à vos urgences et contraintes pour respecter les délais du projet.' },
-  { title: 'Tout accompagner', desc: 'Notre présence à chaque phase du projet garantit une coordination fluide et une continuité du suivi technique.' },
-  { title: 'Toujours disponibles', desc: 'Un interlocuteur dédié et joignable tout au long du projet pour répondre à toutes vos questions.' },
+  'Nous sommes honorés qu’ils nous choisissent',
+  'Notre client est notre partenaire. Quant il prospère, nous faisons de même',
+  'Tout revient à… notre engagement envers nos clients !',
 ]
 
-const clients = [
-  ['Saïdani & Associés', 'Bureau d\'études'], ['Groupe COSIDER', 'Construction'], ['ETRHB Haddad', 'BTP'],
-  ['Sonatrach', 'Énergie'], ['Ramdane Architecture', 'Architecture'], ['Batimetal', 'Industrie'],
-  ['CNEP-Banque', 'Finance'], ['Groupe Khalifa', 'Immobilier'], ['Algérie Télécom', 'Télécoms'],
-  ['EPE Saidal', 'Pharmacie'], ['Air Algérie', 'Aérien'], ['SNVI', 'Industrie'],
-  ['Cevital', 'Agroalimentaire'], ['Tahkout Manufacturing', 'Industrie'], ['Madar Holding', 'Immobilier'],
-  ['BCI Algérie', 'Construction'], ['Société Générale Algérie', 'Finance'], ['Sonelgaz', 'Énergie'],
-  ['ENGOA', 'Infrastructure'], ['Hydro-Aménagement', 'VRD'], ['Grand Oran', 'Collectivité'],
-  ['SEAAL', 'Services'], ['AADL', 'Logement'], ['Fonds de Promotion du Logement', 'Logement'],
-  ['Résidences Prima', 'Immobilier'], ['Crédit Populaire d\'Algérie', 'Finance'], ['SNTA', 'Industrie'],
-  ['Biopharm', 'Pharmacie'], ['SPA Maison Blanche', 'Hôtellerie'], ['BNA', 'Finance'],
+interface Client {
+  name: string
+  name2: string
+  category: string
+  number: string
+}
+
+const clients: Client[] = [
+  { name: 'Bouchellouga', name2: 'Chawki', category: 'Architecture', number: '21' },
+  { name: 'Best', name2: 'Concept', category: 'Architecture', number: '16' },
+  { name: 'ATM', name2: 'Architecture', category: 'Architecture', number: '16' },
+  { name: 'Kebab', name2: 'Abdeslem', category: 'Architecture', number: '16' },
+  { name: 'Saci Hadef', name2: 'Mohamed', category: 'Architecture', number: '21' },
+  { name: 'Nour El Afak', name2: 'Lilomrane', category: 'Architecture', number: '16' },
+  { name: 'Biodattes', name2: 'Algérie', category: 'Industrie', number: '07' },
+  { name: 'Hazi', name2: 'Bachir', category: 'Architecture', number: '19' },
+  { name: 'Salah', name2: 'Mourdi', category: 'Travaux publics', number: '21' },
+  { name: 'BET', name2: 'CAL', category: 'Architecture', number: '16' },
+  { name: 'Nour El Afak', name2: 'Lilomrane', category: 'Immobilière', number: '16' },
+  { name: 'Bahlouli', name2: 'F.', category: 'Architecture', number: '19' },
+  { name: 'AL ELEC', name2: 'Spa', category: 'Entreprise', number: '16' },
+  { name: 'AZ', name2: 'Architects', category: 'Travaux publics', number: '16' },
+  { name: 'Benmahmoud', name2: 'S.', category: 'Architecture', number: '19' },
+  { name: 'ACTARIS', name2: 'Sarl', category: 'Industrie', number: '16' },
+  { name: 'Wassim', name2: 'Sayeh', category: 'Architecture', number: '19' },
+  { name: 'Abdoun', name2: 'Radhwane', category: 'Architecture', number: '26' },
+  { name: 'Bendjama', name2: 'Chafik', category: 'Architecture', number: '21' },
+  { name: 'Boucherit', name2: 'Othmane', category: 'Architecture', number: '16' },
+  { name: 'BETA', name2: 'HMD', category: 'Architecture', number: '30' },
+  { name: 'Eurl', name2: 'BAUS', category: 'Architecture', number: '16' },
+  { name: 'Archi', name2: 'Gate', category: 'Architecture', number: '19' },
+  { name: 'Inter', name2: 'Plan', category: 'Architecture', number: '19' },
+  { name: 'Archi', name2: 'Box', category: 'Architecture', number: '16' },
+  { name: 'Baret', name2: 'Architectes', category: 'Architecture', number: '19' },
+  { name: 'Médina', name2: 'Architecture', category: 'Architecture', number: '19' },
+  { name: 'Agrodiv', name2: 'Spa', category: 'Industrie', number: '19' },
+  { name: 'Manar', name2: 'El Imara', category: 'Architecture', number: '19' },
+  { name: 'Rezzoug', name2: 'Lamine', category: 'Architecture', number: '09' },
+  { name: 'Debacha', name2: 'Badis', category: 'Architecture', number: '19' },
+  { name: 'Chettab', name2: 'Nabil', category: 'Architecture', number: '19' },
+  { name: 'Cons Belmas', name2: 'Sarl', category: 'Entreprise', number: '34' },
+  { name: 'Boumediene Consultant', name2: 'Engineering', category: 'Génie civil', number: '16' },
+  { name: 'Bougarne', name2: 'Adel', category: 'Architecture', number: '19' },
+  { name: 'Charm', name2: 'Design', category: 'Architecture', number: '23' },
+  { name: 'TT', name2: 'Architects', category: 'Architecture', number: '23' },
+  { name: 'Languer', name2: 'Mostapha', category: 'Architecture', number: '19' },
+  { name: 'Ouaar', name2: 'Mohamed', category: 'Architecture', number: '21' },
+  { name: 'Sarl', name2: 'S3ec', category: 'Entreprise', number: '16' },
+  { name: 'Laghouag', name2: 'S.', category: 'Architecture', number: '19' },
+  { name: 'RKM', name2: 'Studio', category: 'Architecture', number: '16' },
 ]
 
 const testimonials = [
   {
-    name: 'Kamel Ramdane',
-    role: 'Directeur technique, Groupe COSIDER',
-    text: 'Engineering Studio a su répondre à nos exigences les plus pointues. Leur maîtrise du BIM et leur réactivité ont été déterminantes dans la réussite de notre projet.',
+    name: 'TT',
+    name2: 'Architects',
+    category: 'Architecture',
+    text: "J'apprécie particulièrement de travailler avec ENGINEERING STUDIO pour leur sérieux, leur rigueur et leur réactivité. Les dossiers études sont de grandes qualités avec rarement de problèmes en phase exécution.",
   },
   {
-    name: 'Nadia Benali',
-    role: 'Architecte, Bureau Ramdane',
-    text: 'Un partenaire de confiance avec une expertise réelle en MEP. Leurs plans sont précis, leurs délais tenus et leur équipe toujours disponible. Je les recommande vivement.',
+    name: 'Best',
+    name2: 'Concept',
+    category: 'Architecture',
+    text: "Concevoir en équipe dans un dialogue permanent, s'impliquer résolument dans le suivi des projets et des chantiers, faire avec justesse et passion. Autant de valeurs partagées qui font de ENGINEERING STUDIO.",
   },
   {
-    name: 'Sofiane Hadj',
-    role: 'Chef de projet, Madar Holding',
-    text: 'Nous avons confié plusieurs projets résidentiels à Engineering Studio. Leur coordination VRD/MEP/BIM est irréprochable et leur sens du service client est exemplaire.',
+    name: 'Kebab',
+    name2: 'Abdslem',
+    category: 'Architecture',
+    text: "Une équipe Jeune, dynamique et volontaire toujours disponible. Leurs dossiers techniques sont d'une qualité rare. Sur le chantier, les entreprises sont vraiment bien pilotées.",
   },
 ]
 
@@ -74,31 +119,30 @@ export default function Clients() {
             Clients
           </h1>
         </div>
-        <div
-          className="absolute -right-8 top-1/2 -translate-y-1/2 pointer-events-none select-none"
-          style={{ width: 'clamp(150px, 36vw, 400px)', height: 'clamp(150px, 36vw, 400px)' }}
-        >
-          <motion.div style={{ y: heroLogoY }} className="w-full h-full">
-            <img src="/Assets/logo/Logo-seul.png" alt="" className="w-full h-full object-contain" style={{ opacity: 0.15 }} draggable={false} />
-          </motion.div>
-        </div>
+        <HeroShape y={heroLogoY} />
       </section>
 
       {/* ── Intro ───────────────────────────────────────────────────────────── */}
       <section className="px-6 sm:px-10 lg:px-20 py-20 border-t border-white/10">
-        <RevealText className="max-w-screen-xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <RevealText className="max-w-screen-xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
           <div>
             <p className="font-body text-secondary text-xs tracking-widest uppercase mb-6">Nos clients</p>
             <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-[2.8rem] text-white leading-tight">
               Découvrez nos clients et comment nous collaborons avec eux
             </h2>
-            <div className="mt-8">
-              <LogoButton onClick={() => nav('/contact')}>Travaillons ensemble</LogoButton>
+            <div className="mt-10">
+              <LogoButton aria-label="Travaillons ensemble" onClick={() => nav('/contact')} />
             </div>
           </div>
-          <div>
+          <div className="flex flex-col gap-6">
             <p className="font-body text-secondary text-sm leading-relaxed">
-              Nous travaillons avec des maîtres d'ouvrage publics et privés, des architectes, des promoteurs immobiliers et des entreprises de construction à travers toute l'Algérie. Notre approche collaborative et notre adaptabilité font de nous un partenaire de choix pour tout type de projet.
+              Nous travaillons principalement avec les installateurs, architectes, bureaux d'études, entreprises générales, sous-traitants, propriétaires industrielles, maîtres d'ouvrages, promoteurs.
+            </p>
+            <p className="font-body text-secondary text-sm leading-relaxed">
+              Quel que soit votre secteur d'activité, nous pouvons vous aider à réussir vos projets, même les plus complexes. Le tout en répondant aux différents enjeux liés au délai, au coût et à la qualité.
+            </p>
+            <p className="font-body text-secondary text-sm leading-relaxed">
+              Vous pouvez compter sur nous pour vous assister à chaque étape de votre projet d'études. De la conception à le dimensionnement, nous vous garantissons des études de qualité, que ce soit pour un projet neuve ou une rénovation. Nous possédons les meilleurs moyens et logiciels pour vous fournir des prestations de qualité.
             </p>
           </div>
         </RevealText>
@@ -110,44 +154,65 @@ export default function Clients() {
           <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-5xl text-white leading-tight max-w-[32ch] mx-auto">
             Des missions variées et des solutions adaptées à chaque client
           </h2>
-          <p className="font-body text-secondary text-sm mt-6 max-w-[50ch] mx-auto leading-relaxed">
-            Chaque projet est unique. Nous adaptons notre approche, nos outils et notre équipe pour répondre précisément à vos besoins et contraintes spécifiques.
+          <p className="font-body text-secondary text-sm mt-8 max-w-[62ch] mx-auto leading-relaxed">
+            Avec ENGINEERING STUDIO à vos côtés, vous bénéficiez des meilleures solutions en matière d'études techniques (réseaux extérieurs et réseaux intérieurs).
           </p>
         </RevealText>
       </section>
 
       {/* ── Engagement ──────────────────────────────────────────────────────── */}
       <section className="px-6 sm:px-10 lg:px-20 py-20 border-t border-white/10">
-        <RevealText className="max-w-screen-xl mx-auto">
-          <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-5xl text-white mb-14">
-            Notre engagement envers nos clients
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {engagements.map(e => (
-              <div key={e.title} className="flex flex-col gap-3 border-t border-white/10 pt-6 hover:opacity-70 transition-opacity">
-                <h3 className="font-display font-bold text-lg text-white">{e.title}</h3>
-                <p className="font-body text-secondary text-sm leading-relaxed">{e.desc}</p>
-              </div>
+        <div className="max-w-screen-xl mx-auto">
+          <RevealText className="text-center">
+            <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-5xl text-white leading-tight mb-8">
+              Notre engagement envers nos clients
+            </h2>
+            <p className="font-body text-secondary text-sm leading-relaxed max-w-[90ch] mx-auto mb-16">
+              Notre engagement envers nos clients de partout en est un par lequel nous prenons réellement conscience que ce sont eux qui nous fournissent du travail et des avantages. Ces clients ont la possibilité de s'approvisionner à de nombreuses autres sources et nous sommes honorés qu'ils nous choisissent. Leurs besoins sont simples. Ils veulent que l'étude soit livrée tel que promis et que la qualité offre la performance prévue.
+            </p>
+          </RevealText>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-12">
+            {engagements.map((e, i) => (
+              <RevealText key={e} delay={i * 0.1}>
+                <div className="relative flex items-center justify-center px-4 py-8 hover:opacity-70 transition-opacity">
+                  <img
+                    src="/Assets/logo/Logo-seul.png"
+                    alt=""
+                    className="absolute w-32 h-32 object-contain pointer-events-none select-none"
+                    style={{ opacity: 0.12 }}
+                    draggable={false}
+                  />
+                  <p className="relative z-10 font-display font-bold text-white text-center text-lg leading-snug max-w-[22ch]">
+                    {e}
+                  </p>
+                </div>
+              </RevealText>
             ))}
           </div>
-        </RevealText>
+        </div>
       </section>
 
       {/* ── Sectors ─────────────────────────────────────────────────────────── */}
       <section className="px-6 sm:px-10 lg:px-20 py-20 border-t border-white/10">
         <RevealText className="max-w-screen-xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16">
           <div>
-            <p className="font-body text-secondary text-xs tracking-widest uppercase mb-3">Domaines d'intervention</p>
-            <h2 className="font-display font-bold text-3xl sm:text-4xl text-white leading-tight">
+            <p className="font-body text-secondary text-sm mb-3">Qui sont nos clients&nbsp;?</p>
+            <h2 className="font-display font-bold text-4xl sm:text-5xl text-white leading-tight mb-10">
               Secteurs d'activité
             </h2>
+            <p className="font-body text-secondary text-sm leading-relaxed">
+              ENGINEERING STUDIO intervient en Algérie et est spécialisé dans les études techniques d'ingénierie (réseaux extérieurs et réseaux intérieurs), également missionné pour des travaux topographiques.
+              <br />
+              Nos clients proviennent de secteurs d'activité très variés.
+              <br />
+              Cette diversité est une richesse qui nécessite une capacité d'adaptabilité et nous permet sans cesse de repousser nos limites.
+            </p>
           </div>
-          <div className="flex flex-col gap-0">
-            {sectors.map((s, i) => (
-              <div key={i} className="flex items-center gap-4 py-4 border-b border-white/10 hover:opacity-70 transition-opacity">
-                <span className="w-1.5 h-1.5 rounded-full bg-white/40 flex-shrink-0" />
-                <p className="font-body text-white text-sm">{s}</p>
-              </div>
+          <div className="flex flex-col gap-1 lg:pt-4">
+            {sectors.map(s => (
+              <p key={s} className="font-display font-medium text-white text-xl sm:text-2xl leading-relaxed">
+                {s}
+              </p>
             ))}
           </div>
         </RevealText>
@@ -178,48 +243,79 @@ export default function Clients() {
         </div>
       </section>
 
-      {/* ── Client grid ─────────────────────────────────────────────────────── */}
+      {/* ── Client cards ────────────────────────────────────────────────────── */}
       <section className="px-6 sm:px-10 lg:px-20 pb-20 border-t border-white/10 pt-12">
-        <RevealText className="max-w-screen-xl mx-auto">
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-px bg-white/10">
-            {clients.map(([name, type]) => (
-              <div key={name} className="bg-bg px-5 py-6 flex flex-col gap-1 hover:opacity-60 transition-opacity">
-                <p className="font-display font-semibold text-white text-xs leading-snug">{name}</p>
-                <p className="font-body text-secondary text-[10px]">{type}</p>
+        <div className="max-w-screen-xl mx-auto grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-5">
+          {clients.map((c, i) => (
+            <RevealText key={`${c.name}-${c.name2}-${i}`} delay={Math.min(i % 5, 4) * 0.08}>
+              <div className="relative h-full min-h-[200px] overflow-hidden rounded-2xl bg-gradient-to-br from-[#1f1f1f] to-[#111111] p-6 flex flex-col justify-between hover:opacity-80 transition-opacity">
+                <p className="relative z-10 font-display font-bold text-white text-sm leading-tight">
+                  {c.name}
+                  <br />
+                  {c.name2}
+                </p>
+                <p className="relative z-10 font-body text-secondary text-xs">{c.category}</p>
+                <span
+                  aria-hidden
+                  className="absolute -right-2 -bottom-3 font-display font-bold text-white/[0.06] text-7xl leading-none select-none"
+                >
+                  {c.number}
+                </span>
               </div>
-            ))}
-          </div>
-        </RevealText>
+            </RevealText>
+          ))}
+        </div>
       </section>
 
       {/* ── Thank you ───────────────────────────────────────────────────────── */}
       <section className="px-6 sm:px-10 lg:px-20 py-24 bg-surface text-center">
-        <RevealText className="max-w-screen-xl mx-auto">
+        <RevealText className="max-w-screen-xl mx-auto flex flex-col items-center">
           <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-5xl text-white leading-tight max-w-[28ch] mx-auto mb-8">
             Un grand merci à tous nos clients pour leur fidélité et leur confiance
           </h2>
-          <LogoButton onClick={() => nav('/contact')}>Rejoignez-nous</LogoButton>
+          <p className="font-body text-secondary text-sm leading-relaxed max-w-[70ch] mx-auto mb-12">
+            Nous tenons à remercier tous nos nouveaux clients qui nous ont confié la réalisation de leurs projets, ainsi que tous les clients qui sont fidèles aux ENGINEERING STUDIO depuis de nombreuses années.
+          </p>
+          <img
+            src="/Assets/logo/Logo-seul.png"
+            alt=""
+            className="w-[72px] h-[72px] object-contain select-none"
+            draggable={false}
+          />
         </RevealText>
       </section>
 
       {/* ── Testimonials ────────────────────────────────────────────────────── */}
-      <section className="px-6 sm:px-10 lg:px-20 py-20 border-t border-white/10">
-        <RevealText className="max-w-screen-xl mx-auto">
-          <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-5xl text-white mb-14">
+      <section className="pl-6 sm:pl-10 lg:pl-20 py-20 border-t border-white/10 overflow-hidden">
+        <RevealText>
+          <p className="font-body text-secondary text-sm mb-2">Témoignages</p>
+          <h2 className="font-display font-bold text-2xl sm:text-3xl lg:text-4xl text-white mb-14">
             Écoutez ce que nos clients ont à dire
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {testimonials.map((t, i) => (
-              <div key={i} className="bg-surface rounded-2xl p-8 flex flex-col gap-5 hover:opacity-80 transition-opacity">
-                <p className="font-body text-white text-sm leading-relaxed flex-1">"{t.text}"</p>
-                <div className="border-t border-white/10 pt-5">
-                  <p className="font-display font-semibold text-white text-sm">{t.name}</p>
-                  <p className="font-body text-secondary text-xs mt-0.5">{t.role}</p>
+        </RevealText>
+        <div className="flex gap-6 overflow-x-auto pb-4 pr-6 sm:pr-10 lg:pr-20 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          {testimonials.map((t, i) => (
+            <Reveal key={t.name} direction="right" delay={i * 0.12} className="flex-shrink-0">
+              <div className="w-[300px] md:w-[340px] h-full bg-[#1a1a1a] rounded-2xl p-8 flex flex-col gap-6 hover:opacity-80 transition-opacity">
+                <img
+                  src="/Assets/logo/Logo-seul.png"
+                  alt=""
+                  className="w-6 h-6 object-contain select-none"
+                  draggable={false}
+                />
+                <p className="font-body text-secondary text-sm leading-relaxed flex-1">{t.text}</p>
+                <div>
+                  <p className="font-display font-bold text-white text-sm leading-tight">
+                    {t.name}
+                    <br />
+                    {t.name2}
+                  </p>
+                  <p className="font-body text-secondary text-xs mt-1">{t.category}</p>
                 </div>
               </div>
-            ))}
-          </div>
-        </RevealText>
+            </Reveal>
+          ))}
+        </div>
       </section>
 
       <Footer />

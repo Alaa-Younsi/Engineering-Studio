@@ -1,8 +1,9 @@
 import { useCallback, useRef } from 'react'
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { useScroll, useTransform } from 'framer-motion'
 import { useTransition } from '../context/TransitionContext'
 import { LogoButton } from '../components/LogoButton'
 import { Footer } from '../components/Footer'
+import { HeroShape } from '../components/HeroShape'
 import { RevealText } from '../components/Reveal'
 
 export default function Nouvelles() {
@@ -23,15 +24,7 @@ export default function Nouvelles() {
           </h1>
         </div>
 
-        {/* Decorative circle top-right */}
-        <div
-          className="absolute -right-8 top-1/2 -translate-y-1/2 pointer-events-none select-none"
-          style={{ width: 'clamp(150px, 36vw, 400px)', height: 'clamp(150px, 36vw, 400px)' }}
-        >
-          <motion.div style={{ y: heroLogoY }} className="w-full h-full">
-            <img src="/Assets/logo/Logo-seul.png" alt="" className="w-full h-full object-contain" style={{ opacity: 0.15 }} draggable={false} />
-          </motion.div>
-        </div>
+        <HeroShape y={heroLogoY} />
       </section>
 
       {/* Under construction */}
