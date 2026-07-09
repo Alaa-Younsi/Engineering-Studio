@@ -123,7 +123,7 @@ export default function Clients() {
       </section>
 
       {/* ── Intro ───────────────────────────────────────────────────────────── */}
-      <section className="px-6 sm:px-10 lg:px-20 py-20 border-t border-white/10">
+      <section className="px-6 sm:px-10 lg:px-20 py-44 border-t border-white/10">
         <RevealText className="max-w-screen-xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
           <div>
             <p className="font-body text-secondary text-xs tracking-widest uppercase mb-6">Nos clients</p>
@@ -131,7 +131,7 @@ export default function Clients() {
               Découvrez nos clients et comment nous collaborons avec eux
             </h2>
             <div className="mt-10">
-              <LogoButton aria-label="Travaillons ensemble" onClick={() => nav('/contact')} />
+              <LogoButton onClick={() => nav('/contact')}>Travaillons ensemble</LogoButton>
             </div>
           </div>
           <div className="flex flex-col gap-6">
@@ -149,7 +149,7 @@ export default function Clients() {
       </section>
 
       {/* ── Mission statement ───────────────────────────────────────────────── */}
-      <section className="px-6 sm:px-10 lg:px-20 py-20 bg-surface">
+      <section className="px-6 sm:px-10 lg:px-20 py-52 bg-surface">
         <RevealText className="max-w-screen-xl mx-auto text-center">
           <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-5xl text-white leading-tight max-w-[32ch] mx-auto">
             Des missions variées et des solutions adaptées à chaque client
@@ -161,7 +161,7 @@ export default function Clients() {
       </section>
 
       {/* ── Engagement ──────────────────────────────────────────────────────── */}
-      <section className="px-6 sm:px-10 lg:px-20 py-20 border-t border-white/10">
+      <section className="px-6 sm:px-10 lg:px-20 py-44 border-t border-white/10">
         <div className="max-w-screen-xl mx-auto">
           <RevealText className="text-center">
             <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-5xl text-white leading-tight mb-8">
@@ -193,7 +193,7 @@ export default function Clients() {
       </section>
 
       {/* ── Sectors ─────────────────────────────────────────────────────────── */}
-      <section className="px-6 sm:px-10 lg:px-20 py-20 border-t border-white/10">
+      <section className="px-6 sm:px-10 lg:px-20 py-44 border-t border-white/10">
         <RevealText className="max-w-screen-xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16">
           <div>
             <p className="font-body text-secondary text-sm mb-3">Qui sont nos clients&nbsp;?</p>
@@ -219,7 +219,7 @@ export default function Clients() {
       </section>
 
       {/* ── Client examples intro ───────────────────────────────────────────── */}
-      <section className="px-6 sm:px-10 lg:px-20 py-20 border-t border-white/10">
+      <section className="px-6 sm:px-10 lg:px-20 py-44 border-t border-white/10">
         <div className="max-w-screen-xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <RevealText>
             <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-[2.6rem] text-white leading-tight">
@@ -244,7 +244,7 @@ export default function Clients() {
       </section>
 
       {/* ── Client cards ────────────────────────────────────────────────────── */}
-      <section className="px-6 sm:px-10 lg:px-20 pb-20 border-t border-white/10 pt-12">
+      <section className="px-6 sm:px-10 lg:px-20 py-44 border-t border-white/10">
         <div className="max-w-screen-xl mx-auto grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-5">
           {clients.map((c, i) => (
             <RevealText key={`${c.name}-${c.name2}-${i}`} delay={Math.min(i % 5, 4) * 0.08}>
@@ -268,7 +268,7 @@ export default function Clients() {
       </section>
 
       {/* ── Thank you ───────────────────────────────────────────────────────── */}
-      <section className="px-6 sm:px-10 lg:px-20 py-24 bg-surface text-center">
+      <section className="px-6 sm:px-10 lg:px-20 py-52 bg-surface text-center">
         <RevealText className="max-w-screen-xl mx-auto flex flex-col items-center">
           <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-5xl text-white leading-tight max-w-[28ch] mx-auto mb-8">
             Un grand merci à tous nos clients pour leur fidélité et leur confiance
@@ -286,7 +286,7 @@ export default function Clients() {
       </section>
 
       {/* ── Testimonials ────────────────────────────────────────────────────── */}
-      <section className="pl-6 sm:pl-10 lg:pl-20 py-20 border-t border-white/10 overflow-hidden">
+      <section className="pl-6 sm:pl-10 lg:pl-20 py-44 border-t border-white/10 overflow-hidden">
         <RevealText>
           <p className="font-body text-secondary text-sm mb-2">Témoignages</p>
           <h2 className="font-display font-bold text-2xl sm:text-3xl lg:text-4xl text-white mb-14">

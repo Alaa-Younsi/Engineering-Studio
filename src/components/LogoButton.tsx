@@ -33,7 +33,7 @@ export function LogoButton({
     <button
       onClick={onClick}
       aria-label={ariaLabel ?? (typeof children === 'string' ? children : undefined)}
-      className={`group inline-flex items-center h-10 w-fit max-w-full rounded-full bg-white overflow-hidden ${className}`}
+      className={`group inline-flex flex-shrink-0 items-center h-10 w-fit rounded-full bg-white overflow-hidden ${className}`}
     >
       <span className="flex-shrink-0 w-10 h-10 flex items-center justify-center">
         <img

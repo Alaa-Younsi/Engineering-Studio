@@ -10,7 +10,7 @@ export function LinkedInButton({ href = 'https://linkedin.com', className = '' }
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Retrouvez-nous sur LinkedIn"
-      className={`group inline-flex items-center h-10 w-fit max-w-full rounded-full bg-white hover:bg-black overflow-hidden transition-colors duration-300 ease-out ${className}`}
+      className={`group inline-flex flex-shrink-0 items-center h-10 w-fit rounded-full bg-white hover:bg-black overflow-hidden transition-colors duration-300 ease-out ${className}`}
     >
       <span className="flex-shrink-0 w-10 h-10 flex items-center justify-center font-display font-bold text-sm text-black group-hover:text-white transition-colors duration-300">
         in

@@ -20,6 +20,7 @@ const Reunion = lazy(() => import('./pages/Reunion'))
 const Portefeuille = lazy(() => import('./pages/Portefeuille'))
 const Clients = lazy(() => import('./pages/Clients'))
 const Nouvelles = lazy(() => import('./pages/Nouvelles'))
+const NouvelleArticle = lazy(() => import('./pages/NouvelleArticle'))
 const Contact = lazy(() => import('./pages/Contact'))
 
 function AppShell() {
@@ -44,6 +45,7 @@ function AppShell() {
           <Route path="/portefeuille" element={<Portefeuille />} />
           <Route path="/clients" element={<Clients />} />
           <Route path="/nouvelles" element={<Nouvelles />} />
+          <Route path="/nouvelles/:slug" element={<NouvelleArticle />} />
           <Route path="/contact" element={<Contact />} />
         </Routes>
       </Suspense>

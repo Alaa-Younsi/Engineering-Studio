@@ -1,10 +1,11 @@
 import { useCallback, useRef } from 'react'
 import { useScroll, useTransform } from 'framer-motion'
 import { useTransition } from '../context/TransitionContext'
-import { LogoButton } from '../components/LogoButton'
 import { Footer } from '../components/Footer'
 import { HeroShape } from '../components/HeroShape'
-import { RevealText } from '../components/Reveal'
+import { NouvellesArchive } from '../components/NouvellesArchive'
+import { UnderConstruction } from '../components/UnderConstruction'
+import { FEATURES } from '../config/features'
 
 export default function Nouvelles() {
   const { startTransition } = useTransition()
@@ -27,26 +28,11 @@ export default function Nouvelles() {
         <HeroShape y={heroLogoY} />
       </section>
 
-      {/* Under construction */}
-      <section className="flex flex-col items-center justify-center py-16 px-6">
-        <RevealText
-          className="relative rounded-full bg-[#111] flex flex-col items-center justify-center overflow-hidden"
-          style={{ width: 'min(72vw, 380px)', height: 'min(72vw, 380px)' }}
-        >
-          {/* Background LogoMark within circle */}
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <img src="/Assets/logo/Logo-seul.png" alt="" className="w-full h-full object-contain" style={{ opacity: 0.12 }} draggable={false} />
-          </div>
-
-          {/* Text */}
-          <div className="relative z-10 text-center px-8">
-            <p className="font-display font-bold text-2xl sm:text-3xl text-white leading-tight mb-6">
-              En cours de<br />construction
-            </p>
-            <LogoButton onClick={() => nav('/')}>Retour à l'accueil</LogoButton>
-          </div>
-        </RevealText>
-      </section>
+      {FEATURES.nouvelles ? (
+        <NouvellesArchive />
+      ) : (
+        <UnderConstruction label="Retour à l'accueil" onClick={() => nav('/')} />
+      )}
 
       <Footer />
     </main>

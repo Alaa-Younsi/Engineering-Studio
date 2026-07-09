@@ -2,7 +2,6 @@ import { useState, useCallback } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useTransition } from '../context/TransitionContext'
 import { LogoFull } from '../components/LogoFull'
-import { LogoButton } from '../components/LogoButton'
 
 interface FormData {
   nom: string
@@ -94,7 +93,7 @@ export default function Reunion() {
         </button>
         <button
           onClick={onNext}
-          className="bg-[#2a2a2a] hover:bg-[#333] text-white rounded-full px-6 py-2.5 text-sm font-body border border-white/15 transition-colors"
+          className="bg-white hover:bg-white/85 text-black rounded-full px-6 py-2.5 text-sm font-body border border-white transition-colors"
         >
           {nextLabel}
         </button>
@@ -123,7 +122,15 @@ export default function Reunion() {
         <button onClick={() => nav('/')} className="cursor-pointer">
           <LogoFull size="sm" />
         </button>
-        <LogoButton onClick={() => nav('/')}>Retour à l'accueil</LogoButton>
+        <button
+          onClick={() => nav('/')}
+          aria-label="Retour à l'accueil"
+          className="text-white hover:opacity-70 transition-opacity"
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden>
+            <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </button>
       </div>
 
       {/* Centered card area */}
@@ -184,7 +191,7 @@ export default function Reunion() {
                   <Pill key={t} label={t} active={form.typeReunion === t} onClick={() => update('typeReunion', t)} />
                 ))}
               </div>
-              <div className="flex items-center justify-center gap-4 mt-8">
+              <div className="flex items-center justify-center gap-4 mt-16">
                 <button
                   onClick={back}
                   className="flex items-center gap-2 bg-[#242424] hover:bg-[#2c2c2c] text-white rounded-full px-6 py-2.5 text-sm font-body border border-white/10 transition-colors"
@@ -194,7 +201,12 @@ export default function Reunion() {
                   </svg>
                   Retour
                 </button>
-                <LogoButton onClick={next}>Prendre une réunion</LogoButton>
+                <button
+                  onClick={next}
+                  className="bg-transparent hover:bg-white/5 text-white rounded-full px-8 py-3 text-sm font-body border border-white/30 hover:border-white/60 transition-colors"
+                >
+                  Prendre une réunion
+                </button>
               </div>
             </motion.div>
           )}
@@ -206,7 +218,7 @@ export default function Reunion() {
             >
               <div className="relative py-8 mb-4">
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                  <img src="/Assets/logo/Logo-seul.png" alt="" className="w-52 h-52 object-contain" style={{ opacity: 0.14 }} draggable={false} />
+                  <img src="/Assets/logo/Logo-seul.png" alt="" className="w-64 h-64 object-contain" style={{ opacity: 0.14 }} draggable={false} />
                 </div>
                 <h2 className="relative z-10 font-display font-bold text-5xl lg:text-6xl text-white leading-none mb-4">
                   Confirmation

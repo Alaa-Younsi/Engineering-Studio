@@ -55,23 +55,133 @@ const softwareItems = [
 
 const strengths = ['Réactivité', 'Expertise', 'Expérience', 'Professionnalisme', 'Compétences']
 
-const radialItems = [
-  { label: ["Fluidité", "d'informations"], tx: 600, ty: 44,  anchor: 'middle' as const },
-  { label: ['Respect',  'des délais'],     tx: 818, ty: 180, anchor: 'start'  as const },
-  { label: ['Précision'],                  tx: 818, ty: 415, anchor: 'start'  as const },
-  { label: ['Professionnalisme'],          tx: 600, ty: 556, anchor: 'middle' as const },
-  { label: ['Écoute'],                     tx: 382, ty: 415, anchor: 'end'    as const },
-  { label: ["Rapidité", "d'exécution"],   tx: 382, ty: 180, anchor: 'end'    as const },
-]
+interface WheelLabel {
+  label: string[]
+  tx: number
+  ty: number
+  anchor: 'start' | 'middle' | 'end'
+}
 
-const arcPaths = [
-  'M 649 117 A 170 170 0 0 1 734 166',
-  'M 784 251 A 170 170 0 0 1 784 349',
-  'M 734 434 A 170 170 0 0 1 649 483',
-  'M 551 483 A 170 170 0 0 1 466 434',
-  'M 416 349 A 170 170 0 0 1 416 251',
-  'M 466 166 A 170 170 0 0 1 551 117',
-]
+interface Wheel {
+  id: string
+  viewBox: string
+  /** Aspect ratio of the viewBox, as the padding-bottom percentage that reserves it. */
+  pad: string
+  cx: number
+  cy: number
+  titleSize: number
+  labelSize: number
+  lineStep: number
+  stroke: number
+  items: WheelLabel[]
+  /** Six 80° arcs, each springing from beside the wordmark out to an arrowhead. */
+  arcs: string[]
+}
+
+/* Wide layout: the wordmark centre sits at (450, 270) of a 900×540 viewBox. */
+const wideWheel: Wheel = {
+  id: 'arr-wide',
+  viewBox: '0 0 900 540',
+  pad: '60%',
+  cx: 450,
+  cy: 270,
+  titleSize: 60,
+  labelSize: 17,
+  lineStep: 18,
+  stroke: 1.2,
+  items: [
+    { label: ['Fluidité', "d'informations"], tx: 450, ty: 41,  anchor: 'middle' },
+    { label: ['Respect',  'des délais'],     tx: 706, ty: 227, anchor: 'start'  },
+    { label: ['Précision'],                  tx: 708, ty: 317, anchor: 'start'  },
+    { label: ['Professionnalisme'],          tx: 450, ty: 485, anchor: 'middle' },
+    { label: ['Écoute'],                     tx: 186, ty: 317, anchor: 'end'    },
+    { label: ['Rapidité', "d'exécution"],    tx: 187, ty: 227, anchor: 'end'    },
+  ],
+  arcs: [
+    'M 465 232.5 A 125 125 0 0 1 452.5 75',
+    'M 532.5 230 A 125 125 0 0 1 685 205',
+    'M 532.5 305 A 125 125 0 0 0 682.5 322.5',
+    'M 462.5 307.5 A 125 125 0 0 0 455 460',
+    'M 362.5 305 A 125 125 0 0 1 207.5 322.5',
+    'M 362.5 231 A 125 125 0 0 0 205 205',
+  ],
+}
+
+/* Narrow layout: same drawing, arcs pulled in to 62% so the labels stay legible
+   once the whole thing is scaled down to a phone's width. */
+const narrowWheel: Wheel = {
+  id: 'arr-narrow',
+  viewBox: '0 0 600 500',
+  pad: '83.33%',
+  cx: 300,
+  cy: 300,
+  titleSize: 40,
+  labelSize: 24,
+  lineStep: 26,
+  stroke: 1.4,
+  items: [
+    { label: ['Fluidité', "d'informations"], tx: 300, ty: 141, anchor: 'middle' },
+    { label: ['Respect',  'des délais'],     tx: 460, ty: 274, anchor: 'start'  },
+    { label: ['Précision'],                  tx: 460, ty: 329, anchor: 'start'  },
+    { label: ['Professionnalisme'],          tx: 300, ty: 455, anchor: 'middle' },
+    { label: ['Écoute'],                     tx: 140, ty: 329, anchor: 'end'    },
+    { label: ['Rapidité', "d'exécution"],    tx: 140, ty: 274, anchor: 'end'    },
+  ],
+  arcs: [
+    'M 309.3 276.75 A 77.5 77.5 0 0 1 301.55 179.1',
+    'M 351.2 275.2 A 77.5 77.5 0 0 1 445.7 259.7',
+    'M 351.2 321.7 A 77.5 77.5 0 0 0 444.2 332.6',
+    'M 307.75 323.25 A 77.5 77.5 0 0 0 303.1 417.8',
+    'M 245.75 321.7 A 77.5 77.5 0 0 1 149.6 332.6',
+    'M 245.75 275.8 A 77.5 77.5 0 0 0 148.1 259.7',
+  ],
+}
+
+function GarantiesWheel({ wheel }: { wheel: Wheel }) {
+  return (
+    <div className="relative w-full" style={{ paddingBottom: wheel.pad }}>
+      <svg className="absolute inset-0 w-full h-full" viewBox={wheel.viewBox} preserveAspectRatio="xMidYMid meet">
+        <defs>
+          <marker id={wheel.id} markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto">
+            <path d="M 0 0.5 L 8.5 4.5 L 0 8.5" fill="none" stroke="rgba(255,255,255,0.35)" strokeWidth="1.2" strokeLinecap="round" />
+          </marker>
+        </defs>
+        {wheel.arcs.map((d, i) => (
+          <path key={i} d={d} fill="none" stroke="rgba(255,255,255,0.35)" strokeWidth={wheel.stroke} markerEnd={`url(#${wheel.id})`} />
+        ))}
+        <text
+          x={wheel.cx}
+          y={wheel.cy}
+          textAnchor="middle"
+          dominantBaseline="middle"
+          fill="white"
+          fontSize={wheel.titleSize}
+          fontFamily="Bossa, sans-serif"
+          fontWeight="700"
+        >
+          Nos garanties
+        </text>
+        {wheel.items.map((item, idx) =>
+          item.label.map((line, li) => (
+            <text
+              key={`${idx}-${li}`}
+              x={item.tx}
+              y={item.ty + li * wheel.lineStep - ((item.label.length - 1) * wheel.lineStep) / 2}
+              textAnchor={item.anchor}
+              dominantBaseline="middle"
+              fill="white"
+              fontSize={wheel.labelSize}
+              fontFamily="Bossa, sans-serif"
+              fontWeight="500"
+            >
+              {line}
+            </text>
+          )),
+        )}
+      </svg>
+    </div>
+  )
+}
 
 export default function APropos() {
   const { startTransition } = useTransition()
@@ -84,7 +194,7 @@ export default function APropos() {
   const { scrollYProgress: featureProgress } = useScroll({ target: featureRef, offset: ['start end',   'end start'] })
 
   const heroLogoY    = useTransform(heroProgress,    [0, 1], ['0px', '-120px'])
-  const featureLogoY = useTransform(featureProgress, [0, 1], ['60px', '-60px'])
+  const featureLogoY = useTransform(featureProgress, [0, 1], ['30px', '-30px'])
 
   return (
     <main className="min-h-screen bg-bg">
@@ -259,14 +369,14 @@ export default function APropos() {
             <img
               src="/Assets/logo/Logo-seul.png"
               alt=""
-              className="w-[min(90vw,780px)] h-[min(90vw,780px)] object-contain"
+              className="w-[min(80vh,90vw)] h-[min(80vh,90vw)] object-contain"
               style={{ opacity: 0.4 }}
               draggable={false}
             />
           </motion.div>
         </div>
         {/* Content */}
-        <RevealText className="relative z-10 flex flex-col items-center text-center px-6 gap-6 max-w-2xl">
+        <RevealText className="relative z-10 flex flex-col items-center text-center px-6 gap-6 max-w-4xl">
           <p className="font-body text-white text-xs tracking-widest uppercase">
             Prêts à travailler ensemble
           </p>
@@ -276,12 +386,12 @@ export default function APropos() {
           <p className="font-body text-white/75 text-sm max-w-[50ch] leading-relaxed">
             Que vous ayez un projet et que vous recherchiez un partenaire d'étude technique fiable ou que vous souhaitiez franchir une nouvelle étape dans votre projet, nous voulons vous entendre !
           </p>
-          <div className="flex items-center gap-4 sm:gap-6 flex-wrap justify-center mt-4">
-            <button onClick={() => nav('/contact')} className="font-body text-white text-sm hover:opacity-60 transition-opacity">
+          <div className="flex items-center gap-4 sm:gap-6 flex-wrap sm:flex-nowrap justify-center mt-4">
+            <button onClick={() => nav('/contact')} className="flex-shrink-0 whitespace-nowrap font-body text-white text-sm hover:opacity-60 transition-opacity">
               Donnons vie à votre projet
             </button>
             <LogoButton onClick={() => nav('/reunion')}>Demande un échange</LogoButton>
-            <button onClick={() => nav('/contact')} className="font-body text-white text-sm hover:opacity-60 transition-opacity">
+            <button onClick={() => nav('/contact')} className="flex-shrink-0 whitespace-nowrap font-body text-white text-sm hover:opacity-60 transition-opacity">
               Appelez pour un rendez-vous
             </button>
           </div>
@@ -350,61 +460,11 @@ export default function APropos() {
 
       {/* ── Nos garanties — radial wheel ─────────────────────────────────── */}
       <section className="border-t border-white/10 py-16">
-
-        {/* Mobile */}
-        <div className="lg:hidden px-6 sm:px-10 py-16">
-          <RevealText>
-            <h2 className="font-display font-bold text-4xl text-white mb-10 text-center">Nos garanties</h2>
-          </RevealText>
-          <div className="grid grid-cols-2 gap-3">
-            {radialItems.map((g, i) => (
-              <RevealText key={i} delay={Math.min(i, 6) * 0.08}>
-                <div className="border border-white/10 rounded-2xl p-5 h-full hover:opacity-70 transition-opacity">
-                  <p className="font-display font-medium text-white text-sm">{g.label.join(' ')}</p>
-                </div>
-              </RevealText>
-            ))}
-          </div>
-        </div>
-
-        {/* Desktop: SVG radial diagram */}
-        <RevealText className="hidden lg:block relative w-full">
-          <div style={{ paddingBottom: '50%' }}>
-          <svg
-            className="absolute inset-0 w-full h-full"
-            viewBox="0 0 1200 600"
-            preserveAspectRatio="xMidYMid meet"
-          >
-            <defs>
-              <marker id="arr" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
-                <path d="M 0 0 L 8 4 L 0 8 z" fill="rgba(255,255,255,0.5)" />
-              </marker>
-            </defs>
-            <text x="600" y="290" textAnchor="middle" dominantBaseline="middle" fill="white" fontSize="72" fontFamily="Bossa, sans-serif" fontWeight="700">
-              Nos garanties
-            </text>
-            {arcPaths.map((d, i) => (
-              <path key={i} d={d} fill="none" stroke="rgba(255,255,255,0.4)" strokeWidth="1.5" markerEnd="url(#arr)" />
-            ))}
-            {radialItems.map((item, idx) =>
-              item.label.map((line, li) => (
-                <text
-                  key={`${idx}-${li}`}
-                  x={item.tx}
-                  y={item.ty + li * 20 - (item.label.length - 1) * 10}
-                  textAnchor={item.anchor}
-                  dominantBaseline="middle"
-                  fill="white"
-                  fontSize="15"
-                  fontFamily="Bossa, sans-serif"
-                  fontWeight="500"
-                >
-                  {line}
-                </text>
-              ))
-            )}
-          </svg>
-          </div>
+        <RevealText className="lg:hidden relative w-full max-w-[520px] mx-auto px-4">
+          <GarantiesWheel wheel={narrowWheel} />
+        </RevealText>
+        <RevealText className="hidden lg:block relative w-full max-w-[900px] mx-auto">
+          <GarantiesWheel wheel={wideWheel} />
         </RevealText>
       </section>
 
