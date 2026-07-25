@@ -1,34 +1,18 @@
-export interface ArticleBlock {
-  /** Optional sub-heading rendered above the paragraphs. */
-  heading?: string
-  paragraphs: string[]
-}
+import type { Article, Project } from './types'
 
-export interface Article {
-  /** URL segment: /nouvelles/<slug>. Must be unique. */
-  slug: string
-  /** ISO date, e.g. '2026-02-18'. */
-  date: string
-  title: string
-  /** Path under /public, e.g. '/Assets/nouvelles/mon-article.jpg'. Omit for a placeholder. */
-  cover?: string
-  blocks: ArticleBlock[]
-  tags: string[]
-}
+/**
+ * Initial content, lifted from the original static data files. Used to seed the
+ * localStorage fallback on first run so the site and dashboard are never empty
+ * before Supabase is connected. Once Supabase holds the data, this is ignored.
+ */
 
-const MONTHS_FR = ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc']
-
-/** '2026-02-18' → '18 Fév 2026'. */
-export function formatArticleDate(iso: string): string {
-  const [year, month, day] = iso.split('-')
-  return `${day} ${MONTHS_FR[Number(month) - 1]} ${year}`
-}
-
-export const articles: Article[] = [
+export const seedArticles: Article[] = [
   {
+    id: 'seed-article-1',
     slug: 'grow-your-brand-smarter-faster',
     date: '2026-02-18',
     title: 'Grow your brand smarter & faster with grafty',
+    published: true,
     blocks: [
       {
         heading: 'Sustainable design',
@@ -43,40 +27,58 @@ export const articles: Article[] = [
     tags: ['MEP', 'Electricité CFO', 'Plomberie'],
   },
   {
+    id: 'seed-article-2',
     slug: 'grow-your-brand-smarter-faster-2',
     date: '2026-01-01',
     title: 'Grow your brand smarter & faster with grafty',
+    published: true,
     blocks: [
-      {
-        heading: 'Sustainable design',
-        paragraphs: [
-          'Remplacez ce texte par le contenu réel de votre article.',
-        ],
-      },
+      { heading: 'Sustainable design', paragraphs: ['Remplacez ce texte par le contenu réel de votre article.'] },
     ],
     tags: ['VRD', 'Aménagement'],
   },
   {
+    id: 'seed-article-3',
     slug: 'grow-your-brand-smarter-faster-3',
     date: '2026-09-22',
     title: 'Grow your brand smarter & faster with grafty',
+    published: true,
     blocks: [
-      {
-        heading: 'Sustainable design',
-        paragraphs: [
-          'Remplacez ce texte par le contenu réel de votre article.',
-        ],
-      },
+      { heading: 'Sustainable design', paragraphs: ['Remplacez ce texte par le contenu réel de votre article.'] },
     ],
     tags: ['BIM'],
   },
 ]
 
-/** Newest first — the order the archive grid uses. */
-export function sortedArticles(): Article[] {
-  return [...articles].sort((a, b) => b.date.localeCompare(a.date))
-}
-
-export function findArticle(slug: string): Article | undefined {
-  return articles.find(a => a.slug === slug)
-}
+export const seedProjects: Project[] = [
+  {
+    id: 'seed-project-1',
+    title: 'Etude de 350 logements promotionnels libres',
+    location: ['Gue de constantine', "Wilaya d'Alger"],
+    tags: ['VRD', 'Aménagement', 'Infrastructures'],
+    published: true,
+    media: [
+      { type: 'image' },
+      { type: 'video' },
+      { type: 'image' },
+      { type: 'image' },
+      { type: 'image' },
+      { type: 'image' },
+    ],
+  },
+  {
+    id: 'seed-project-2',
+    title: 'Etude de 350 logements promotionnels libres',
+    location: ['Gue de constantine', "Wilaya d'Alger"],
+    tags: ['MEP', 'Electricité CFO', 'Plomberie'],
+    published: true,
+    media: [
+      { type: 'image' },
+      { type: 'video' },
+      { type: 'image' },
+      { type: 'image' },
+      { type: 'image' },
+      { type: 'image' },
+    ],
+  },
+]

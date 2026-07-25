@@ -2,17 +2,22 @@ import { useCallback } from 'react'
 import { useTransition } from '../context/TransitionContext'
 import { MediaFrame } from './MediaPlaceholder'
 import { RevealText } from './Reveal'
-import { formatArticleDate, sortedArticles } from '../data/nouvelles'
+import { useArticles } from '../lib/content/hooks'
+import { formatArticleDate } from '../lib/content/types'
 
 /** The card grid that replaces the placeholder once FEATURES.nouvelles is on. */
 export function NouvellesArchive() {
   const { startTransition } = useTransition()
   const open = useCallback((slug: string) => startTransition(`/nouvelles/${slug}`), [startTransition])
+  const { data: articles, loading } = useArticles()
 
   return (
     <section className="px-6 sm:px-10 lg:px-20 pb-32">
       <div className="max-w-screen-xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-14">
-        {sortedArticles().map((article, i) => (
+        {!loading && articles.length === 0 && (
+          <p className="font-body text-secondary text-sm">Aucun article pour le moment.</p>
+        )}
+        {articles.map((article, i) => (
           <RevealText key={article.slug} delay={Math.min(i, 5) * 0.08}>
             <button
               onClick={() => open(article.slug)}

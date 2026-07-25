@@ -23,7 +23,7 @@ function HeroSection({ nav }: { nav: (path: string) => void }) {
           ENGINEERING STUDIO, intervient sur tout type de projets et à n'importe quelle phase du projet, de l'étude à la modélisation BIM.
         </p>
         <div className="flex items-center gap-3 flex-wrap">
-          <LogoButton variant="pill" onClick={() => nav('/devis')}>Obtenir un devis</LogoButton>
+          <LogoButton variant="pill" onClick={() => nav('/devis')}>Obtenez un devis</LogoButton>
           <LogoButton onClick={() => nav('/a-propos')}>Qui Sommes Nous</LogoButton>
         </div>
       </div>
@@ -162,6 +162,16 @@ export default function Home() {
         imageLeft={false}
         onLearnMore={() => nav('/prestations/bim')}
       />
+
+      {/* ── CTA banner ────────────────────────────────────────────────────── */}
+      <section className="bg-surface px-6 sm:px-10 lg:px-20 py-36">
+        <RevealText className="max-w-screen-xl mx-auto flex flex-col items-center text-center gap-8">
+          <h2 className="font-display font-bold text-4xl sm:text-5xl lg:text-6xl xl:text-7xl text-white leading-tight max-w-[22ch]">
+            Ingénierie du bâtiment
+          </h2>
+          <LogoButton variant="pill" onClick={() => nav('/contact')}>Écrivez-nous</LogoButton>
+        </RevealText>
+      </section>
 
       <Footer />
     </div>

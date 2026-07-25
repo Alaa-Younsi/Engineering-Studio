@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { MediaFrame, Tag } from './MediaPlaceholder'
 import { Reveal, RevealText } from './Reveal'
-import { projects } from '../data/portefeuille'
-import type { Project } from '../data/portefeuille'
+import { useProjects } from '../lib/content/hooks'
+import type { Project } from '../lib/content/types'
 
 function ProjectCard({ project }: { project: Project }) {
   const [active, setActive] = useState(0)
@@ -64,6 +64,8 @@ function ProjectCard({ project }: { project: Project }) {
 
 /** The project showcase that replaces the placeholder once FEATURES.portefeuille is on. */
 export function PortefeuilleGallery() {
+  const { data: projects, loading } = useProjects()
+
   return (
     <>
       <section className="relative flex items-center justify-center overflow-hidden py-32 px-6">
@@ -84,6 +86,9 @@ export function PortefeuilleGallery() {
       </section>
 
       <section className="px-6 sm:px-10 lg:px-20 pb-32 flex flex-col gap-10 lg:gap-16">
+        {!loading && projects.length === 0 && (
+          <p className="font-body text-secondary text-sm text-center">Aucune réalisation pour le moment.</p>
+        )}
         {projects.map((project, i) => (
           <Reveal key={project.id} direction={i % 2 === 0 ? 'left' : 'right'} className="max-w-screen-xl mx-auto w-full">
             <ProjectCard project={project} />

@@ -4,6 +4,6 @@
  * components are already wired up.
  */
 export const FEATURES = {
-  nouvelles: false,
-  portefeuille: false,
+  nouvelles: true,
+  portefeuille: true,
 }

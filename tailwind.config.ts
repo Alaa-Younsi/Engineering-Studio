@@ -6,8 +6,8 @@ const config: Config = {
     extend: {
       colors: {
         bg: '#000000',
-        surface: '#111111',
-        secondary: '#666666',
+        surface: '#1a1a1a',
+        secondary: '#707070',
         'logo-mid': '#555555',
         'logo-outer': '#333333',
       },

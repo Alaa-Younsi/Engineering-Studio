@@ -8,7 +8,8 @@ import { LogoButton } from '../components/LogoButton'
 import { MediaFrame, Tag } from '../components/MediaPlaceholder'
 import { RevealText } from '../components/Reveal'
 import { FEATURES } from '../config/features'
-import { findArticle, formatArticleDate } from '../data/nouvelles'
+import { useArticle } from '../lib/content/hooks'
+import { formatArticleDate } from '../lib/content/types'
 
 export default function NouvelleArticle() {
   const { slug } = useParams<{ slug: string }>()
@@ -19,7 +20,7 @@ export default function NouvelleArticle() {
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] })
   const heroLogoY = useTransform(scrollYProgress, [0, 1], ['0px', '-80px'])
 
-  const article = slug ? findArticle(slug) : undefined
+  const { data: article, loading } = useArticle(slug)
 
   // While the section is still behind the flag, an article URL is not a real page.
   if (!FEATURES.nouvelles) return <Navigate to="/nouvelles" replace />
@@ -37,7 +38,9 @@ export default function NouvelleArticle() {
         <HeroShape y={heroLogoY} />
       </section>
 
-      {!article ? (
+      {loading ? (
+        <section className="px-6 sm:px-10 lg:px-20 py-32" />
+      ) : !article ? (
         <section className="px-6 sm:px-10 lg:px-20 py-32 flex flex-col items-center gap-8 text-center">
           <p className="font-display font-bold text-2xl sm:text-3xl text-white">Cet article n'existe pas.</p>
           <LogoButton onClick={() => nav('/nouvelles')}>Toutes les nouvelles</LogoButton>
