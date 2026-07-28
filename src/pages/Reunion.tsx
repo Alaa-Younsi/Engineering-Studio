@@ -160,7 +160,7 @@ export default function Reunion() {
               className="bg-[#1a1a1a] rounded-2xl px-12 py-10 w-full max-w-xl text-center"
             >
               <CardLogo />
-              <h2 className="font-display font-bold text-2xl lg:text-[1.9rem] text-white leading-snug mb-8">
+              <h2 className="font-display font-bold text-2xl lg:text-[1.9rem] text-white leading-snug lg:leading-snug mb-8">
                 Renseignez vos coordonnées
               </h2>
               <div className="grid grid-cols-2 gap-3">
@@ -183,7 +183,7 @@ export default function Reunion() {
               className="bg-[#1a1a1a] rounded-2xl px-12 py-10 w-full max-w-xl text-center"
             >
               <CardLogo />
-              <h2 className="font-display font-bold text-2xl lg:text-[1.9rem] text-white leading-snug mb-8">
+              <h2 className="font-display font-bold text-2xl lg:text-[1.9rem] text-white leading-snug lg:leading-snug mb-8">
                 Choisissez le type de réunion<br />qui correspond le mieux<br />à vos besoins
               </h2>
               <div className="flex flex-wrap justify-center gap-3 mb-4">

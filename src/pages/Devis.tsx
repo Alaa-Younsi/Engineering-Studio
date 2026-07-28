@@ -138,7 +138,7 @@ export default function Devis() {
             <motion.div key="s0" {...slide}
               className="bg-[#1a1a1a] rounded-2xl px-14 py-16 w-full max-w-xl text-center"
             >
-              <h1 className="font-display font-bold text-5xl lg:text-[3.5rem] text-white leading-none mb-4">
+              <h1 className="font-display font-bold text-5xl lg:text-[3.5rem] text-white leading-none lg:leading-none mb-4">
                 Obtenez<br />un devis
               </h1>
               <p className="font-body text-white/40 text-sm mb-10">Notre offre. Etudes clé en main</p>
@@ -157,7 +157,7 @@ export default function Devis() {
               className="bg-[#1a1a1a] rounded-2xl px-12 py-10 w-full max-w-xl text-center"
             >
               <CardLogo />
-              <h2 className="font-display font-bold text-3xl lg:text-[2.1rem] text-white leading-snug mb-8">
+              <h2 className="font-display font-bold text-3xl lg:text-[2.1rem] text-white leading-snug lg:leading-snug mb-8">
                 Choisissez le type de<br />votre société ?
               </h2>
               <div className="flex flex-wrap justify-center gap-3">
@@ -175,7 +175,7 @@ export default function Devis() {
               className="bg-[#1a1a1a] rounded-2xl px-12 py-10 w-full max-w-xl text-center"
             >
               <CardLogo />
-              <h2 className="font-display font-bold text-3xl lg:text-[2.1rem] text-white leading-snug mb-8">
+              <h2 className="font-display font-bold text-3xl lg:text-[2.1rem] text-white leading-snug lg:leading-snug mb-8">
                 Veuillez nous indiquer plus<br />détails de votre société
               </h2>
               <div className="grid grid-cols-2 gap-3">
@@ -192,7 +192,7 @@ export default function Devis() {
               className="bg-[#1a1a1a] rounded-2xl px-12 py-10 w-full max-w-xl text-center"
             >
               <CardLogo />
-              <h2 className="font-display font-bold text-3xl lg:text-[2.1rem] text-white leading-snug mb-8">
+              <h2 className="font-display font-bold text-3xl lg:text-[2.1rem] text-white leading-snug lg:leading-snug mb-8">
                 Représentant de<br />la société
               </h2>
               <div className="grid grid-cols-2 gap-3">
@@ -209,7 +209,7 @@ export default function Devis() {
               className="bg-[#1a1a1a] rounded-2xl px-12 py-10 w-full max-w-xl text-center"
             >
               <CardLogo />
-              <h2 className="font-display font-bold text-3xl lg:text-[2.1rem] text-white leading-snug mb-8">
+              <h2 className="font-display font-bold text-3xl lg:text-[2.1rem] text-white leading-snug lg:leading-snug mb-8">
                 Saisissez vos<br />coordonnées
               </h2>
               <div className="grid grid-cols-2 gap-3">
@@ -226,7 +226,7 @@ export default function Devis() {
               className="bg-[#1a1a1a] rounded-2xl px-12 py-10 w-full max-w-xl text-center"
             >
               <CardLogo />
-              <h2 className="font-display font-bold text-3xl lg:text-[2.1rem] text-white leading-snug mb-8">
+              <h2 className="font-display font-bold text-3xl lg:text-[2.1rem] text-white leading-snug lg:leading-snug mb-8">
                 Parlez-nous de<br />votre projet
               </h2>
               <div className="grid grid-cols-2 gap-3">
@@ -243,7 +243,7 @@ export default function Devis() {
               className="bg-[#1a1a1a] rounded-2xl px-12 py-10 w-full max-w-xl text-center"
             >
               <CardLogo />
-              <h2 className="font-display font-bold text-3xl lg:text-[2.1rem] text-white leading-snug mb-8">
+              <h2 className="font-display font-bold text-3xl lg:text-[2.1rem] text-white leading-snug lg:leading-snug mb-8">
                 Quel type d'études<br />recherchez-vous ?
               </h2>
               <div className="flex flex-wrap justify-center gap-3">
@@ -261,7 +261,7 @@ export default function Devis() {
               className="bg-[#1a1a1a] rounded-2xl px-12 py-10 w-full max-w-xl text-center"
             >
               <CardLogo />
-              <h2 className="font-display font-bold text-3xl lg:text-[2.1rem] text-white leading-snug mb-8">
+              <h2 className="font-display font-bold text-3xl lg:text-[2.1rem] text-white leading-snug lg:leading-snug mb-8">
                 Plus de détails sur<br />votre demande
               </h2>
               <textarea
@@ -280,7 +280,7 @@ export default function Devis() {
               className="bg-[#1a1a1a] rounded-2xl px-12 py-10 w-full max-w-xl text-center"
             >
               <CardLogo />
-              <h2 className="font-display font-bold text-3xl lg:text-[2.1rem] text-white leading-snug mb-8">
+              <h2 className="font-display font-bold text-3xl lg:text-[2.1rem] text-white leading-snug lg:leading-snug mb-8">
                 Envoyez-nous vos plans<br />afin que nous puissions vous<br />fournir un meilleur devis
               </h2>
               <input
@@ -311,7 +311,7 @@ export default function Devis() {
             <motion.div key="s9" {...slide}
               className="bg-[#1a1a1a] rounded-2xl px-12 py-12 w-full max-w-xl text-center"
             >
-              <h2 className="font-display font-bold text-3xl lg:text-[2.2rem] text-white leading-snug mb-8">
+              <h2 className="font-display font-bold text-3xl lg:text-[2.2rem] text-white leading-snug lg:leading-snug mb-8">
                 Votre demande de devis<br />est bien envoyée !
               </h2>
               <div className="relative w-64 h-64 mx-auto rounded-full bg-[#141414] overflow-hidden mb-8">

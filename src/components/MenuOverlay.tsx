@@ -82,13 +82,15 @@ export function MenuOverlay() {
           {/* Body */}
           <div className="flex flex-col lg:flex-row flex-1 overflow-y-auto overflow-x-hidden">
 
-            {/* Left side — logo + CTA */}
-            <div className="flex flex-col justify-center px-6 sm:px-10 lg:px-[6.75rem] py-8 lg:py-0 gap-6 lg:gap-10 lg:w-[52%] lg:flex-shrink-0 border-b border-white/10 lg:border-b-0">
-              <LogoFull size="lg" className="scale-75 origin-left sm:scale-90 lg:scale-[1.4] lg:origin-left" />
-              <div className="flex flex-wrap items-center gap-3">
-                <LogoButton variant="pill" onClick={handleDevis}>Devis</LogoButton>
-                <LogoButton variant="pill" onClick={handleReunion}>Demander un échange</LogoButton>
-                <LogoButton aria-label="Contactez-nous" onClick={() => handleNavClick('/contact')} />
+            {/* Left side — logo + CTA (block centred in the left half) */}
+            <div className="flex flex-col justify-center lg:items-center px-6 sm:px-10 py-8 lg:py-0 lg:w-[58%] lg:flex-shrink-0 border-b border-white/10 lg:border-b-0">
+              <div className="flex flex-col items-start gap-6 lg:gap-[2.4rem]">
+                <LogoFull size="lg" className="scale-75 origin-left sm:scale-90 lg:scale-[1.35] lg:origin-left" />
+                <div className="flex flex-wrap items-center gap-3">
+                  <LogoButton variant="pill" onClick={handleDevis}>Devis</LogoButton>
+                  <LogoButton variant="pill" onClick={handleReunion}>Demander un échange</LogoButton>
+                  <LogoButton aria-label="Contactez-nous" onClick={() => handleNavClick('/contact')} />
+                </div>
               </div>
             </div>
 
@@ -104,7 +106,7 @@ export function MenuOverlay() {
                 <motion.div key={link.path} variants={itemVariants}>
                   <button
                     onClick={() => handleNavClick(link.path)}
-                    className="block w-full font-display font-bold text-4xl sm:text-5xl lg:text-[3.6rem] text-white leading-[1.12] hover:opacity-60 transition-opacity text-left py-1"
+                    className="block w-full font-display font-bold text-4xl sm:text-5xl lg:text-[3.6rem] text-white leading-[1.12] lg:leading-[1.12] hover:opacity-60 transition-opacity text-left py-1"
                   >
                     {link.label}
                   </button>

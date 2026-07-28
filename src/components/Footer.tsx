@@ -9,7 +9,7 @@ export function Footer() {
   const nav = useCallback((path: string) => startTransition(path), [startTransition])
 
   return (
-    <footer className="relative bg-surface overflow-hidden border-t border-white/10">
+    <footer className="relative bg-bg overflow-hidden border-t border-white/10">
 
       {/* ── Logo mark spans the footer as a subtle background ─────────────── */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none z-0">
@@ -17,7 +17,7 @@ export function Footer() {
           src="/Assets/logo/Logo-seul.png"
           alt=""
           className="object-contain"
-          style={{ width: 'min(95vw, 68rem)', height: 'min(95vw, 68rem)', opacity: 0.12 }}
+          style={{ width: 'min(95vw, 68rem)', height: 'min(95vw, 68rem)', opacity: 0.28 }}
           draggable={false}
         />
       </div>
@@ -28,7 +28,7 @@ export function Footer() {
           <span className="font-body text-secondary text-xs lg:text-[0.9rem] uppercase tracking-[0.2em]">
             Ingénierie du bâtiment
           </span>
-          <h2 className="font-display font-bold text-5xl sm:text-6xl lg:text-[5.25rem] text-white leading-none tracking-tight">
+          <h2 className="font-display font-bold text-5xl sm:text-6xl lg:text-[5.25rem] text-white leading-none lg:leading-none tracking-tight">
             Engineering Studio
           </h2>
           <LogoButton variant="pill" onClick={() => nav('/contact')}>Écrivez-nous</LogoButton>
@@ -68,14 +68,15 @@ export function Footer() {
       </RevealText>
 
       {/* ── Bottom bar ────────────────────────────────────────────────────── */}
-      <div className="relative z-10 flex flex-wrap items-center justify-between gap-4 px-10 sm:px-14 lg:px-gutter py-6 border-t border-white/10">
+      <div className="relative z-10 grid grid-cols-1 sm:grid-cols-3 items-center gap-4 px-10 sm:px-14 lg:px-gutter py-6 lg:py-[1.75rem] border-t border-white/10">
         <div className="flex items-center gap-8">
-          <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="font-body text-secondary text-xs hover:text-white transition-colors">Facebook</a>
+          <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="font-body text-secondary text-xs lg:text-[0.8rem] hover:text-white transition-colors">Facebook</a>
           <LinkedInButton />
         </div>
-        <p className="font-body text-secondary text-[10px]">
+        <p className="font-body text-secondary text-[10px] lg:text-[0.8rem] sm:text-center">
           Copyright © 2026 tous droits réservés. Design par le propriétaire Engineering Studio
         </p>
+        <span className="hidden sm:block" />
       </div>
 
     </footer>

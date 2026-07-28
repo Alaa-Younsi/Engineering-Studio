@@ -202,7 +202,7 @@ export default function APropos() {
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
       <section ref={heroRef} className="relative h-screen flex items-center overflow-hidden">
         <div className="px-6 sm:px-10 lg:px-gutter relative z-10">
-          <h1 className="font-display font-bold text-[2.5rem] sm:text-6xl lg:text-[5.375rem] text-white leading-none">
+          <h1 className="font-display font-bold text-[2.5rem] sm:text-6xl lg:text-[5.375rem] text-white leading-none lg:leading-none">
             À propos
           </h1>
         </div>
@@ -311,7 +311,7 @@ export default function APropos() {
       <section className="px-6 sm:px-10 lg:px-gutter py-32 border-t border-white/10">
         <RevealText className="max-w-content mx-auto">
           <p className="font-body text-secondary text-xs tracking-widest uppercase mb-6">La modélisation BIM au cœur de nos projets</p>
-          <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-[2.8rem] text-white leading-tight max-w-[30ch] mb-8">
+          <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-[2.8rem] text-white leading-tight lg:leading-tight max-w-[30ch] mb-8">
             Modélisation BIM : réalisez vos ouvrages en 3D grâce à notre expertise
           </h2>
           <p className="font-body text-secondary text-sm leading-relaxed max-w-[90ch] mb-16">

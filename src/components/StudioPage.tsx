@@ -38,7 +38,7 @@ function ServiceRow({ service, index }: { service: Service; index: number }) {
       <span className="font-body text-secondary text-xs lg:text-[1.35rem] tracking-widest">
         {String(index + 1).padStart(2, '0')}.
       </span>
-      <h2 className="font-display font-bold text-3xl lg:text-[3.5rem] text-white leading-[1.05]">
+      <h2 className="font-display font-bold text-3xl lg:text-[3.5rem] text-white leading-[1.05] lg:leading-[1.05]">
         {service.name}
       </h2>
     </div>

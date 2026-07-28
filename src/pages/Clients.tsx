@@ -115,7 +115,7 @@ export default function Clients() {
       {/* ── Hero ────────────────────────────────────────────────────────────── */}
       <section ref={heroRef} className="relative h-screen flex items-center overflow-hidden">
         <div className="px-6 sm:px-10 lg:px-gutter relative z-10">
-          <h1 className="font-display font-bold text-[2.5rem] sm:text-6xl lg:text-[5.375rem] text-white leading-none">
+          <h1 className="font-display font-bold text-[2.5rem] sm:text-6xl lg:text-[5.375rem] text-white leading-none lg:leading-none">
             Clients
           </h1>
         </div>
@@ -127,7 +127,7 @@ export default function Clients() {
         <RevealText className="max-w-content mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
           <div>
             <p className="font-body text-secondary text-xs tracking-widest uppercase mb-6">Nos clients</p>
-            <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-[2.8rem] text-white leading-tight">
+            <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-[2.8rem] text-white leading-tight lg:leading-tight">
               Découvrez nos clients et comment nous collaborons avec eux
             </h2>
             <div className="mt-10">
@@ -222,7 +222,7 @@ export default function Clients() {
       <section className="px-6 sm:px-10 lg:px-gutter py-44 border-t border-white/10">
         <div className="max-w-content mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <RevealText>
-            <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-[2.6rem] text-white leading-tight">
+            <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-[2.6rem] text-white leading-tight lg:leading-tight">
               Voici quelques exemples de clients avec lesquels nous avons eu le plaisir de collaborer
             </h2>
           </RevealText>

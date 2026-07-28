@@ -43,7 +43,7 @@ function CitySection() {
       </motion.div>
       <RevealText className="relative z-10 flex items-center justify-end min-h-screen px-8 sm:px-14 lg:px-gutter py-16">
         <div className="max-w-[16rem] lg:max-w-[22rem]">
-          <h2 className="font-display font-bold text-2xl sm:text-3xl lg:text-[2.15rem] text-black leading-[1.15] mb-6 lg:mb-[1.6rem]">
+          <h2 className="font-display font-bold text-2xl sm:text-3xl lg:text-[2.15rem] text-black leading-[1.15] lg:leading-[1.15] mb-6 lg:mb-[1.6rem]">
             Suivez notre actualité et découvrez nos travaux récentes
           </h2>
           <LinkedInButton />
@@ -73,7 +73,7 @@ export default function Contact() {
       {/* ── Hero ────────────────────────────────────────────────────────────── */}
       <section ref={heroRef} className="relative h-screen flex items-center overflow-hidden">
         <div className="px-6 sm:px-12 lg:px-gutter relative z-10">
-          <h1 className="font-display font-bold text-[2.5rem] sm:text-6xl lg:text-[5.375rem] text-white leading-none">
+          <h1 className="font-display font-bold text-[2.5rem] sm:text-6xl lg:text-[5.375rem] text-white leading-none lg:leading-none">
             Contact
           </h1>
         </div>
@@ -87,10 +87,10 @@ export default function Contact() {
           {/* Left */}
           <div className="flex flex-col justify-center gap-6 lg:gap-[1.8rem]">
             <p className="font-body text-secondary text-xs lg:text-[0.95rem] tracking-widest uppercase">Contactez-nous</p>
-            <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-[2.9rem] text-white leading-[1.12] max-w-[19ch]">
+            <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-[2.9rem] text-white leading-[1.12] lg:leading-[1.12] max-w-[19ch]">
               Nous adorons les challenges, mettez-nous à contribution&nbsp;!. N'hésitez pas à nous contacter&nbsp;!
             </h2>
-            <p className="font-body text-secondary text-sm lg:text-[1.05rem] leading-[1.5] max-w-[34ch]">
+            <p className="font-body text-secondary text-sm lg:text-[1.05rem] leading-[1.5] lg:leading-[1.5] max-w-[34ch]">
               Nous serons heureux de répondre à toutes vos questions et de vous aider à déterminer lequel de nos services correspond le mieux à vos besoins.
             </p>
             <a
@@ -175,7 +175,7 @@ export default function Contact() {
           <p className="font-body text-secondary text-xs lg:text-[0.95rem] tracking-widest uppercase text-center mb-4 lg:mb-[1.1rem]">
             Vous avez des questions&nbsp;?
           </p>
-          <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-[3.5rem] text-white leading-[1.08] mb-16 lg:mb-[6rem] text-center">
+          <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-[3.5rem] text-white leading-[1.08] lg:leading-[1.08] mb-16 lg:mb-[6rem] text-center">
             Voici les questions fréquemment posées.
           </h2>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-[1.1rem]">

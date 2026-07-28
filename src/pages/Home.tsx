@@ -18,10 +18,10 @@ function HeroSection({ nav }: { nav: (path: string) => void }) {
     <section ref={ref} className="relative h-screen flex items-center overflow-hidden bg-bg">
       <div className="relative z-10 w-full px-6 sm:px-12 lg:px-gutter">
         <div className="max-w-[24rem] sm:max-w-[34rem] lg:max-w-[56rem]">
-          <h1 className="font-display font-bold text-[2rem] sm:text-[2.75rem] lg:text-[5.375rem] leading-[1.05] text-white">
+          <h1 className="font-display font-bold text-[2rem] sm:text-[2.75rem] lg:text-[5.375rem] leading-[1.05] lg:leading-[1.05] text-white">
             L'excellence dans l'ingénierie d'étude technique en BTP
           </h1>
-          <p className="font-body text-secondary text-[0.7rem] sm:text-xs lg:text-[1.1875rem] uppercase tracking-[0.05em] leading-[1.32] mt-[1.8rem] max-w-[29rem] lg:max-w-[46rem]">
+          <p className="font-body text-secondary text-sm sm:text-base lg:text-[1.1875rem] tracking-[0.01em] leading-[1.45] lg:leading-[1.5] mt-6 lg:mt-[1.9rem] max-w-[29rem] lg:max-w-[40rem]">
             ENGINEERING STUDIO, intervient sur tout type de projets et à n'importe quelle phase du projet, de l'étude à la modélisation BIM.
           </p>
           <div className="flex items-center gap-3 flex-wrap mt-[3.1rem]">
@@ -66,10 +66,10 @@ function ServiceSection({ title, description, imageSrc, imageAlt, imageLeft, onL
 
   const textBlock = (
     <div className="flex flex-col justify-center min-w-0">
-      <h2 className="font-display font-bold text-2xl sm:text-3xl lg:text-[4.125rem] text-white leading-[1.06] lg:max-w-[35rem]">
+      <h2 className="font-display font-bold text-2xl sm:text-3xl lg:text-[4.125rem] leading-[1.08] lg:leading-[1.08] text-white lg:max-w-[35rem]">
         {title}
       </h2>
-      <p className="font-body text-secondary text-sm lg:text-[1.1875rem] leading-[1.37] mt-4 lg:mt-[0.95rem] max-w-[34rem] lg:max-w-[46rem]">
+      <p className="font-body text-secondary text-sm lg:text-[1.1875rem] leading-[1.5] lg:leading-[1.5] mt-4 lg:mt-[0.95rem] max-w-[34rem] lg:max-w-[46rem]">
         {description}
       </p>
       <div className="mt-6 lg:mt-[6.25rem]">
