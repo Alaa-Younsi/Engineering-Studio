@@ -85,12 +85,12 @@ export function PortefeuilleGallery() {
         </RevealText>
       </section>
 
-      <section className="px-6 sm:px-10 lg:px-20 pb-32 flex flex-col gap-10 lg:gap-16">
+      <section className="px-6 sm:px-10 lg:px-gutter pb-32 flex flex-col gap-10 lg:gap-16">
         {!loading && projects.length === 0 && (
           <p className="font-body text-secondary text-sm text-center">Aucune réalisation pour le moment.</p>
         )}
         {projects.map((project, i) => (
-          <Reveal key={project.id} direction={i % 2 === 0 ? 'left' : 'right'} className="max-w-screen-xl mx-auto w-full">
+          <Reveal key={project.id} direction={i % 2 === 0 ? 'left' : 'right'} className="max-w-content mx-auto w-full">
             <ProjectCard project={project} />
           </Reveal>
         ))}

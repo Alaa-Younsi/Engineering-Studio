@@ -1,5 +1,6 @@
 import { useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
+import { CAPTURE } from '../lib/capture'
 import { Footer } from './Footer'
 import { Reveal, RevealText } from './Reveal'
 
@@ -22,10 +23,10 @@ function ServiceRow({ service, index }: { service: Service; index: number }) {
   const imageLeft = index % 2 !== 0
 
   const circle = (
-    <div className="flex items-center justify-center">
+    <div className={`flex items-center ${imageLeft ? 'justify-start pl-[6.8rem]' : 'justify-end pr-[6.8rem]'}`}>
       <motion.div
-        style={{ y: imgY }}
-        className="w-64 h-64 lg:w-72 lg:h-72 xl:w-80 xl:h-80 rounded-full overflow-hidden border border-white/10 flex-shrink-0 hover:opacity-80 transition-opacity"
+        style={{ y: CAPTURE ? 0 : imgY }}
+        className="w-64 h-64 lg:w-[34rem] lg:h-[34rem] rounded-full overflow-hidden border border-white/10 flex-shrink-0 hover:opacity-80 transition-opacity"
       >
         <img src={service.image} alt={service.name} className="w-full h-full object-cover" />
       </motion.div>
@@ -33,11 +34,11 @@ function ServiceRow({ service, index }: { service: Service; index: number }) {
   )
 
   const label = (
-    <div className="flex flex-col items-center text-center gap-4">
-      <span className="font-body text-secondary text-xs tracking-widest">
+    <div className="flex flex-col items-center text-center gap-3 lg:gap-[2.9rem]">
+      <span className="font-body text-secondary text-xs lg:text-[1.35rem] tracking-widest">
         {String(index + 1).padStart(2, '0')}.
       </span>
-      <h2 className="font-display font-bold text-3xl lg:text-4xl xl:text-5xl text-white leading-tight">
+      <h2 className="font-display font-bold text-3xl lg:text-[3.5rem] text-white leading-[1.05]">
         {service.name}
       </h2>
     </div>
@@ -60,8 +61,8 @@ function ServiceRow({ service, index }: { service: Service; index: number }) {
         </RevealText>
       </div>
 
-      {/* Desktop: alternating two-column */}
-      <div className="hidden md:grid grid-cols-3 gap-10 lg:gap-16 xl:gap-20 items-center max-w-screen-xl mx-auto px-10 lg:px-20 py-24 lg:py-32 xl:py-40">
+      {/* Desktop: alternating — number+name centred, circle offset to one side */}
+      <div className="hidden md:grid grid-cols-3 items-center w-full lg:h-screen px-6 py-24 lg:py-0">
         {imageLeft ? (
           <>
             <Reveal direction="left">{circle}</Reveal>
@@ -90,14 +91,14 @@ export function StudioPage({ logo, logoAlt, services }: StudioConfig) {
             src="/Assets/logo/Logo-seul.png"
             alt=""
             className="object-contain"
-            style={{ width: 'min(80vh, 80vw)', height: 'min(80vh, 80vw)', opacity: 0.40 }}
+            style={{ width: 'min(66vh, 90vw)', height: 'min(66vh, 90vw)', opacity: 0.42 }}
             draggable={false}
           />
         </div>
         <img
           src={logo}
           alt={logoAlt}
-          className="relative z-10 w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 xl:w-56 xl:h-56 object-contain select-none"
+          className="relative z-10 w-40 sm:w-48 md:w-56 lg:w-[26rem] object-contain select-none"
           draggable={false}
         />
       </section>

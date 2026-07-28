@@ -9,7 +9,7 @@ export function Navbar() {
   const goHome = useCallback(() => startTransition('/'), [startTransition])
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-6 sm:px-8 h-16">
+    <nav className="fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-6 sm:px-8 lg:px-[6.75rem] h-16 lg:h-[8.5rem]">
       <button
         onClick={goHome}
         aria-label="Accueil"

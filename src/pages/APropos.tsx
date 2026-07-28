@@ -201,17 +201,17 @@ export default function APropos() {
 
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
       <section ref={heroRef} className="relative h-screen flex items-center overflow-hidden">
-        <div className="px-6 sm:px-10 lg:px-20 relative z-10">
-          <h1 className="font-display font-bold text-3xl sm:text-5xl md:text-6xl lg:text-7xl text-white leading-none">
+        <div className="px-6 sm:px-10 lg:px-gutter relative z-10">
+          <h1 className="font-display font-bold text-[2.5rem] sm:text-6xl lg:text-[5.375rem] text-white leading-none">
             À propos
           </h1>
         </div>
-        <HeroShape y={heroLogoY} />
+        <HeroShape y={heroLogoY} className="hidden md:block" />
       </section>
 
       {/* ── Stats ────────────────────────────────────────────────────────── */}
-      <section className="px-6 sm:px-10 lg:px-20 py-32 border-t border-white/10">
-        <RevealText className="max-w-screen-xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
+      <section className="px-6 sm:px-10 lg:px-gutter py-32 border-t border-white/10">
+        <RevealText className="max-w-content mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
           <div>
             <p className="font-body text-secondary text-xs tracking-widest uppercase mb-6">Solutions globale en ingénierie</p>
             <h2 className="font-display font-bold text-4xl sm:text-5xl lg:text-6xl text-white leading-tight mb-14">
@@ -244,8 +244,8 @@ export default function APropos() {
       </section>
 
       {/* ── Études clé en main ───────────────────────────────────────────── */}
-      <section className="px-6 sm:px-10 lg:px-20 py-32 border-t border-white/10">
-        <RevealText className="max-w-screen-xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-10">
+      <section className="px-6 sm:px-10 lg:px-gutter py-32 border-t border-white/10">
+        <RevealText className="max-w-content mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-10">
           <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-5xl text-white leading-tight">
             Etudes<br />clé en main
           </h2>
@@ -262,8 +262,8 @@ export default function APropos() {
       </section>
 
       {/* ── Services — circle+number ──────────────────────────────────────── */}
-      <section className="px-6 sm:px-10 lg:px-20 py-32 border-t border-white/10">
-        <div className="max-w-screen-xl mx-auto">
+      <section className="px-6 sm:px-10 lg:px-gutter py-32 border-t border-white/10">
+        <div className="max-w-content mx-auto">
           <RevealText>
             <p className="font-body text-secondary text-xs tracking-widest uppercase mb-6">Présentation</p>
             <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-5xl text-white leading-tight max-w-[38ch] mb-8">
@@ -297,8 +297,8 @@ export default function APropos() {
       </section>
 
       {/* ── BIM highlight ─────────────────────────────────────────────────── */}
-      <section className="bg-surface px-6 sm:px-10 lg:px-20 py-36">
-        <RevealText className="max-w-screen-xl mx-auto flex flex-col items-center text-center gap-8">
+      <section className="bg-surface px-6 sm:px-10 lg:px-gutter py-36">
+        <RevealText className="max-w-content mx-auto flex flex-col items-center text-center gap-8">
           <p className="font-body text-secondary text-xs tracking-widest uppercase">Pour mieux construire</p>
           <h2 className="font-display font-bold text-4xl sm:text-5xl lg:text-6xl xl:text-7xl text-white leading-tight max-w-[22ch]">
             Boostez vos projets avec le BIM &amp; BTP numérique
@@ -308,8 +308,8 @@ export default function APropos() {
       </section>
 
       {/* ── BIM expertise ─────────────────────────────────────────────────── */}
-      <section className="px-6 sm:px-10 lg:px-20 py-32 border-t border-white/10">
-        <RevealText className="max-w-screen-xl mx-auto">
+      <section className="px-6 sm:px-10 lg:px-gutter py-32 border-t border-white/10">
+        <RevealText className="max-w-content mx-auto">
           <p className="font-body text-secondary text-xs tracking-widest uppercase mb-6">La modélisation BIM au cœur de nos projets</p>
           <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-[2.8rem] text-white leading-tight max-w-[30ch] mb-8">
             Modélisation BIM : réalisez vos ouvrages en 3D grâce à notre expertise
@@ -328,8 +328,8 @@ export default function APropos() {
       </section>
 
       {/* ── Process — circle+number ───────────────────────────────────────── */}
-      <section className="px-6 sm:px-10 lg:px-20 py-40 border-t border-white/10">
-        <div className="max-w-screen-xl mx-auto text-center">
+      <section className="px-6 sm:px-10 lg:px-gutter py-40 border-t border-white/10">
+        <div className="max-w-content mx-auto text-center">
           <RevealText>
             <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-5xl text-white leading-tight mb-6">
               Comment se déroule<br />le processus d'étude
@@ -400,7 +400,7 @@ export default function APropos() {
 
       {/* ── Points forts — overlapping circles ───────────────────────────── */}
       <section className="py-32 border-t border-white/10">
-        <RevealText className="text-center px-6 sm:px-10 lg:px-20 mb-20">
+        <RevealText className="text-center px-6 sm:px-10 lg:px-gutter mb-20">
           <h2 className="font-display font-bold text-4xl sm:text-5xl lg:text-6xl text-white mb-8">Nos points forts</h2>
           <p className="font-body text-secondary text-sm leading-relaxed max-w-[80ch] mx-auto">
             Notre connaissance des contraintes des chargés d'affaires, maîtres d'œuvre et bureaux d'études nous permet d'être réactifs et efficaces pour satisfaire au mieux à vos attentes. Quelles que soient vos exigences, vous pouvez faire appel à ENGINEERING STUDIO pour vous aider à réussir vos projets les plus complexes. Le tout en répondant aux différents enjeux liés au délai, au coût et à la qualité.
@@ -438,8 +438,8 @@ export default function APropos() {
       </section>
 
       {/* ── Software — card grid ──────────────────────────────────────────── */}
-      <section className="border-t border-white/10 px-6 sm:px-10 lg:px-20 py-32">
-        <div className="max-w-screen-xl mx-auto">
+      <section className="border-t border-white/10 px-6 sm:px-10 lg:px-gutter py-32">
+        <div className="max-w-content mx-auto">
           <RevealText>
             <h2 className="font-display font-bold text-2xl sm:text-3xl lg:text-4xl text-white text-left leading-snug max-w-[32ch] ml-auto mb-16">
               Utilisés les logiciels d'ingénierie couvrent la conception, calculs, simulation et la gestion de projets

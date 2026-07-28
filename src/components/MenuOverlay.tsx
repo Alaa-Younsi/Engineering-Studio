@@ -58,7 +58,7 @@ export function MenuOverlay() {
           exit="exit"
         >
           {/* Top bar */}
-          <div className="flex items-center justify-between px-6 sm:px-8 h-16 border-b border-white/10 flex-shrink-0">
+          <div className="flex items-center justify-between px-6 sm:px-8 lg:px-[6.75rem] h-16 lg:h-[7rem] border-b border-white/10 flex-shrink-0">
             <span className="hidden sm:block font-body text-white text-sm truncate">
               contact@engineering-studio.net
             </span>
@@ -83,8 +83,8 @@ export function MenuOverlay() {
           <div className="flex flex-col lg:flex-row flex-1 overflow-y-auto overflow-x-hidden">
 
             {/* Left side — logo + CTA */}
-            <div className="flex flex-col justify-center px-6 sm:px-10 lg:px-16 py-8 lg:py-0 gap-6 lg:gap-10 lg:w-[42%] lg:flex-shrink-0 border-b border-white/10 lg:border-b-0 lg:border-r lg:border-white/10">
-              <LogoFull size="lg" className="scale-75 origin-left sm:scale-90 lg:scale-100" />
+            <div className="flex flex-col justify-center px-6 sm:px-10 lg:px-[6.75rem] py-8 lg:py-0 gap-6 lg:gap-10 lg:w-[52%] lg:flex-shrink-0 border-b border-white/10 lg:border-b-0">
+              <LogoFull size="lg" className="scale-75 origin-left sm:scale-90 lg:scale-[1.4] lg:origin-left" />
               <div className="flex flex-wrap items-center gap-3">
                 <LogoButton variant="pill" onClick={handleDevis}>Devis</LogoButton>
                 <LogoButton variant="pill" onClick={handleReunion}>Demander un échange</LogoButton>
@@ -94,7 +94,7 @@ export function MenuOverlay() {
 
             {/* Right side — nav links */}
             <motion.div
-              className="flex flex-col justify-center px-6 sm:px-10 lg:px-12 py-8 lg:py-0 gap-0.5 flex-1"
+              className="flex flex-col justify-center px-6 sm:px-10 lg:pl-0 lg:pr-[6.75rem] py-8 lg:py-0 gap-0.5 flex-1"
               variants={listVariants}
               initial="hidden"
               animate="visible"
@@ -104,7 +104,7 @@ export function MenuOverlay() {
                 <motion.div key={link.path} variants={itemVariants}>
                   <button
                     onClick={() => handleNavClick(link.path)}
-                    className="block w-full font-display font-bold text-4xl sm:text-5xl lg:text-5xl xl:text-6xl text-white leading-tight hover:opacity-60 transition-opacity text-left py-1"
+                    className="block w-full font-display font-bold text-4xl sm:text-5xl lg:text-[3.6rem] text-white leading-[1.12] hover:opacity-60 transition-opacity text-left py-1"
                   >
                     {link.label}
                   </button>
@@ -114,7 +114,7 @@ export function MenuOverlay() {
           </div>
 
           {/* Bottom bar */}
-          <div className="flex items-center justify-between px-6 sm:px-8 py-4 border-t border-white/10 flex-shrink-0 gap-4">
+          <div className="flex items-center justify-between px-6 sm:px-8 lg:px-[6.75rem] py-4 lg:py-6 border-t border-white/10 flex-shrink-0 gap-4">
             <div className="flex items-center gap-4 sm:gap-6">
               <a
                 href="https://facebook.com"

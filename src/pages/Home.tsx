@@ -1,5 +1,6 @@
 import { useCallback, useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
+import { CAPTURE } from '../lib/capture'
 import { useTransition } from '../context/TransitionContext'
 import { LogoButton } from '../components/LogoButton'
 import { Footer } from '../components/Footer'
@@ -15,16 +16,18 @@ function HeroSection({ nav }: { nav: (path: string) => void }) {
 
   return (
     <section ref={ref} className="relative h-screen flex items-center overflow-hidden bg-bg">
-      <div className="relative z-10 pl-6 sm:pl-12 lg:pl-20 pr-6 sm:pr-20 md:pr-10 lg:pr-0 pt-16 w-full md:max-w-[60%] lg:max-w-[55%]">
-        <h1 className="font-display font-bold text-[1.65rem] sm:text-[2.25rem] md:text-[2.75rem] lg:text-[3.25rem] leading-[1.07] text-white mb-4 lg:mb-6">
-          L'excellence dans l'ingénierie d'étude technique en BTP
-        </h1>
-        <p className="font-body text-secondary text-[10px] sm:text-xs uppercase tracking-widest mb-8 lg:mb-10 max-w-[44ch] leading-relaxed">
-          ENGINEERING STUDIO, intervient sur tout type de projets et à n'importe quelle phase du projet, de l'étude à la modélisation BIM.
-        </p>
-        <div className="flex items-center gap-3 flex-wrap">
-          <LogoButton variant="pill" onClick={() => nav('/devis')}>Obtenez un devis</LogoButton>
-          <LogoButton onClick={() => nav('/a-propos')}>Qui Sommes Nous</LogoButton>
+      <div className="relative z-10 w-full px-6 sm:px-12 lg:px-gutter">
+        <div className="max-w-[24rem] sm:max-w-[34rem] lg:max-w-[56rem]">
+          <h1 className="font-display font-bold text-[2rem] sm:text-[2.75rem] lg:text-[5.375rem] leading-[1.05] text-white">
+            L'excellence dans l'ingénierie d'étude technique en BTP
+          </h1>
+          <p className="font-body text-secondary text-[0.7rem] sm:text-xs lg:text-[1.1875rem] uppercase tracking-[0.05em] leading-[1.32] mt-[1.8rem] max-w-[29rem] lg:max-w-[46rem]">
+            ENGINEERING STUDIO, intervient sur tout type de projets et à n'importe quelle phase du projet, de l'étude à la modélisation BIM.
+          </p>
+          <div className="flex items-center gap-3 flex-wrap mt-[3.1rem]">
+            <LogoButton variant="pill" onClick={() => nav('/devis')}>Obtenez un devis</LogoButton>
+            <LogoButton aria-label="Qui sommes nous" onClick={() => nav('/a-propos')} />
+          </div>
         </div>
       </div>
 
@@ -50,68 +53,62 @@ function ServiceSection({ title, description, imageSrc, imageAlt, imageLeft, onL
   const illustY = useTransform(scrollYProgress, [0, 1], ['50px', '-50px'])
 
   const imgBlock = (
-    <div className="flex items-center justify-center flex-shrink-0">
-      <motion.div style={{ y: illustY }}>
-        <div className="
-          w-48 h-48
-          sm:w-56 sm:h-56
-          md:w-64 md:h-64
-          lg:w-72 lg:h-72
-          xl:w-80 xl:h-80
-          rounded-full overflow-hidden border border-white/10
-          hover:opacity-80 transition-opacity
-        ">
-          <img src={imageSrc} alt={imageAlt} className="w-full h-full object-cover" />
-        </div>
-      </motion.div>
-    </div>
+    <motion.div style={{ y: CAPTURE ? 0 : illustY }} className="flex-shrink-0">
+      <div className="
+        w-48 h-48 sm:w-64 sm:h-64 lg:w-disc lg:h-disc
+        rounded-full overflow-hidden border border-white/10
+        hover:opacity-90 transition-opacity
+      ">
+        <img src={imageSrc} alt={imageAlt} className="w-full h-full object-cover" />
+      </div>
+    </motion.div>
   )
 
   const textBlock = (
-    <div className="flex flex-col justify-center gap-4 lg:gap-6 min-w-0">
-      <h2 className="font-display font-bold text-2xl sm:text-3xl lg:text-4xl text-white leading-tight">
+    <div className="flex flex-col justify-center min-w-0">
+      <h2 className="font-display font-bold text-2xl sm:text-3xl lg:text-[4.125rem] text-white leading-[1.06] lg:max-w-[35rem]">
         {title}
       </h2>
-      <p className="font-body text-secondary text-sm leading-relaxed max-w-prose">
+      <p className="font-body text-secondary text-sm lg:text-[1.1875rem] leading-[1.37] mt-4 lg:mt-[0.95rem] max-w-[34rem] lg:max-w-[46rem]">
         {description}
       </p>
-      <LogoButton onClick={onLearnMore}>En savoir plus</LogoButton>
+      <div className="mt-6 lg:mt-[6.25rem]">
+        <LogoButton onClick={onLearnMore}>En savoir plus</LogoButton>
+      </div>
     </div>
   )
 
   return (
     <section ref={ref} className="h-screen flex items-center bg-bg overflow-hidden">
-      <div className="w-full px-6 sm:px-10 lg:px-20 max-w-screen-xl mx-auto">
-
-        {/* Mobile: always stack, image on top */}
-        <div className="flex flex-col gap-8 items-center text-center md:hidden">
+      <div className="w-full px-6 sm:px-10 lg:px-gutter">
+        {/* Mobile: stack, image on top */}
+        <div className="flex flex-col gap-8 items-center text-center lg:hidden">
           <Reveal direction={imageLeft ? 'left' : 'right'}>
-            <div className="w-48 h-48 rounded-full overflow-hidden border border-white/10 hover:opacity-80 transition-opacity">
+            <div className="w-48 h-48 sm:w-64 sm:h-64 rounded-full overflow-hidden border border-white/10">
               <img src={imageSrc} alt={imageAlt} className="w-full h-full object-cover" />
             </div>
           </Reveal>
           <RevealText className="flex flex-col items-center gap-4">
-            <h2 className="font-display font-bold text-2xl text-white leading-tight">{title}</h2>
+            <h2 className="font-display font-bold text-2xl sm:text-3xl text-white leading-tight">{title}</h2>
             <p className="font-body text-secondary text-sm leading-relaxed max-w-[38ch]">{description}</p>
             <LogoButton onClick={onLearnMore}>En savoir plus</LogoButton>
           </RevealText>
         </div>
 
-        {/* Tablet / Desktop: two columns */}
-        <div className="hidden md:grid grid-cols-2 gap-10 lg:gap-20 xl:gap-28 items-center">
+        {/* Desktop: circle at the page gutter, text fills to the opposite gutter */}
+        <div className="hidden lg:flex items-center gap-[8rem] mx-auto max-w-content">
           {imageLeft ? (
             <>
               <Reveal direction="left">{imgBlock}</Reveal>
-              <RevealText>{textBlock}</RevealText>
+              <RevealText className="flex-1">{textBlock}</RevealText>
             </>
           ) : (
             <>
-              <RevealText>{textBlock}</RevealText>
+              <RevealText className="flex-1">{textBlock}</RevealText>
               <Reveal direction="right">{imgBlock}</Reveal>
             </>
           )}
         </div>
-
       </div>
     </section>
   )
@@ -162,16 +159,6 @@ export default function Home() {
         imageLeft={false}
         onLearnMore={() => nav('/prestations/bim')}
       />
-
-      {/* ── CTA banner ────────────────────────────────────────────────────── */}
-      <section className="bg-surface px-6 sm:px-10 lg:px-20 py-36">
-        <RevealText className="max-w-screen-xl mx-auto flex flex-col items-center text-center gap-8">
-          <h2 className="font-display font-bold text-4xl sm:text-5xl lg:text-6xl xl:text-7xl text-white leading-tight max-w-[22ch]">
-            Ingénierie du bâtiment
-          </h2>
-          <LogoButton variant="pill" onClick={() => nav('/contact')}>Écrivez-nous</LogoButton>
-        </RevealText>
-      </section>
 
       <Footer />
     </div>

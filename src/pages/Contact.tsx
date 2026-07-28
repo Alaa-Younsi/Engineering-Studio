@@ -41,10 +41,10 @@ function CitySection() {
           style={{ opacity: 0.85 }}
         />
       </motion.div>
-      <RevealText className="relative z-10 flex items-center justify-end min-h-screen px-8 sm:px-14 lg:px-20 py-16">
-        <div className="max-w-[320px]">
-          <h2 className="font-display font-bold text-2xl sm:text-3xl text-black leading-snug mb-6">
-            Suivez notre actualités et découvrez nos travaux récentes
+      <RevealText className="relative z-10 flex items-center justify-end min-h-screen px-8 sm:px-14 lg:px-gutter py-16">
+        <div className="max-w-[16rem] lg:max-w-[22rem]">
+          <h2 className="font-display font-bold text-2xl sm:text-3xl lg:text-[2.15rem] text-black leading-[1.15] mb-6 lg:mb-[1.6rem]">
+            Suivez notre actualité et découvrez nos travaux récentes
           </h2>
           <LinkedInButton />
         </div>
@@ -54,7 +54,7 @@ function CitySection() {
 }
 
 export default function Contact() {
-  const [form, setForm] = useState({ nom: '', email: '', sujet: '', message: '' })
+  const [form, setForm] = useState({ nom: '', prenom: '', tel: '', email: '', message: '' })
   const [openFaq, setOpenFaq] = useState<number | null>(null)
   const [sent, setSent] = useState(false)
 
@@ -72,24 +72,27 @@ export default function Contact() {
 
       {/* ── Hero ────────────────────────────────────────────────────────────── */}
       <section ref={heroRef} className="relative h-screen flex items-center overflow-hidden">
-        <div className="px-6 sm:px-10 lg:px-20 relative z-10">
-          <h1 className="font-display font-bold text-3xl sm:text-5xl md:text-6xl lg:text-7xl text-white leading-none">
+        <div className="px-6 sm:px-12 lg:px-gutter relative z-10">
+          <h1 className="font-display font-bold text-[2.5rem] sm:text-6xl lg:text-[5.375rem] text-white leading-none">
             Contact
           </h1>
         </div>
-        <HeroShape y={heroLogoY} />
+        <HeroShape y={heroLogoY} className="hidden md:block" />
       </section>
 
       {/* ── Form section ────────────────────────────────────────────────────── */}
-      <section className="px-6 sm:px-10 lg:px-20 py-20 border-t border-white/10">
-        <RevealText className="max-w-screen-xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
+      <section className="px-6 sm:px-10 lg:px-gutter py-20 lg:py-0 lg:min-h-screen flex items-center border-t border-white/10">
+        <RevealText className="w-full max-w-content mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-[6rem]">
 
           {/* Left */}
-          <div className="flex flex-col justify-center gap-8">
-            <p className="font-body text-secondary text-xs tracking-widest uppercase">Nous contacter</p>
-            <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-[2.6rem] text-white leading-tight max-w-[22ch]">
-              Nous adorons les challenges, mettez-nous à contribution ! N'hésitez pas à nous contacter&nbsp;!
+          <div className="flex flex-col justify-center gap-6 lg:gap-[1.8rem]">
+            <p className="font-body text-secondary text-xs lg:text-[0.95rem] tracking-widest uppercase">Contactez-nous</p>
+            <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-[2.9rem] text-white leading-[1.12] max-w-[19ch]">
+              Nous adorons les challenges, mettez-nous à contribution&nbsp;!. N'hésitez pas à nous contacter&nbsp;!
             </h2>
+            <p className="font-body text-secondary text-sm lg:text-[1.05rem] leading-[1.5] max-w-[34ch]">
+              Nous serons heureux de répondre à toutes vos questions et de vous aider à déterminer lequel de nos services correspond le mieux à vos besoins.
+            </p>
             <a
               href="tel:+213773876214"
               className="flex items-center gap-5 text-white hover:opacity-70 transition-opacity self-start"
@@ -124,56 +127,37 @@ export default function Contact() {
                 <LogoButton onClick={() => setSent(false)}>Nouveau message</LogoButton>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="font-body text-secondary text-xs mb-1.5 block tracking-wide">Nom complet</label>
-                    <input
-                      type="text"
-                      required
-                      value={form.nom}
-                      onChange={e => setForm(f => ({ ...f, nom: e.target.value }))}
-                      className="w-full bg-surface border border-white/10 rounded-lg px-4 py-3 font-body text-white text-sm placeholder:text-secondary focus:outline-none focus:border-white/40 transition-colors"
-                      placeholder="Votre nom"
-                    />
-                  </div>
-                  <div>
-                    <label className="font-body text-secondary text-xs mb-1.5 block tracking-wide">Adresse e-mail</label>
-                    <input
-                      type="email"
-                      required
-                      value={form.email}
-                      onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
-                      className="w-full bg-surface border border-white/10 rounded-lg px-4 py-3 font-body text-white text-sm placeholder:text-secondary focus:outline-none focus:border-white/40 transition-colors"
-                      placeholder="votre@email.com"
-                    />
-                  </div>
-                </div>
-                <div>
-                  <label className="font-body text-secondary text-xs mb-1.5 block tracking-wide">Sujet</label>
-                  <input
-                    type="text"
-                    required
-                    value={form.sujet}
-                    onChange={e => setForm(f => ({ ...f, sujet: e.target.value }))}
-                    className="w-full bg-surface border border-white/10 rounded-lg px-4 py-3 font-body text-white text-sm placeholder:text-secondary focus:outline-none focus:border-white/40 transition-colors"
-                    placeholder="Sujet de votre message"
-                  />
-                </div>
-                <div>
-                  <label className="font-body text-secondary text-xs mb-1.5 block tracking-wide">Message</label>
-                  <textarea
-                    required
-                    rows={5}
-                    value={form.message}
-                    onChange={e => setForm(f => ({ ...f, message: e.target.value }))}
-                    className="w-full bg-surface border border-white/10 rounded-lg px-4 py-3 font-body text-white text-sm placeholder:text-secondary focus:outline-none focus:border-white/40 transition-colors resize-none"
-                    placeholder="Décrivez votre projet ou votre demande..."
-                  />
-                </div>
-                <div className="pt-2">
-                  <LogoButton variant="pill">Envoyer le message</LogoButton>
-                </div>
+              <form onSubmit={handleSubmit} className="flex flex-col justify-center h-full gap-3.5 lg:gap-[0.9rem]">
+                {(() => {
+                  const inp =
+                    'w-full bg-surface border border-white/10 rounded-xl px-5 py-4 font-body text-white text-sm lg:text-[0.95rem] placeholder:text-secondary focus:outline-none focus:border-white/40 transition-colors'
+                  return (
+                    <>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 lg:gap-[0.9rem]">
+                        <input type="text" required value={form.nom}
+                          onChange={e => setForm(f => ({ ...f, nom: e.target.value }))}
+                          className={inp} placeholder="Votre nom" />
+                        <input type="text" required value={form.prenom}
+                          onChange={e => setForm(f => ({ ...f, prenom: e.target.value }))}
+                          className={inp} placeholder="Votre prénom" />
+                      </div>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 lg:gap-[0.9rem]">
+                        <input type="tel" value={form.tel}
+                          onChange={e => setForm(f => ({ ...f, tel: e.target.value }))}
+                          className={inp} placeholder="Numéro de téléphone" />
+                        <input type="email" required value={form.email}
+                          onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
+                          className={inp} placeholder="Email" />
+                      </div>
+                      <textarea required rows={5} value={form.message}
+                        onChange={e => setForm(f => ({ ...f, message: e.target.value }))}
+                        className={`${inp} resize-none`} placeholder="Rédigez votre message" />
+                      <div className="pt-1">
+                        <LogoButton variant="pill">Envoyer le message</LogoButton>
+                      </div>
+                    </>
+                  )
+                })()}
               </form>
             )}
           </div>
@@ -181,12 +165,20 @@ export default function Contact() {
       </section>
 
       {/* ── FAQ ─────────────────────────────────────────────────────────────── */}
-      <section className="px-6 sm:px-10 lg:px-20 py-20 border-t border-white/10">
-        <RevealText className="max-w-screen-xl mx-auto">
-          <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-5xl text-white mb-12 text-center">
+      <section className="relative px-6 sm:px-10 lg:px-gutter py-24 lg:py-[9rem] lg:min-h-screen flex flex-col justify-center border-t border-white/10 overflow-hidden">
+        {/* subtle mark behind the heading */}
+        <div className="absolute top-[20%] left-1/2 -translate-x-1/2 pointer-events-none select-none z-0">
+          <img src="/Assets/logo/Logo-seul.png" alt="" draggable={false}
+            style={{ width: 'min(60vw, 22rem)', height: 'min(60vw, 22rem)', opacity: 0.12 }} />
+        </div>
+        <RevealText className="relative z-10 w-full max-w-content mx-auto">
+          <p className="font-body text-secondary text-xs lg:text-[0.95rem] tracking-widest uppercase text-center mb-4 lg:mb-[1.1rem]">
+            Vous avez des questions&nbsp;?
+          </p>
+          <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-[3.5rem] text-white leading-[1.08] mb-16 lg:mb-[6rem] text-center">
             Voici les questions fréquemment posées.
           </h2>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-[1.1rem]">
             {faqs.map((faq, i) => (
               <div key={i} className="border border-white/10 rounded-xl overflow-hidden">
                 <button

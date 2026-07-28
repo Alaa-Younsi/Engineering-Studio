@@ -30,23 +30,23 @@ export default function NouvelleArticle() {
 
       {/* ── Hero ────────────────────────────────────────────────────────────── */}
       <section ref={heroRef} className="relative h-screen flex items-center overflow-hidden">
-        <div className="px-6 sm:px-10 lg:px-20 relative z-10">
-          <h1 className="font-display font-bold text-3xl sm:text-5xl md:text-6xl lg:text-7xl text-white leading-none">
+        <div className="px-6 sm:px-10 lg:px-gutter relative z-10">
+          <h1 className="font-display font-bold text-[2.5rem] sm:text-6xl lg:text-[5.375rem] text-white leading-none">
             Nouvelles
           </h1>
         </div>
-        <HeroShape y={heroLogoY} />
+        <HeroShape y={heroLogoY} className="hidden md:block" />
       </section>
 
       {loading ? (
-        <section className="px-6 sm:px-10 lg:px-20 py-32" />
+        <section className="px-6 sm:px-10 lg:px-gutter py-32" />
       ) : !article ? (
-        <section className="px-6 sm:px-10 lg:px-20 py-32 flex flex-col items-center gap-8 text-center">
+        <section className="px-6 sm:px-10 lg:px-gutter py-32 flex flex-col items-center gap-8 text-center">
           <p className="font-display font-bold text-2xl sm:text-3xl text-white">Cet article n'existe pas.</p>
           <LogoButton onClick={() => nav('/nouvelles')}>Toutes les nouvelles</LogoButton>
         </section>
       ) : (
-        <article className="px-6 sm:px-10 lg:px-20 pb-32">
+        <article className="px-6 sm:px-10 lg:px-gutter pb-32">
           <div className="max-w-5xl mx-auto">
 
             <RevealText>

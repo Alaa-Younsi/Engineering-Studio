@@ -19,12 +19,12 @@ export default function Portefeuille() {
 
       {/* ── Hero ── */}
       <section ref={heroRef} className="relative h-screen flex items-center overflow-hidden">
-        <div className="px-6 sm:px-10 lg:px-20 relative z-10">
-          <h1 className="font-display font-bold text-3xl sm:text-5xl md:text-6xl lg:text-7xl text-white leading-none">
+        <div className="px-6 sm:px-10 lg:px-gutter relative z-10">
+          <h1 className="font-display font-bold text-[2.5rem] sm:text-6xl lg:text-[5.375rem] text-white leading-none">
             Portefeuille
           </h1>
         </div>
-        <HeroShape y={logoY} />
+        <HeroShape y={logoY} className="hidden md:block" />
       </section>
 
       {FEATURES.portefeuille ? (

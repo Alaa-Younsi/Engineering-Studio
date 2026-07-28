@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import type { CSSProperties, ReactNode } from 'react'
+import { CAPTURE } from '../lib/capture'
 
 interface RevealProps {
   children: ReactNode
@@ -15,6 +16,8 @@ const viewport = { once: true, amount: 0.15, margin: '0px 0px -10% 0px' } as con
 export function Reveal({ children, className = '', style, delay = 0, direction = 'left' }: RevealProps) {
   const x = direction === 'none' ? 0 : direction === 'left' ? -64 : 64
   const rotateY = direction === 'none' ? 0 : direction === 'left' ? 32 : -32
+
+  if (CAPTURE) return <div className={className} style={style}>{children}</div>
 
   return (
     <motion.div
@@ -35,6 +38,8 @@ export function Reveal({ children, className = '', style, delay = 0, direction =
  * the page (skewed + scaled down) and rises into crisp focus. No side travel.
  */
 export function RevealText({ children, className = '', style, delay = 0 }: Omit<RevealProps, 'direction'>) {
+  if (CAPTURE) return <div className={className} style={style}>{children}</div>
+
   return (
     <motion.div
       className={className}

@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { motion, useAnimation } from 'framer-motion'
 import { LogoFull } from './LogoFull'
+import { CAPTURE } from '../lib/capture'
 
 interface Frame {
   id: number
@@ -107,6 +108,7 @@ export function IntroSequence() {
   }, [overlayControls])
 
   useEffect(() => {
+    if (CAPTURE) { setDone(true); return }
     cancelRef.current = false
 
     const playSequence = async () => {

@@ -114,17 +114,17 @@ export default function Clients() {
 
       {/* ── Hero ────────────────────────────────────────────────────────────── */}
       <section ref={heroRef} className="relative h-screen flex items-center overflow-hidden">
-        <div className="px-6 sm:px-10 lg:px-20 relative z-10">
-          <h1 className="font-display font-bold text-3xl sm:text-5xl md:text-6xl lg:text-7xl text-white leading-none">
+        <div className="px-6 sm:px-10 lg:px-gutter relative z-10">
+          <h1 className="font-display font-bold text-[2.5rem] sm:text-6xl lg:text-[5.375rem] text-white leading-none">
             Clients
           </h1>
         </div>
-        <HeroShape y={heroLogoY} />
+        <HeroShape y={heroLogoY} className="hidden md:block" />
       </section>
 
       {/* ── Intro ───────────────────────────────────────────────────────────── */}
-      <section className="px-6 sm:px-10 lg:px-20 py-44 border-t border-white/10">
-        <RevealText className="max-w-screen-xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+      <section className="px-6 sm:px-10 lg:px-gutter py-44 border-t border-white/10">
+        <RevealText className="max-w-content mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
           <div>
             <p className="font-body text-secondary text-xs tracking-widest uppercase mb-6">Nos clients</p>
             <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-[2.8rem] text-white leading-tight">
@@ -149,8 +149,8 @@ export default function Clients() {
       </section>
 
       {/* ── Mission statement ───────────────────────────────────────────────── */}
-      <section className="px-6 sm:px-10 lg:px-20 py-52 bg-surface">
-        <RevealText className="max-w-screen-xl mx-auto text-center">
+      <section className="px-6 sm:px-10 lg:px-gutter py-52 bg-surface">
+        <RevealText className="max-w-content mx-auto text-center">
           <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-5xl text-white leading-tight max-w-[32ch] mx-auto">
             Des missions variées et des solutions adaptées à chaque client
           </h2>
@@ -161,8 +161,8 @@ export default function Clients() {
       </section>
 
       {/* ── Engagement ──────────────────────────────────────────────────────── */}
-      <section className="px-6 sm:px-10 lg:px-20 py-44 border-t border-white/10">
-        <div className="max-w-screen-xl mx-auto">
+      <section className="px-6 sm:px-10 lg:px-gutter py-44 border-t border-white/10">
+        <div className="max-w-content mx-auto">
           <RevealText className="text-center">
             <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-5xl text-white leading-tight mb-8">
               Notre engagement envers nos clients
@@ -193,8 +193,8 @@ export default function Clients() {
       </section>
 
       {/* ── Sectors ─────────────────────────────────────────────────────────── */}
-      <section className="px-6 sm:px-10 lg:px-20 py-44 border-t border-white/10">
-        <RevealText className="max-w-screen-xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16">
+      <section className="px-6 sm:px-10 lg:px-gutter py-44 border-t border-white/10">
+        <RevealText className="max-w-content mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16">
           <div>
             <p className="font-body text-secondary text-sm mb-3">Qui sont nos clients&nbsp;?</p>
             <h2 className="font-display font-bold text-4xl sm:text-5xl text-white leading-tight mb-10">
@@ -219,8 +219,8 @@ export default function Clients() {
       </section>
 
       {/* ── Client examples intro ───────────────────────────────────────────── */}
-      <section className="px-6 sm:px-10 lg:px-20 py-44 border-t border-white/10">
-        <div className="max-w-screen-xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+      <section className="px-6 sm:px-10 lg:px-gutter py-44 border-t border-white/10">
+        <div className="max-w-content mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <RevealText>
             <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-[2.6rem] text-white leading-tight">
               Voici quelques exemples de clients avec lesquels nous avons eu le plaisir de collaborer
@@ -244,8 +244,8 @@ export default function Clients() {
       </section>
 
       {/* ── Client cards ────────────────────────────────────────────────────── */}
-      <section className="px-6 sm:px-10 lg:px-20 py-44 border-t border-white/10">
-        <div className="max-w-screen-xl mx-auto grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-5">
+      <section className="px-6 sm:px-10 lg:px-gutter py-44 border-t border-white/10">
+        <div className="max-w-content mx-auto grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-5">
           {clients.map((c, i) => (
             <RevealText key={`${c.name}-${c.name2}-${i}`} delay={Math.min(i % 5, 4) * 0.08}>
               <div className="relative h-full min-h-[200px] overflow-hidden rounded-2xl bg-gradient-to-br from-[#1f1f1f] to-[#111111] p-6 flex flex-col justify-between hover:opacity-80 transition-opacity">
@@ -268,8 +268,8 @@ export default function Clients() {
       </section>
 
       {/* ── Thank you ───────────────────────────────────────────────────────── */}
-      <section className="px-6 sm:px-10 lg:px-20 py-52 bg-surface text-center">
-        <RevealText className="max-w-screen-xl mx-auto flex flex-col items-center">
+      <section className="px-6 sm:px-10 lg:px-gutter py-52 bg-surface text-center">
+        <RevealText className="max-w-content mx-auto flex flex-col items-center">
           <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-5xl text-white leading-tight max-w-[28ch] mx-auto mb-8">
             Un grand merci à tous nos clients pour leur fidélité et leur confiance
           </h2>
