@@ -4,6 +4,7 @@ import { AdminButton } from '../../components/admin/ui'
 
 const NAV = [
   { to: '/admin', label: 'Tableau de bord', end: true },
+  { to: '/admin/demandes', label: 'Demandes', end: false },
   { to: '/admin/nouvelles', label: 'Nouvelles', end: false },
   { to: '/admin/portefeuille', label: 'Portefeuille', end: false },
 ]

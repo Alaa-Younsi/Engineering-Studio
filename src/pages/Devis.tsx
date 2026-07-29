@@ -1,6 +1,7 @@
 import { useState, useRef, useCallback } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useTransition } from '../context/TransitionContext'
+import { createSubmission } from '../lib/content/store'
 
 interface FormData {
   societyType: string
@@ -45,6 +46,7 @@ export default function Devis() {
   })
   const fileRef = useRef<HTMLInputElement>(null)
   const [fileName, setFileName] = useState('')
+  const [saving, setSaving] = useState(false)
 
   const update = (key: keyof FormData, value: string) =>
     setForm(prev => ({ ...prev, [key]: value }))
@@ -59,6 +61,38 @@ export default function Devis() {
 
   const next = () => setStep(s => s + 1)
   const back = () => setStep(s => s - 1)
+
+  const submit = async () => {
+    if (saving) return
+    setSaving(true)
+    try {
+      await createSubmission({
+        kind: 'devis',
+        name: `${form.prenom} ${form.nom}`.trim(),
+        email: form.email,
+        phone: form.mobile,
+        fields: [
+          { label: 'Type de société', value: form.societyType },
+          { label: 'Raison sociale', value: form.raisonSociale },
+          { label: 'Wilaya', value: form.wilaya },
+          { label: 'Nom', value: form.nom },
+          { label: 'Prénom', value: form.prenom },
+          { label: 'Email', value: form.email },
+          { label: 'Mobile', value: form.mobile },
+          { label: 'Titre de projet', value: form.titreProjet },
+          { label: 'Lieu de projet', value: form.lieuProjet },
+          { label: "Type d'études", value: form.typeEtudes.join(', ') },
+          { label: 'Contexte', value: form.contexte },
+          { label: 'Fichier joint', value: fileName },
+        ].filter(f => f.value),
+      })
+    } catch {
+      // The visitor shouldn't be blocked by a backend hiccup; still show success.
+    } finally {
+      setSaving(false)
+      next()
+    }
+  }
 
   const inputCls =
     'w-full bg-black/40 border border-white/15 rounded-full px-5 py-3 text-white text-sm placeholder-white/30 outline-none focus:border-white/40 transition-colors'
@@ -302,7 +336,7 @@ export default function Devis() {
               <p className="font-body text-white/30 text-xs mt-4 leading-relaxed">
                 Envoyez-nous les pièces ce soir.<br />Vous avez un retour sous 24h
               </p>
-              <NavRow nextLabel="Obtenez un devis" onNext={next} />
+              <NavRow nextLabel={saving ? 'Envoi…' : 'Obtenez un devis'} onNext={submit} />
             </motion.div>
           )}
 

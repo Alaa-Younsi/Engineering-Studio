@@ -1,5 +1,5 @@
 import { supabase, isSupabaseConfigured, MEDIA_BUCKET } from '../supabase'
-import type { Article, Project } from './types'
+import type { Article, Project, Submission, SubmissionKind } from './types'
 import { seedArticles, seedProjects } from './seed'
 
 /**
@@ -11,9 +11,11 @@ import { seedArticles, seedProjects } from './seed'
 
 export type ArticleInput = Omit<Article, 'id' | 'updatedAt'>
 export type ProjectInput = Omit<Project, 'id' | 'updatedAt'>
+export type SubmissionInput = Omit<Submission, 'id' | 'createdAt' | 'read'>
 
 const LS_ARTICLES = 'es_articles'
 const LS_PROJECTS = 'es_projects'
+const LS_SUBMISSIONS = 'es_submissions'
 
 const newId = () =>
   typeof crypto !== 'undefined' && 'randomUUID' in crypto
@@ -260,6 +262,86 @@ export async function deleteProject(id: string): Promise<void> {
   }
   const all = readLS<Project>(LS_PROJECTS, seedProjects)
   writeLS(LS_PROJECTS, all.filter(p => p.id !== id))
+}
+
+/* ── Submissions (Devis / Réunion / Contact forms) ────────────────────────── */
+
+interface SubmissionRow {
+  id: string
+  kind: SubmissionKind
+  name: string
+  email: string
+  phone: string | null
+  fields: Submission['fields']
+  read: boolean
+  created_at: string
+}
+
+const toSubmission = (r: SubmissionRow): Submission => ({
+  id: r.id,
+  kind: r.kind,
+  name: r.name ?? '',
+  email: r.email ?? '',
+  phone: r.phone ?? undefined,
+  fields: r.fields ?? [],
+  read: r.read,
+  createdAt: r.created_at,
+})
+
+/** Saves a form submission. Called from the public site by anonymous visitors. */
+export async function createSubmission(input: SubmissionInput): Promise<Submission> {
+  if (isSupabaseConfigured && supabase) {
+    const { data, error } = await supabase
+      .from('submissions')
+      .insert({
+        kind: input.kind,
+        name: input.name,
+        email: input.email,
+        phone: input.phone ?? null,
+        fields: input.fields,
+      })
+      .select('*')
+      .single()
+    if (error) throw error
+    return toSubmission(data as SubmissionRow)
+  }
+  const all = readLS<Submission>(LS_SUBMISSIONS, [])
+  const record: Submission = { ...input, id: newId(), read: false, createdAt: new Date().toISOString() }
+  writeLS(LS_SUBMISSIONS, [record, ...all])
+  return record
+}
+
+export async function listSubmissions(opts: { kind?: SubmissionKind } = {}): Promise<Submission[]> {
+  if (isSupabaseConfigured && supabase) {
+    let query = supabase.from('submissions').select('*')
+    if (opts.kind) query = query.eq('kind', opts.kind)
+    const { data, error } = await query.order('created_at', { ascending: false })
+    if (error) throw error
+    return (data as SubmissionRow[]).map(toSubmission)
+  }
+  const all = readLS<Submission>(LS_SUBMISSIONS, [])
+  const filtered = opts.kind ? all.filter(s => s.kind === opts.kind) : all
+  return [...filtered].sort((a, b) => (b.createdAt ?? '').localeCompare(a.createdAt ?? ''))
+}
+
+export async function markSubmissionRead(id: string, read: boolean): Promise<void> {
+  if (isSupabaseConfigured && supabase) {
+    const { error } = await supabase.from('submissions').update({ read }).eq('id', id)
+    if (error) throw error
+    return
+  }
+  const all = readLS<Submission>(LS_SUBMISSIONS, [])
+  writeLS(LS_SUBMISSIONS, all.map(s => (s.id === id ? { ...s, read } : s)))
+}
+
+export async function deleteSubmission(id: string): Promise<void> {
+  if (isSupabaseConfigured && supabase) {
+    const { error } = await supabase.from('submissions').delete().eq('id', id)
+    if (error) throw error
+    return
+  }
+  const all = readLS<Submission>(LS_SUBMISSIONS, [])
+  writeLS(LS_SUBMISSIONS, all.filter(s => s.id !== id))
 }
 
 /* ── Media upload ─────────────────────────────────────────────────────────── */

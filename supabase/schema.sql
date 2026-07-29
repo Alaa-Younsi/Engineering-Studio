@@ -31,12 +31,26 @@ create table if not exists public.projects (
   updated_at timestamptz not null default now()
 );
 
+-- ── Submissions (Devis / Réunion / Contact forms) ──────────────────────────
+create table if not exists public.submissions (
+  id         uuid primary key default gen_random_uuid(),
+  kind       text not null check (kind in ('devis', 'reunion', 'contact')),
+  name       text not null default '',
+  email      text not null default '',
+  phone      text,
+  fields     jsonb not null default '[]'::jsonb,     -- [{ label, value }]
+  read       boolean not null default false,
+  created_at timestamptz not null default now()
+);
+
 create index if not exists articles_date_idx on public.articles (date desc);
 create index if not exists projects_created_idx on public.projects (created_at asc);
+create index if not exists submissions_created_idx on public.submissions (created_at desc);
 
 -- ── Row Level Security ──────────────────────────────────────────────────────
 alter table public.articles enable row level security;
 alter table public.projects enable row level security;
+alter table public.submissions enable row level security;
 
 -- Public can read only what is published.
 drop policy if exists "articles public read" on public.articles;
@@ -55,6 +69,24 @@ create policy "articles admin all" on public.articles
 drop policy if exists "projects admin all" on public.projects;
 create policy "projects admin all" on public.projects
   for all to authenticated using (true) with check (true);
+
+-- Anyone (including anonymous visitors) may submit a form…
+drop policy if exists "submissions public insert" on public.submissions;
+create policy "submissions public insert" on public.submissions
+  for insert to anon, authenticated with check (true);
+
+-- …but only authenticated admins can read, update (mark read) or delete them.
+drop policy if exists "submissions admin read" on public.submissions;
+create policy "submissions admin read" on public.submissions
+  for select to authenticated using (true);
+
+drop policy if exists "submissions admin update" on public.submissions;
+create policy "submissions admin update" on public.submissions
+  for update to authenticated using (true) with check (true);
+
+drop policy if exists "submissions admin delete" on public.submissions;
+create policy "submissions admin delete" on public.submissions
+  for delete to authenticated using (true);
 
 -- ── Storage bucket for covers & project media ───────────────────────────────
 insert into storage.buckets (id, name, public)

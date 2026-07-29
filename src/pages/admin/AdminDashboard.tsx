@@ -1,14 +1,15 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { listArticles, listProjects } from '../../lib/content/store'
-import type { Article, Project } from '../../lib/content/types'
-import { formatArticleDate } from '../../lib/content/types'
+import { listArticles, listProjects, listSubmissions } from '../../lib/content/store'
+import type { Article, Project, Submission } from '../../lib/content/types'
+import { formatArticleDate, SUBMISSION_LABELS } from '../../lib/content/types'
 import { AdminButton, Card, Spinner } from '../../components/admin/ui'
 
 interface RecentItem {
   key: string
   label: string
-  kind: 'Nouvelle' | 'Projet'
+  kind: 'Nouvelle' | 'Projet' | 'Demande'
+  sub?: string
   when?: string
   to: string
 }
@@ -16,13 +17,15 @@ interface RecentItem {
 export default function AdminDashboard() {
   const [articles, setArticles] = useState<Article[]>([])
   const [projects, setProjects] = useState<Project[]>([])
+  const [submissions, setSubmissions] = useState<Submission[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    Promise.all([listArticles(), listProjects()])
-      .then(([a, p]) => {
+    Promise.all([listArticles(), listProjects(), listSubmissions()])
+      .then(([a, p, s]) => {
         setArticles(a)
         setProjects(p)
+        setSubmissions(s)
       })
       .finally(() => setLoading(false))
   }, [])
@@ -31,13 +34,15 @@ export default function AdminDashboard() {
 
   const publishedArticles = articles.filter(a => a.published).length
   const publishedProjects = projects.filter(p => p.published).length
+  const unreadSubmissions = submissions.filter(s => !s.read).length
 
   const recent: RecentItem[] = [
+    ...submissions.map<RecentItem>(s => ({ key: `s-${s.id}`, label: s.name || s.email || 'Sans nom', kind: 'Demande', sub: SUBMISSION_LABELS[s.kind], when: s.createdAt, to: '/admin/demandes' })),
     ...articles.map<RecentItem>(a => ({ key: `a-${a.id}`, label: a.title, kind: 'Nouvelle', when: a.updatedAt, to: `/admin/nouvelles/${a.id}` })),
     ...projects.map<RecentItem>(p => ({ key: `p-${p.id}`, label: p.title, kind: 'Projet', when: p.updatedAt, to: `/admin/portefeuille/${p.id}` })),
   ]
     .sort((x, y) => (y.when ?? '').localeCompare(x.when ?? ''))
-    .slice(0, 6)
+    .slice(0, 8)
 
   const formatWhen = (iso?: string) => {
     if (!iso) return '—'
@@ -48,10 +53,24 @@ export default function AdminDashboard() {
   return (
     <div>
       <h1 className="font-display font-bold text-white text-3xl">Tableau de bord</h1>
-      <p className="font-body text-sm text-secondary mt-2">Gérez les articles et les réalisations affichés sur le site.</p>
+      <p className="font-body text-sm text-secondary mt-2">Suivez les demandes reçues et gérez le contenu affiché sur le site.</p>
 
       {/* Stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8">
+        <Card className="p-6">
+          <div className="flex items-center justify-between">
+            <p className="font-body text-xs text-secondary uppercase tracking-wide">Demandes</p>
+            {unreadSubmissions > 0 && (
+              <span className="rounded-full bg-white text-black font-body text-[0.7rem] px-2 py-0.5">{unreadSubmissions} nouvelle{unreadSubmissions > 1 ? 's' : ''}</span>
+            )}
+          </div>
+          <p className="font-display font-bold text-white text-4xl mt-3">{submissions.length}</p>
+          <p className="font-body text-xs text-secondary mt-2">Devis · Réunion · Contact</p>
+          <div className="mt-5 flex gap-2">
+            <Link to="/admin/demandes"><AdminButton className="!py-2 !px-4 text-xs">Voir les demandes</AdminButton></Link>
+          </div>
+        </Card>
+
         <Card className="p-6">
           <p className="font-body text-xs text-secondary uppercase tracking-wide">Nouvelles</p>
           <p className="font-display font-bold text-white text-4xl mt-3">{articles.length}</p>
@@ -81,7 +100,7 @@ export default function AdminDashboard() {
           <Link key={item.key} to={item.to} className="flex items-center justify-between gap-4 px-6 py-4 hover:bg-white/5 transition-colors">
             <div className="min-w-0">
               <p className="font-body text-sm text-white truncate">{item.label}</p>
-              <p className="font-body text-xs text-secondary mt-0.5">{item.kind}</p>
+              <p className="font-body text-xs text-secondary mt-0.5">{item.sub ? `${item.kind} · ${item.sub}` : item.kind}</p>
             </div>
             <span className="font-body text-xs text-secondary whitespace-nowrap">{formatWhen(item.when)}</span>
           </Link>

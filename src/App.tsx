@@ -33,6 +33,7 @@ const AdminArticles = lazy(() => import('./pages/admin/AdminArticles'))
 const AdminArticleEditor = lazy(() => import('./pages/admin/AdminArticleEditor'))
 const AdminProjects = lazy(() => import('./pages/admin/AdminProjects'))
 const AdminProjectEditor = lazy(() => import('./pages/admin/AdminProjectEditor'))
+const AdminSubmissions = lazy(() => import('./pages/admin/AdminSubmissions'))
 
 function PublicApp() {
   return (
@@ -81,6 +82,7 @@ function AdminApp() {
             <Route path="portefeuille" element={<AdminProjects />} />
             <Route path="portefeuille/new" element={<AdminProjectEditor />} />
             <Route path="portefeuille/:id" element={<AdminProjectEditor />} />
+            <Route path="demandes" element={<AdminSubmissions />} />
           </Route>
         </Routes>
       </Suspense>

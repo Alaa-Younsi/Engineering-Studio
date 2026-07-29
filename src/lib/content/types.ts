@@ -47,12 +47,54 @@ export interface Project {
   updatedAt?: string
 }
 
+/* ── Form submissions (Devis / Réunion / Contact) ─────────────────────────── */
+
+export type SubmissionKind = 'devis' | 'reunion' | 'contact'
+
+/** One submitted field, kept as a label/value pair for generic rendering. */
+export interface SubmissionField {
+  label: string
+  value: string
+}
+
+export interface Submission {
+  /** DB primary key. Absent only for a brand-new, unsaved submission. */
+  id?: string
+  kind: SubmissionKind
+  /** Best-effort display name of the sender. */
+  name: string
+  email: string
+  phone?: string
+  /** Every submitted field, in display order. */
+  fields: SubmissionField[]
+  /** Marked true once an admin has opened it. */
+  read: boolean
+  /** Set by the store when the submission is created. */
+  createdAt?: string
+}
+
+export const SUBMISSION_LABELS: Record<SubmissionKind, string> = {
+  devis: 'Devis',
+  reunion: 'Réunion',
+  contact: 'Contact',
+}
+
 const MONTHS_FR = ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc']
 
 /** '2026-02-18' → '18 Fév 2026'. */
 export function formatArticleDate(iso: string): string {
   const [year, month, day] = iso.split('-')
   return `${day} ${MONTHS_FR[Number(month) - 1]} ${year}`
+}
+
+/** ISO timestamp → '18 Fév 2026 à 14:30' (best-effort, falls back to '—'). */
+export function formatSubmissionDate(iso?: string): string {
+  if (!iso) return '—'
+  const d = new Date(iso)
+  if (Number.isNaN(d.getTime())) return '—'
+  const day = String(d.getDate()).padStart(2, '0')
+  const time = d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })
+  return `${day} ${MONTHS_FR[d.getMonth()]} ${d.getFullYear()} à ${time}`
 }
 
 /** Turn a title into a URL-safe slug, stripping accents. */

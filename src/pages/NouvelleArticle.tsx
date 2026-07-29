@@ -39,14 +39,14 @@ export default function NouvelleArticle() {
       </section>
 
       {loading ? (
-        <section className="px-6 sm:px-10 lg:px-gutter py-32" />
+        <section className="px-6 sm:px-10 lg:px-gutter py-44" />
       ) : !article ? (
-        <section className="px-6 sm:px-10 lg:px-gutter py-32 flex flex-col items-center gap-8 text-center">
+        <section className="px-6 sm:px-10 lg:px-gutter py-44 flex flex-col items-center gap-8 text-center">
           <p className="font-display font-bold text-2xl sm:text-3xl text-white">Cet article n'existe pas.</p>
           <LogoButton onClick={() => nav('/nouvelles')}>Toutes les nouvelles</LogoButton>
         </section>
       ) : (
-        <article className="px-6 sm:px-10 lg:px-gutter pb-32">
+        <article className="px-6 sm:px-10 lg:px-gutter pb-44">
           <div className="max-w-5xl mx-auto">
 
             <RevealText>

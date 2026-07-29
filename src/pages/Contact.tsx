@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
+import { createSubmission } from '../lib/content/store'
 import { LogoButton } from '../components/LogoButton'
 import { LinkedInButton } from '../components/LinkedInButton'
 import { Footer } from '../components/Footer'
@@ -62,9 +63,33 @@ export default function Contact() {
   const { scrollYProgress: heroProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] })
   const heroLogoY = useTransform(heroProgress, [0, 1], ['0px', '-80px'])
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [saving, setSaving] = useState(false)
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setSent(true)
+    if (saving) return
+    setSaving(true)
+    try {
+      await createSubmission({
+        kind: 'contact',
+        name: `${form.prenom} ${form.nom}`.trim(),
+        email: form.email,
+        phone: form.tel,
+        fields: [
+          { label: 'Nom', value: form.nom },
+          { label: 'Prénom', value: form.prenom },
+          { label: 'Téléphone', value: form.tel },
+          { label: 'Email', value: form.email },
+          { label: 'Message', value: form.message },
+        ].filter(f => f.value),
+      })
+    } catch {
+      // Don't block the visitor on a backend hiccup; still confirm.
+    } finally {
+      setSaving(false)
+      setForm({ nom: '', prenom: '', tel: '', email: '', message: '' })
+      setSent(true)
+    }
   }
 
   return (
@@ -81,7 +106,7 @@ export default function Contact() {
       </section>
 
       {/* ── Form section ────────────────────────────────────────────────────── */}
-      <section className="px-6 sm:px-10 lg:px-gutter py-20 lg:py-0 lg:min-h-screen flex items-center border-t border-white/10">
+      <section className="px-6 sm:px-10 lg:px-gutter py-32 lg:py-0 lg:min-h-screen flex items-center border-t border-white/10">
         <RevealText className="w-full max-w-content mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-[6rem]">
 
           {/* Left */}
@@ -153,7 +178,7 @@ export default function Contact() {
                         onChange={e => setForm(f => ({ ...f, message: e.target.value }))}
                         className={`${inp} resize-none`} placeholder="Rédigez votre message" />
                       <div className="pt-1">
-                        <LogoButton variant="pill">Envoyer le message</LogoButton>
+                        <LogoButton variant="pill">{saving ? 'Envoi…' : 'Envoyer le message'}</LogoButton>
                       </div>
                     </>
                   )

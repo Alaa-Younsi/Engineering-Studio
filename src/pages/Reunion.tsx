@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useTransition } from '../context/TransitionContext'
 import { LogoFull } from '../components/LogoFull'
+import { createSubmission } from '../lib/content/store'
 
 interface FormData {
   nom: string
@@ -40,11 +41,42 @@ export default function Reunion() {
     typeReunion: '',
   })
 
+  const [saving, setSaving] = useState(false)
+
   const update = (key: keyof FormData, value: string) =>
     setForm(prev => ({ ...prev, [key]: value }))
 
   const next = () => setStep(s => s + 1)
   const back = () => setStep(s => s - 1)
+
+  const submit = async () => {
+    if (saving) return
+    setSaving(true)
+    try {
+      await createSubmission({
+        kind: 'reunion',
+        name: `${form.prenom} ${form.nom}`.trim(),
+        email: form.email,
+        phone: form.mobile,
+        fields: [
+          { label: 'Nom', value: form.nom },
+          { label: 'Prénom', value: form.prenom },
+          { label: 'Email', value: form.email },
+          { label: 'Mobile', value: form.mobile },
+          { label: 'Raison sociale', value: form.raisonSociale },
+          { label: 'Sujet', value: form.sujet },
+          { label: 'Date souhaitée', value: form.date },
+          { label: 'Heure souhaitée', value: form.heure },
+          { label: 'Type de réunion', value: form.typeReunion },
+        ].filter(f => f.value),
+      })
+    } catch {
+      // Don't block the visitor on a backend hiccup; still confirm.
+    } finally {
+      setSaving(false)
+      next()
+    }
+  }
 
   const inputCls =
     'w-full bg-black/40 border border-white/15 rounded-full px-5 py-3 text-white text-sm placeholder-white/30 outline-none focus:border-white/40 transition-colors'
@@ -202,10 +234,10 @@ export default function Reunion() {
                   Retour
                 </button>
                 <button
-                  onClick={next}
+                  onClick={submit}
                   className="bg-transparent hover:bg-white/5 text-white rounded-full px-8 py-3 text-sm font-body border border-white/30 hover:border-white/60 transition-colors"
                 >
-                  Prendre une réunion
+                  {saving ? 'Envoi…' : 'Prendre une réunion'}
                 </button>
               </div>
             </motion.div>
