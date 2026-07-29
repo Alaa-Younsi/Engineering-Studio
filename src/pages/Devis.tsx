@@ -2,6 +2,7 @@ import { useState, useRef, useCallback } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useTransition } from '../context/TransitionContext'
 import { createSubmission } from '../lib/content/store'
+import { LogoField } from '../components/LogoField'
 
 interface FormData {
   societyType: string
@@ -150,18 +151,8 @@ export default function Devis() {
   return (
     <div className="fixed inset-0 overflow-auto">
 
-      {/* Tiled logo background */}
-      <div className="fixed inset-0 bg-black pointer-events-none">
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: "url('/Assets/logo/Logo-seul.png')",
-            backgroundSize: '100px 100px',
-            backgroundRepeat: 'repeat',
-            opacity: 0.13,
-          }}
-        />
-      </div>
+      {/* Spaced logo-coin background */}
+      <LogoField />
 
       {/* Centered card area */}
       <div className="relative z-10 min-h-screen flex items-center justify-center py-24 px-4">

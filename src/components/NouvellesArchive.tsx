@@ -12,7 +12,7 @@ export function NouvellesArchive() {
   const { data: articles, loading } = useArticles()
 
   return (
-    <section className="px-6 sm:px-10 lg:px-gutter pb-44">
+    <section className="px-6 sm:px-10 lg:px-gutter pb-32">
       <div className="max-w-content mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-14">
         {!loading && articles.length === 0 && (
           <p className="font-body text-secondary text-sm">Aucun article pour le moment.</p>

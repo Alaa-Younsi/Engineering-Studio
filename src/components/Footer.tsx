@@ -1,7 +1,6 @@
 import { useCallback } from 'react'
 import { useTransition } from '../context/TransitionContext'
 import { LogoButton } from './LogoButton'
-import { LinkedInButton } from './LinkedInButton'
 import { RevealText } from './Reveal'
 
 export function Footer() {
@@ -69,9 +68,9 @@ export function Footer() {
 
       {/* ── Bottom bar ────────────────────────────────────────────────────── */}
       <div className="relative z-10 grid grid-cols-1 sm:grid-cols-3 items-center gap-4 px-10 sm:px-14 lg:px-gutter py-6 lg:py-[1.75rem] border-t border-white/10">
-        <div className="flex items-center gap-8">
-          <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="font-body text-secondary text-xs lg:text-[0.8rem] hover:text-white transition-colors">Facebook</a>
-          <LinkedInButton />
+        <div className="flex items-center gap-4 sm:gap-6">
+          <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="font-body text-sm text-white hover:opacity-60 transition-opacity">Facebook</a>
+          <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="font-body text-sm text-white hover:opacity-60 transition-opacity">LinkedIn</a>
         </div>
         <p className="font-body text-secondary text-[10px] lg:text-[0.8rem] sm:text-center">
           Copyright © 2026 tous droits réservés. Design par le propriétaire Engineering Studio

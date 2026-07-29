@@ -206,11 +206,11 @@ export default function APropos() {
             À propos
           </h1>
         </div>
-        <HeroShape y={heroLogoY} className="hidden md:block" />
+        <HeroShape y={heroLogoY} />
       </section>
 
       {/* ── Stats ────────────────────────────────────────────────────────── */}
-      <section className="px-6 sm:px-10 lg:px-gutter py-44 border-t border-white/10">
+      <section className="px-6 sm:px-10 lg:px-gutter py-44 lg:py-60 border-t border-white/10">
         <RevealText className="max-w-content mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
           <div>
             <p className="font-body text-secondary text-xs tracking-widest uppercase mb-6">Solutions globale en ingénierie</p>
@@ -244,7 +244,7 @@ export default function APropos() {
       </section>
 
       {/* ── Études clé en main ───────────────────────────────────────────── */}
-      <section className="px-6 sm:px-10 lg:px-gutter py-44 border-t border-white/10">
+      <section className="px-6 sm:px-10 lg:px-gutter py-44 lg:py-60 border-t border-white/10">
         <RevealText className="max-w-content mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-10">
           <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-5xl text-white leading-tight">
             Etudes<br />clé en main
@@ -262,7 +262,7 @@ export default function APropos() {
       </section>
 
       {/* ── Services — circle+number ──────────────────────────────────────── */}
-      <section className="px-6 sm:px-10 lg:px-gutter py-44 border-t border-white/10">
+      <section className="px-6 sm:px-10 lg:px-gutter py-44 lg:py-60 border-t border-white/10">
         <div className="max-w-content mx-auto">
           <RevealText>
             <p className="font-body text-secondary text-xs tracking-widest uppercase mb-6">Présentation</p>
@@ -297,7 +297,7 @@ export default function APropos() {
       </section>
 
       {/* ── BIM highlight ─────────────────────────────────────────────────── */}
-      <section className="bg-surface px-6 sm:px-10 lg:px-gutter py-52">
+      <section className="bg-surface px-6 sm:px-10 lg:px-gutter py-52 lg:py-72">
         <RevealText className="max-w-content mx-auto flex flex-col items-center text-center gap-8">
           <p className="font-body text-secondary text-xs tracking-widest uppercase">Pour mieux construire</p>
           <h2 className="font-display font-bold text-4xl sm:text-5xl lg:text-6xl xl:text-7xl text-white leading-tight max-w-[22ch]">
@@ -308,7 +308,7 @@ export default function APropos() {
       </section>
 
       {/* ── BIM expertise ─────────────────────────────────────────────────── */}
-      <section className="px-6 sm:px-10 lg:px-gutter py-44 border-t border-white/10">
+      <section className="px-6 sm:px-10 lg:px-gutter py-44 lg:py-60 border-t border-white/10">
         <RevealText className="max-w-content mx-auto">
           <p className="font-body text-secondary text-xs tracking-widest uppercase mb-6">La modélisation BIM au cœur de nos projets</p>
           <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-[2.8rem] text-white leading-tight lg:leading-tight max-w-[30ch] mb-8">
@@ -328,7 +328,7 @@ export default function APropos() {
       </section>
 
       {/* ── Process — circle+number ───────────────────────────────────────── */}
-      <section className="px-6 sm:px-10 lg:px-gutter py-48 border-t border-white/10">
+      <section className="px-6 sm:px-10 lg:px-gutter py-48 lg:py-64 border-t border-white/10">
         <div className="max-w-content mx-auto text-center">
           <RevealText>
             <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-5xl text-white leading-tight mb-6">
@@ -362,7 +362,7 @@ export default function APropos() {
       </section>
 
       {/* ── Prêts à travailler — centered circle CTA ─────────────────────── */}
-      <section ref={featureRef} className="relative bg-bg min-h-screen flex items-center justify-center overflow-hidden py-44">
+      <section ref={featureRef} className="relative bg-bg min-h-screen flex items-center justify-center overflow-hidden py-44 lg:py-60">
         {/* Circle — centered background */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
           <motion.div style={{ y: featureLogoY }}>
@@ -399,7 +399,7 @@ export default function APropos() {
       </section>
 
       {/* ── Points forts — overlapping circles ───────────────────────────── */}
-      <section className="py-44 border-t border-white/10">
+      <section className="py-44 lg:py-60 border-t border-white/10">
         <RevealText className="text-center px-6 sm:px-10 lg:px-gutter mb-20">
           <h2 className="font-display font-bold text-4xl sm:text-5xl lg:text-6xl text-white mb-8">Nos points forts</h2>
           <p className="font-body text-secondary text-sm leading-relaxed max-w-[80ch] mx-auto">
@@ -438,7 +438,7 @@ export default function APropos() {
       </section>
 
       {/* ── Software — card grid ──────────────────────────────────────────── */}
-      <section className="border-t border-white/10 px-6 sm:px-10 lg:px-gutter py-44">
+      <section className="border-t border-white/10 px-6 sm:px-10 lg:px-gutter py-44 lg:py-60">
         <div className="max-w-content mx-auto">
           <RevealText>
             <h2 className="font-display font-bold text-2xl sm:text-3xl lg:text-4xl text-white text-left leading-snug max-w-[32ch] ml-auto mb-16">

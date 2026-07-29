@@ -34,7 +34,9 @@ function CitySection() {
 
   return (
     <section ref={ref} className="relative border-t border-white/10 overflow-hidden min-h-screen">
-      <motion.div style={{ y: cityY }} className="absolute inset-0">
+      {/* The box bleeds past the section top & bottom so the parallax shift
+          never exposes a black gap against the footer. */}
+      <motion.div style={{ y: cityY }} className="absolute -top-16 -bottom-16 inset-x-0">
         <img
           src="/Assets/images/Contact-img linkedin.png"
           alt=""
@@ -102,11 +104,11 @@ export default function Contact() {
             Contact
           </h1>
         </div>
-        <HeroShape y={heroLogoY} className="hidden md:block" />
+        <HeroShape y={heroLogoY} />
       </section>
 
       {/* ── Form section ────────────────────────────────────────────────────── */}
-      <section className="px-6 sm:px-10 lg:px-gutter py-32 lg:py-0 lg:min-h-screen flex items-center border-t border-white/10">
+      <section className="px-6 sm:px-10 lg:px-gutter py-20 lg:py-0 lg:min-h-screen flex items-center border-t border-white/10">
         <RevealText className="w-full max-w-content mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-[6rem]">
 
           {/* Left */}

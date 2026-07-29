@@ -24,7 +24,7 @@ export default function Portefeuille() {
             Portefeuille
           </h1>
         </div>
-        <HeroShape y={logoY} className="hidden md:block" />
+        <HeroShape y={logoY} />
       </section>
 
       {FEATURES.portefeuille ? (

@@ -25,7 +25,7 @@ export default function Nouvelles() {
           </h1>
         </div>
 
-        <HeroShape y={heroLogoY} className="hidden md:block" />
+        <HeroShape y={heroLogoY} />
       </section>
 
       {FEATURES.nouvelles ? (

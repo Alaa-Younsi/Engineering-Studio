@@ -31,7 +31,7 @@ function HeroSection({ nav }: { nav: (path: string) => void }) {
         </div>
       </div>
 
-      <HeroShape y={logoY} className="hidden md:block" />
+      <HeroShape y={logoY} />
     </section>
   )
 }

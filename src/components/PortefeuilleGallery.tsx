@@ -68,7 +68,7 @@ export function PortefeuilleGallery() {
 
   return (
     <>
-      <section className="relative flex items-center justify-center overflow-hidden py-44 px-6">
+      <section className="relative flex items-center justify-center overflow-hidden py-32 px-6">
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
           <img
             src="/Assets/logo/Logo-seul.png"
@@ -85,7 +85,7 @@ export function PortefeuilleGallery() {
         </RevealText>
       </section>
 
-      <section className="px-6 sm:px-10 lg:px-gutter pb-44 flex flex-col gap-14 lg:gap-24">
+      <section className="px-6 sm:px-10 lg:px-gutter pb-32 flex flex-col gap-10 lg:gap-16">
         {!loading && projects.length === 0 && (
           <p className="font-body text-secondary text-sm text-center">Aucune réalisation pour le moment.</p>
         )}
