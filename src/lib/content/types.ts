@@ -57,6 +57,15 @@ export interface SubmissionField {
   value: string
 }
 
+/** A file a visitor attached to a devis request, held in a private bucket. */
+export interface SubmissionAttachment {
+  /** Original file name, for display. */
+  name: string
+  /** Object path inside the private bucket; resolved to a signed URL on demand. */
+  path: string
+  size: number
+}
+
 export interface Submission {
   /** DB primary key. Absent only for a brand-new, unsaved submission. */
   id?: string
@@ -67,11 +76,16 @@ export interface Submission {
   phone?: string
   /** Every submitted field, in display order. */
   fields: SubmissionField[]
+  /** Plans/drawings sent with a devis request. */
+  attachments?: SubmissionAttachment[]
   /** Marked true once an admin has opened it. */
   read: boolean
   /** Set by the store when the submission is created. */
   createdAt?: string
 }
+
+/** A submission as the public forms build it, before the store assigns ids. */
+export type SubmissionInput = Omit<Submission, 'id' | 'createdAt' | 'read'>
 
 export const SUBMISSION_LABELS: Record<SubmissionKind, string> = {
   devis: 'Devis',

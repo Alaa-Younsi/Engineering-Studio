@@ -44,10 +44,14 @@ export function LogoButton({
           draggable={false}
         />
       </span>
+      {/* Beat before the label slides out, so the mark reads first; the
+          collapse runs immediately on leave. */}
       {children && (
-        <span className="grid [grid-template-columns:0fr] group-hover:[grid-template-columns:1fr] transition-[grid-template-columns] duration-300 ease-out">
+        <span className="grid [grid-template-columns:0fr] group-hover:[grid-template-columns:1fr] transition-[grid-template-columns] duration-300 ease-out delay-0 group-hover:delay-150">
           <span className="overflow-hidden whitespace-nowrap font-body text-sm text-black">
-            <span className="block pr-4">{children}</span>
+            <span className="block pr-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200 delay-0 group-hover:delay-[250ms]">
+              {children}
+            </span>
           </span>
         </span>
       )}

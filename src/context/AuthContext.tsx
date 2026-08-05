@@ -5,6 +5,12 @@ import { supabase, isSupabaseConfigured } from '../lib/supabase'
 interface AuthValue {
   /** Signed-in email, or null when logged out. */
   email: string | null
+  /**
+   * True only when the signed-in user is on the `admins` allow-list. Having an
+   * account is not enough — the same check backs every RLS policy, so a
+   * non-admin session can see nothing regardless of what the UI does.
+   */
+  isAdmin: boolean
   loading: boolean
   /** True only when the real Supabase backend is wired. */
   configured: boolean
@@ -18,21 +24,39 @@ const DEMO_KEY = 'es_demo_admin'
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [email, setEmail] = useState<string | null>(null)
+  const [isAdmin, setIsAdmin] = useState(false)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     if (isSupabaseConfigured && supabase) {
-      supabase.auth.getSession().then(({ data }) => {
-        setEmail(data.session?.user.email ?? null)
+      const client = supabase
+
+      const resolve = async (session: Session | null) => {
+        setEmail(session?.user.email ?? null)
+        if (!session?.user) {
+          setIsAdmin(false)
+          return
+        }
+        const { data } = await client
+          .from('admins')
+          .select('user_id')
+          .eq('user_id', session.user.id)
+          .maybeSingle()
+        setIsAdmin(Boolean(data))
+      }
+
+      client.auth.getSession().then(async ({ data }) => {
+        await resolve(data.session)
         setLoading(false)
       })
-      const { data: sub } = supabase.auth.onAuthStateChange((_event, session: Session | null) => {
-        setEmail(session?.user.email ?? null)
+      const { data: sub } = client.auth.onAuthStateChange((_event, session: Session | null) => {
+        void resolve(session)
       })
       return () => sub.subscription.unsubscribe()
     }
     // Demo mode: restore a local session flag.
     setEmail(localStorage.getItem(DEMO_KEY))
+    setIsAdmin(true)
     setLoading(false)
   }, [])
 
@@ -51,6 +75,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const signOut = async () => {
     if (isSupabaseConfigured && supabase) {
       await supabase.auth.signOut()
+      setIsAdmin(false)
     } else {
       localStorage.removeItem(DEMO_KEY)
       setEmail(null)
@@ -58,7 +83,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   return (
-    <AuthContext.Provider value={{ email, loading, configured: isSupabaseConfigured, signIn, signOut }}>
+    <AuthContext.Provider value={{ email, isAdmin, loading, configured: isSupabaseConfigured, signIn, signOut }}>
       {children}
     </AuthContext.Provider>
   )

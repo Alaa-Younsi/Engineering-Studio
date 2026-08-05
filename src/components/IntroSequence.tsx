@@ -11,20 +11,28 @@ interface Frame {
 
 const LOGO_SEUL = '/Assets/logo/Logo-seul.png'
 
+/**
+ * The two background rings breathe in and out on their own offset cycles while
+ * the small centre mark — the "selected" one — stays fixed.
+ */
 export function LoadingMark() {
   return (
     <div className="relative" style={{ width: 170, height: 170 }}>
-      <img
+      <motion.img
         src={LOGO_SEUL}
         alt=""
         className="absolute inset-0 m-auto"
         style={{ width: 170, height: 170, filter: 'brightness(0.1)' }}
+        animate={{ opacity: [0.35, 1, 0.35] }}
+        transition={{ duration: 1.6, ease: 'easeInOut', repeat: Infinity }}
       />
-      <img
+      <motion.img
         src={LOGO_SEUL}
         alt=""
         className="absolute inset-0 m-auto"
         style={{ width: 99, height: 99, filter: 'brightness(0.3)' }}
+        animate={{ opacity: [1, 0.35, 1] }}
+        transition={{ duration: 1.6, ease: 'easeInOut', repeat: Infinity, delay: 0.4 }}
       />
       <img
         src={LOGO_SEUL}
@@ -41,7 +49,7 @@ const frames: Frame[] = [
     id: 0,
     placement: 'bottom-left',
     content: (
-      <span className="font-body font-light text-white text-sm">
+      <span className="font-body font-light text-white text-sm lg:text-[1.5rem] whitespace-nowrap">
         Assalamu alaykum
       </span>
     ),
@@ -49,13 +57,13 @@ const frames: Frame[] = [
   {
     id: 1,
     placement: 'bottom-left',
-    content: <LogoFull size="sm" />,
+    content: <LogoFull size="lg" />,
   },
   {
     id: 2,
     placement: 'center',
     content: (
-      <span className="font-body font-light text-white text-sm">
+      <span className="font-body font-light text-white text-sm lg:text-[1.5rem] whitespace-nowrap">
         Solutions Globales en Ingénierie
       </span>
     ),
@@ -64,7 +72,7 @@ const frames: Frame[] = [
     id: 3,
     placement: 'center',
     content: (
-      <span className="font-body font-light text-white text-sm">
+      <span className="font-body font-light text-white text-sm lg:text-[1.5rem] whitespace-nowrap">
         Ingénierie du bâtiment
       </span>
     ),
@@ -73,7 +81,7 @@ const frames: Frame[] = [
     id: 4,
     placement: 'center',
     content: (
-      <span className="font-body font-light text-white text-sm">
+      <span className="font-body font-light text-white text-sm lg:text-[1.5rem] whitespace-nowrap">
         Faisons connaissance
       </span>
     ),
@@ -82,7 +90,7 @@ const frames: Frame[] = [
     id: 5,
     placement: 'center',
     content: (
-      <span className="font-body font-light text-white text-sm">
+      <span className="font-body font-light text-white text-sm lg:text-[1.5rem] whitespace-nowrap">
         Bienvenue chez nous&nbsp;!
       </span>
     ),
@@ -111,18 +119,23 @@ export function IntroSequence() {
     if (CAPTURE) { setDone(true); return }
     cancelRef.current = false
 
+    const wait = (ms: number) => new Promise<void>((res) => setTimeout(res, ms))
+
     const playSequence = async () => {
       for (let i = 0; i < frames.length; i++) {
         if (cancelRef.current) return
         setFrameIndex(i)
         frameControls.set({ opacity: 0 })
-        await frameControls.start({ opacity: 1, transition: { duration: 0.3, ease: 'easeIn' } })
+        await frameControls.start({ opacity: 1, transition: { duration: 0.45, ease: 'easeIn' } })
         if (cancelRef.current) return
-        // Loading frame stays longer
-        const holdMs = i === frames.length - 1 ? 900 : 600
-        await new Promise<void>((res) => setTimeout(res, holdMs))
+        // Loading frame stays longer so the rings get a couple of breaths.
+        await wait(i === frames.length - 1 ? 1600 : 1100)
         if (cancelRef.current) return
-        await frameControls.start({ opacity: 0, transition: { duration: 0.3, ease: 'easeOut' } })
+        await frameControls.start({ opacity: 0, transition: { duration: 0.45, ease: 'easeOut' } })
+        if (cancelRef.current) return
+        // Beat of black between frames so they read as separate statements
+        // rather than one crossfading blur.
+        if (i < frames.length - 1) await wait(320)
       }
       await finish()
     }

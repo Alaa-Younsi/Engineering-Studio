@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
-import { deleteSubmission, listSubmissions, markSubmissionRead } from '../../lib/content/store'
-import type { Submission, SubmissionKind } from '../../lib/content/types'
+import { attachmentUrl, deleteSubmission, listSubmissions, markSubmissionRead } from '../../lib/content/store'
+import type { Submission, SubmissionAttachment, SubmissionKind } from '../../lib/content/types'
 import { SUBMISSION_LABELS, formatSubmissionDate } from '../../lib/content/types'
 import { AdminButton, Card, Spinner } from '../../components/admin/ui'
 
@@ -19,16 +19,63 @@ const KIND_BADGE: Record<SubmissionKind, string> = {
   contact: 'bg-emerald-500/15 text-emerald-300',
 }
 
+const formatSize = (bytes: number) =>
+  bytes >= 1024 * 1024 ? `${(bytes / (1024 * 1024)).toFixed(1)} Mo` : `${Math.max(1, Math.round(bytes / 1024))} Ko`
+
+/**
+ * Devis plans live in a private bucket, so a link is minted on click and is
+ * only valid for a few minutes — the file never becomes publicly addressable.
+ */
+function Attachment({ attachment }: { attachment: SubmissionAttachment }) {
+  const [busy, setBusy] = useState(false)
+  const [failed, setFailed] = useState(false)
+
+  const open = async () => {
+    if (busy || !attachment.path) return
+    setBusy(true)
+    setFailed(false)
+    const url = await attachmentUrl(attachment.path)
+    setBusy(false)
+    if (!url) { setFailed(true); return }
+    window.open(url, '_blank', 'noopener,noreferrer')
+  }
+
+  if (!attachment.path) {
+    return (
+      <span className="rounded-lg border border-white/10 px-3 py-2 font-body text-xs text-secondary">
+        {attachment.name} — non transmis
+      </span>
+    )
+  }
+
+  return (
+    <button
+      onClick={() => void open()}
+      className="rounded-lg border border-white/15 px-3 py-2 font-body text-xs text-white hover:bg-white/5 transition-colors text-left"
+    >
+      {attachment.name}
+      <span className="text-secondary ml-2">
+        {failed ? 'lien indisponible' : busy ? 'ouverture…' : formatSize(attachment.size)}
+      </span>
+    </button>
+  )
+}
+
 export default function AdminSubmissions() {
   const [submissions, setSubmissions] = useState<Submission[]>([])
   const [loading, setLoading] = useState(true)
   const [filter, setFilter] = useState<Filter>('all')
   const [openId, setOpenId] = useState<string | null>(null)
   const [pendingDelete, setPendingDelete] = useState<string | null>(null)
+  const [loadError, setLoadError] = useState<string | null>(null)
 
   const load = () => {
     setLoading(true)
-    listSubmissions().then(setSubmissions).finally(() => setLoading(false))
+    setLoadError(null)
+    listSubmissions()
+      .then(setSubmissions)
+      .catch((e: unknown) => setLoadError(e instanceof Error ? e.message : 'Erreur inconnue'))
+      .finally(() => setLoading(false))
   }
   useEffect(load, [])
 
@@ -96,6 +143,16 @@ export default function AdminSubmissions() {
 
       {loading ? (
         <Spinner />
+      ) : loadError ? (
+        <Card className="p-6 border-red-500/30 bg-red-500/10">
+          <p className="font-body text-sm text-red-200">
+            Impossible de charger les demandes — elles peuvent exister sans être affichées ici.
+          </p>
+          <p className="font-body text-xs text-red-200/70 mt-2 break-words">{loadError}</p>
+          <div className="mt-4">
+            <AdminButton variant="ghost" className="!py-1.5 !px-4 text-xs" onClick={load}>Réessayer</AdminButton>
+          </div>
+        </Card>
       ) : visible.length === 0 ? (
         <Card className="p-10 text-center">
           <p className="font-body text-sm text-secondary">Aucune demande pour le moment.</p>
@@ -139,6 +196,18 @@ export default function AdminSubmissions() {
                         </div>
                       ))}
                     </dl>
+                    {s.attachments && s.attachments.length > 0 && (
+                      <div className="mt-3">
+                        <p className="font-body text-xs text-secondary mb-2">
+                          Pièces jointes ({s.attachments.length})
+                        </p>
+                        <div className="flex flex-wrap gap-2">
+                          {s.attachments.map((a, i) => (
+                            <Attachment key={`${a.path}-${i}`} attachment={a} />
+                          ))}
+                        </div>
+                      </div>
+                    )}
                     <p className="font-body text-xs text-secondary mt-3 sm:hidden">{formatSubmissionDate(s.createdAt)}</p>
                     <div className="flex flex-wrap items-center gap-2 mt-4">
                       {s.email && (

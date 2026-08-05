@@ -3,6 +3,8 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { useTransition } from '../context/TransitionContext'
 import { LogoFull } from '../components/LogoFull'
 import { createSubmission } from '../lib/content/store'
+import { isEmail, isPhone } from '../lib/content/validation'
+import { HoneypotField, submissionErrorMessage, useFormGuard } from '../components/FormGuard'
 import { LogoField } from '../components/LogoField'
 
 interface FormData {
@@ -43,17 +45,36 @@ export default function Reunion() {
   })
 
   const [saving, setSaving] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const guard = useFormGuard()
 
   const update = (key: keyof FormData, value: string) =>
     setForm(prev => ({ ...prev, [key]: value }))
 
-  const next = () => setStep(s => s + 1)
-  const back = () => setStep(s => s - 1)
+  const stepError = (s: number): string | null => {
+    if (s !== 1) return null
+    if (!form.nom.trim() || !form.prenom.trim()) return 'Indiquez vos nom et prénom.'
+    if (!isEmail(form.email.trim())) return 'Saisissez un email valide.'
+    if (form.mobile && !isPhone(form.mobile)) return 'Saisissez un numéro de mobile valide.'
+    if (!form.sujet.trim()) return 'Indiquez le sujet de la réunion.'
+    return null
+  }
+
+  const next = () => {
+    const problem = stepError(step)
+    if (problem) { setError(problem); return }
+    setError(null)
+    setStep(s => s + 1)
+  }
+  const back = () => { setError(null); setStep(s => s - 1) }
 
   const submit = async () => {
     if (saving) return
+    if (!form.typeReunion) { setError('Choisissez le type de réunion.'); return }
     setSaving(true)
+    setError(null)
     try {
+      guard.check()
       await createSubmission({
         kind: 'reunion',
         name: `${form.prenom} ${form.nom}`.trim(),
@@ -71,11 +92,13 @@ export default function Reunion() {
           { label: 'Type de réunion', value: form.typeReunion },
         ].filter(f => f.value),
       })
-    } catch {
-      // Don't block the visitor on a backend hiccup; still confirm.
+      guard.mark()
+      setStep(s => s + 1)
+    } catch (err) {
+      // Only confirm the RDV once it is genuinely recorded.
+      setError(submissionErrorMessage(err))
     } finally {
       setSaving(false)
-      next()
     }
   }
 
@@ -114,6 +137,10 @@ export default function Reunion() {
 
   function NavRow({ nextLabel = 'Continuer', onNext = next }: { nextLabel?: string; onNext?: () => void }) {
     return (
+      <>
+      {error && (
+        <p role="alert" className="font-body text-red-300 text-sm mt-6 leading-relaxed">{error}</p>
+      )}
       <div className="flex items-center justify-center gap-4 mt-8">
         <button
           onClick={back}
@@ -131,6 +158,7 @@ export default function Reunion() {
           {nextLabel}
         </button>
       </div>
+      </>
     )
   }
 
@@ -139,6 +167,7 @@ export default function Reunion() {
 
       {/* Spaced logo-coin background */}
       <LogoField />
+      <HoneypotField value={guard.honeypot} onChange={guard.setHoneypot} />
 
       {/* Top bar */}
       <div className="fixed top-0 left-0 right-0 h-16 z-20 flex items-center justify-between px-6 sm:px-8">
@@ -214,6 +243,9 @@ export default function Reunion() {
                   <Pill key={t} label={t} active={form.typeReunion === t} onClick={() => update('typeReunion', t)} />
                 ))}
               </div>
+              {error && (
+                <p role="alert" className="font-body text-red-300 text-sm mt-6 leading-relaxed">{error}</p>
+              )}
               <div className="flex items-center justify-center gap-4 mt-16">
                 <button
                   onClick={back}

@@ -1,5 +1,6 @@
 import { useCallback, useRef } from 'react'
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion'
+import { CAPTURE } from '../lib/capture'
 import { useTransition } from '../context/TransitionContext'
 import { LogoButton } from '../components/LogoButton'
 import { Footer } from '../components/Footer'
@@ -95,7 +96,86 @@ const testimonials = [
     category: 'Architecture',
     text: "Une équipe Jeune, dynamique et volontaire toujours disponible. Leurs dossiers techniques sont d'une qualité rare. Sur le chantier, les entreprises sont vraiment bien pilotées.",
   },
+  {
+    name: 'Manar',
+    name2: 'El Imara',
+    category: 'Architecture',
+    text: "Leur réactivité et conseils précieux lors de nos études, nous permettent d'être réactifs et pourvoyeurs de solutions techniques innovantes. Leurs plans et bilans thermiques sont toujours d'une grande précision.",
+  },
+  {
+    name: 'Baret',
+    name2: 'Architectes',
+    category: 'Architecture',
+    text: "Leur expérience pluridisciplinaire (CVC/CET et VRD) nous permet de pouvoir répondre favorablement et sans retenues sur les dossiers complets de nos clients.",
+  },
 ]
+
+/**
+ * Testimonials run as a continuous right-to-left marquee. The list is rendered
+ * twice and the track is translated by exactly -50%; because every card carries
+ * its own trailing margin (rather than the row using `gap`), the halves tile
+ * seamlessly and the loop has no visible seam.
+ */
+function TestimonialsSection() {
+  const reduceMotion = useReducedMotion()
+  const still = CAPTURE || reduceMotion
+
+  const card = (t: (typeof testimonials)[number], key: string) => (
+    <div
+      key={key}
+      className="
+        flex-shrink-0 w-[19rem] lg:w-[30rem] lg:h-[21.375rem]
+        mr-4 lg:mr-[1.5rem] bg-surface rounded-2xl lg:rounded-[1.875rem]
+        px-7 lg:px-[3.125rem] pt-7 lg:pt-[2.5rem] pb-7 lg:pb-[2.5rem]
+        flex flex-col
+      "
+    >
+      <img
+        src="/Assets/logo/Logo-seul.png"
+        alt=""
+        className="w-6 h-6 lg:w-[2rem] lg:h-[2rem] object-contain select-none"
+        draggable={false}
+      />
+      <p className="font-body font-light text-secondary text-sm lg:text-d-sm mt-5 lg:mt-[1.375rem] lg:max-w-[23.75rem]">
+        {t.text}
+      </p>
+      <div className="mt-auto pt-8">
+        <p className="font-display font-bold text-white text-sm lg:text-[1.25rem] lg:leading-[1.25rem]">
+          {t.name}
+          <br />
+          {t.name2}
+        </p>
+        <p className="font-body font-light text-secondary text-xs lg:text-d-xxs mt-1 lg:mt-[0.4375rem]">
+          {t.category}
+        </p>
+      </div>
+    </div>
+  )
+
+  return (
+    <section className="pl-6 sm:pl-10 lg:pl-gutter py-52 lg:py-64 border-t border-white/10 overflow-hidden">
+      <RevealText>
+        <p className="font-body font-light text-secondary text-sm lg:text-d-lead">Témoignages</p>
+        <h2 className="font-display font-medium text-2xl sm:text-3xl lg:text-d-h3 text-white mb-14 lg:mb-[2.75rem]">
+          Écoutez ce que nos clients ont à dire
+        </h2>
+      </RevealText>
+
+      {still ? (
+        <div className="flex overflow-hidden">{testimonials.map(t => card(t, t.name))}</div>
+      ) : (
+        <motion.div
+          className="flex w-max"
+          animate={{ x: ['0%', '-50%'] }}
+          transition={{ duration: testimonials.length * 8, ease: 'linear', repeat: Infinity }}
+        >
+          {testimonials.map(t => card(t, `a-${t.name}`))}
+          {testimonials.map(t => card(t, `b-${t.name}`))}
+        </motion.div>
+      )}
+    </section>
+  )
+}
 
 export default function Clients() {
   const { startTransition } = useTransition()
@@ -124,24 +204,24 @@ export default function Clients() {
 
       {/* ── Intro ───────────────────────────────────────────────────────────── */}
       <section className="px-6 sm:px-10 lg:px-gutter py-52 lg:py-64 border-t border-white/10">
-        <RevealText className="max-w-content mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+        <RevealText className="max-w-content mx-auto grid grid-cols-1 lg:grid-cols-[47.3125rem_1fr] gap-16 lg:gap-0 items-start">
           <div>
-            <p className="font-body text-secondary text-xs tracking-widest uppercase mb-6">Nos clients</p>
-            <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-[2.8rem] text-white leading-tight lg:leading-tight">
+            <p className="font-body font-light text-secondary text-xs lg:text-d-lead mb-4 lg:mb-[0.5rem]">Nos clients</p>
+            <h2 className="font-display font-medium text-3xl sm:text-4xl lg:text-d-h2 text-white leading-tight lg:leading-[4.5625rem] lg:max-w-[17ch]">
               Découvrez nos clients et comment nous collaborons avec eux
             </h2>
-            <div className="mt-10">
+            <div className="mt-10 lg:mt-[5.5rem]">
               <LogoButton onClick={() => nav('/contact')}>Travaillons ensemble</LogoButton>
             </div>
           </div>
-          <div className="flex flex-col gap-6">
-            <p className="font-body text-secondary text-sm leading-relaxed">
+          <div className="flex flex-col gap-6 lg:gap-[1.625rem]">
+            <p className="font-body font-light text-secondary text-sm lg:text-d-body">
               Nous travaillons principalement avec les installateurs, architectes, bureaux d'études, entreprises générales, sous-traitants, propriétaires industrielles, maîtres d'ouvrages, promoteurs.
             </p>
-            <p className="font-body text-secondary text-sm leading-relaxed">
+            <p className="font-body font-light text-secondary text-sm lg:text-d-body">
               Quel que soit votre secteur d'activité, nous pouvons vous aider à réussir vos projets, même les plus complexes. Le tout en répondant aux différents enjeux liés au délai, au coût et à la qualité.
             </p>
-            <p className="font-body text-secondary text-sm leading-relaxed">
+            <p className="font-body font-light text-secondary text-sm lg:text-d-body">
               Vous pouvez compter sur nous pour vous assister à chaque étape de votre projet d'études. De la conception à le dimensionnement, nous vous garantissons des études de qualité, que ce soit pour un projet neuve ou une rénovation. Nous possédons les meilleurs moyens et logiciels pour vous fournir des prestations de qualité.
             </p>
           </div>
@@ -194,13 +274,15 @@ export default function Clients() {
 
       {/* ── Sectors ─────────────────────────────────────────────────────────── */}
       <section className="px-6 sm:px-10 lg:px-gutter py-52 lg:py-64 border-t border-white/10">
-        <RevealText className="max-w-content mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16">
+        {/* The Figma starts the sector list at x=1224 — a good bit right of a
+            plain 50/50 split, which is what made this block look off-centre. */}
+        <RevealText className="max-w-content mx-auto grid grid-cols-1 lg:grid-cols-[63rem_1fr] gap-16 lg:gap-0">
           <div>
-            <p className="font-body text-secondary text-sm mb-3">Qui sont nos clients&nbsp;?</p>
-            <h2 className="font-display font-bold text-4xl sm:text-5xl text-white leading-tight mb-10">
+            <p className="font-body font-light text-secondary text-sm lg:text-d-lead mb-3 lg:mb-[0.5rem]">Qui sont nos clients&nbsp;?</p>
+            <h2 className="font-display font-medium text-4xl sm:text-5xl lg:text-d-h2 text-white leading-tight mb-10 lg:mb-[2.8125rem]">
               Secteurs d'activité
             </h2>
-            <p className="font-body text-secondary text-sm leading-relaxed">
+            <p className="font-body font-light text-secondary text-sm lg:text-d-body lg:max-w-[40rem]">
               ENGINEERING STUDIO intervient en Algérie et est spécialisé dans les études techniques d'ingénierie (réseaux extérieurs et réseaux intérieurs), également missionné pour des travaux topographiques.
               <br />
               Nos clients proviennent de secteurs d'activité très variés.
@@ -208,9 +290,9 @@ export default function Clients() {
               Cette diversité est une richesse qui nécessite une capacité d'adaptabilité et nous permet sans cesse de repousser nos limites.
             </p>
           </div>
-          <div className="flex flex-col gap-1 lg:pt-4">
+          <div className="flex flex-col lg:pt-[0.5rem]">
             {sectors.map(s => (
-              <p key={s} className="font-display font-medium text-white text-xl sm:text-2xl leading-relaxed">
+              <p key={s} className="font-display font-normal text-white text-xl sm:text-2xl lg:text-d-lead leading-relaxed lg:leading-[2.125rem] whitespace-nowrap">
                 {s}
               </p>
             ))}
@@ -285,38 +367,8 @@ export default function Clients() {
         </RevealText>
       </section>
 
-      {/* ── Testimonials ────────────────────────────────────────────────────── */}
-      <section className="pl-6 sm:pl-10 lg:pl-20 py-52 lg:py-64 border-t border-white/10 overflow-hidden">
-        <RevealText>
-          <p className="font-body text-secondary text-sm mb-2">Témoignages</p>
-          <h2 className="font-display font-bold text-2xl sm:text-3xl lg:text-4xl text-white mb-14">
-            Écoutez ce que nos clients ont à dire
-          </h2>
-        </RevealText>
-        <div className="flex gap-6 overflow-x-auto pb-4 pr-6 sm:pr-10 lg:pr-20 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          {testimonials.map((t, i) => (
-            <Reveal key={t.name} direction="right" delay={i * 0.12} className="flex-shrink-0">
-              <div className="w-[300px] md:w-[340px] h-full bg-[#1a1a1a] rounded-2xl p-8 flex flex-col gap-6 hover:opacity-80 transition-opacity">
-                <img
-                  src="/Assets/logo/Logo-seul.png"
-                  alt=""
-                  className="w-6 h-6 object-contain select-none"
-                  draggable={false}
-                />
-                <p className="font-body text-secondary text-sm leading-relaxed flex-1">{t.text}</p>
-                <div>
-                  <p className="font-display font-bold text-white text-sm leading-tight">
-                    {t.name}
-                    <br />
-                    {t.name2}
-                  </p>
-                  <p className="font-body text-secondary text-xs mt-1">{t.category}</p>
-                </div>
-              </div>
-            </Reveal>
-          ))}
-        </div>
-      </section>
+      {/* ── Testimonials — self-scrolling marquee ───────────────────────────── */}
+      <TestimonialsSection />
 
       <Footer />
     </main>

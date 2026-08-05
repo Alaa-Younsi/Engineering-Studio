@@ -3,8 +3,9 @@ import { motion, useScroll, useTransform } from 'framer-motion'
 import { createSubmission } from '../lib/content/store'
 import { LogoButton } from '../components/LogoButton'
 import { LinkedInButton } from '../components/LinkedInButton'
-import { Footer } from '../components/Footer'
 import { HeroShape } from '../components/HeroShape'
+import { HoneypotField, submissionErrorMessage, useFormGuard } from '../components/FormGuard'
+import { LIMITS } from '../lib/content/validation'
 import { RevealText } from '../components/Reveal'
 
 const faqs = [
@@ -60,18 +61,22 @@ export default function Contact() {
   const [form, setForm] = useState({ nom: '', prenom: '', tel: '', email: '', message: '' })
   const [openFaq, setOpenFaq] = useState<number | null>(null)
   const [sent, setSent] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const heroRef = useRef<HTMLElement>(null)
   const { scrollYProgress: heroProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] })
   const heroLogoY = useTransform(heroProgress, [0, 1], ['0px', '-80px'])
 
   const [saving, setSaving] = useState(false)
+  const guard = useFormGuard()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (saving) return
     setSaving(true)
+    setError(null)
     try {
+      guard.check()
       await createSubmission({
         kind: 'contact',
         name: `${form.prenom} ${form.nom}`.trim(),
@@ -85,12 +90,15 @@ export default function Contact() {
           { label: 'Message', value: form.message },
         ].filter(f => f.value),
       })
-    } catch {
-      // Don't block the visitor on a backend hiccup; still confirm.
-    } finally {
-      setSaving(false)
+      guard.mark()
       setForm({ nom: '', prenom: '', tel: '', email: '', message: '' })
       setSent(true)
+    } catch (err) {
+      // Never claim a message was sent when it wasn't — the visitor would
+      // wait for a reply that is never coming.
+      setError(submissionErrorMessage(err))
+    } finally {
+      setSaving(false)
     }
   }
 
@@ -160,25 +168,29 @@ export default function Contact() {
                     'w-full bg-surface border border-white/10 rounded-xl px-5 py-4 font-body text-white text-sm lg:text-[0.95rem] placeholder:text-secondary focus:outline-none focus:border-white/40 transition-colors'
                   return (
                     <>
+                      <HoneypotField value={guard.honeypot} onChange={guard.setHoneypot} />
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 lg:gap-[0.9rem]">
-                        <input type="text" required value={form.nom}
+                        <input type="text" required maxLength={LIMITS.name} value={form.nom}
                           onChange={e => setForm(f => ({ ...f, nom: e.target.value }))}
                           className={inp} placeholder="Votre nom" />
-                        <input type="text" required value={form.prenom}
+                        <input type="text" required maxLength={LIMITS.name} value={form.prenom}
                           onChange={e => setForm(f => ({ ...f, prenom: e.target.value }))}
                           className={inp} placeholder="Votre prénom" />
                       </div>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 lg:gap-[0.9rem]">
-                        <input type="tel" value={form.tel}
+                        <input type="tel" maxLength={LIMITS.phone} value={form.tel}
                           onChange={e => setForm(f => ({ ...f, tel: e.target.value }))}
                           className={inp} placeholder="Numéro de téléphone" />
-                        <input type="email" required value={form.email}
+                        <input type="email" required maxLength={LIMITS.email} value={form.email}
                           onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
                           className={inp} placeholder="Email" />
                       </div>
-                      <textarea required rows={5} value={form.message}
+                      <textarea required rows={5} maxLength={LIMITS.long} value={form.message}
                         onChange={e => setForm(f => ({ ...f, message: e.target.value }))}
                         className={`${inp} resize-none`} placeholder="Rédigez votre message" />
+                      {error && (
+                        <p role="alert" className="font-body text-sm text-red-300 leading-relaxed">{error}</p>
+                      )}
                       <div className="pt-1">
                         <LogoButton variant="pill">{saving ? 'Envoi…' : 'Envoyer le message'}</LogoButton>
                       </div>
@@ -232,8 +244,6 @@ export default function Contact() {
 
       {/* ── City illustration ───────────────────────────────────────────────── */}
       <CitySection />
-
-      <Footer />
     </main>
   )
 }

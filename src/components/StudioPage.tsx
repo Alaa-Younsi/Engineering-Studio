@@ -22,11 +22,12 @@ function ServiceRow({ service, index }: { service: Service; index: number }) {
 
   const imageLeft = index % 2 !== 0
 
+  /* Figma: the disc is 550px across and sits 108px in from the page edge. */
   const circle = (
-    <div className={`flex items-center ${imageLeft ? 'justify-start pl-[3.5rem]' : 'justify-end pr-[3.5rem]'}`}>
+    <div className={`flex items-center ${imageLeft ? 'justify-start pl-[6.75rem]' : 'justify-end pr-[6.75rem]'}`}>
       <motion.div
         style={{ y: CAPTURE ? 0 : imgY }}
-        className="w-64 h-64 lg:w-[26rem] lg:h-[26rem] xl:w-[30rem] xl:h-[30rem] rounded-full overflow-hidden border border-white/10 flex-shrink-0 hover:opacity-80 transition-opacity"
+        className="w-64 h-64 lg:w-[34.375rem] lg:h-[34.375rem] rounded-full overflow-hidden border border-white/10 flex-shrink-0 hover:opacity-80 transition-opacity"
       >
         <img src={service.image} alt={service.name} className="w-full h-full object-cover" />
       </motion.div>
@@ -34,11 +35,11 @@ function ServiceRow({ service, index }: { service: Service; index: number }) {
   )
 
   const label = (
-    <div className="flex flex-col items-center text-center gap-3 lg:gap-[2.9rem] mx-auto max-w-[22rem] px-4">
-      <span className="font-body text-secondary text-xs lg:text-[1.35rem] tracking-widest">
+    <div className="flex flex-col items-center text-center gap-3 lg:gap-[0.9rem] mx-auto max-w-[30rem] px-4">
+      <span className="font-body font-normal text-secondary text-xs lg:text-d-step">
         {String(index + 1).padStart(2, '0')}.
       </span>
-      <h2 className="font-display font-bold text-3xl lg:text-[3rem] text-white leading-[1.05] lg:leading-[1.05]">
+      <h2 className="font-display font-medium text-3xl lg:text-d-h2 text-white leading-[1.05] lg:leading-[4.5625rem]">
         {service.name}
       </h2>
     </div>
@@ -61,21 +62,16 @@ function ServiceRow({ service, index }: { service: Service; index: number }) {
         </RevealText>
       </div>
 
-      {/* Desktop: alternating — number+name centred, circle offset to one side */}
-      <div className="hidden md:grid grid-cols-3 items-center w-full lg:h-screen px-6 py-24 lg:py-0">
-        {imageLeft ? (
-          <>
-            <Reveal direction="left">{circle}</Reveal>
-            <RevealText>{label}</RevealText>
-            <div aria-hidden />
-          </>
-        ) : (
-          <>
-            <div aria-hidden />
-            <RevealText>{label}</RevealText>
-            <Reveal direction="right">{circle}</Reveal>
-          </>
-        )}
+      {/* Desktop: number+name centred on the page, disc pinned to one gutter. */}
+      <div className="hidden md:block relative w-full lg:h-screen py-24 lg:py-0">
+        {/* Positioning lives on the wrappers — Reveal drives `transform`, so it
+            cannot also carry the centring translate. */}
+        <div className={`absolute top-1/2 -translate-y-1/2 ${imageLeft ? 'left-0' : 'right-0'}`}>
+          <Reveal direction={imageLeft ? 'left' : 'right'}>{circle}</Reveal>
+        </div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full">
+          <RevealText>{label}</RevealText>
+        </div>
       </div>
     </section>
   )

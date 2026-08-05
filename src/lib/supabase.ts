@@ -20,3 +20,10 @@ export const supabase: SupabaseClient | null = isSupabaseConfigured
 
 /** Name of the public storage bucket used for covers and project media. */
 export const MEDIA_BUCKET = 'media'
+
+/**
+ * Private bucket for plans attached to a devis request. Visitors may write to
+ * it but never read it back — client drawings are confidential, so the admin
+ * dashboard opens them through short-lived signed URLs.
+ */
+export const DEVIS_BUCKET = 'devis-files'

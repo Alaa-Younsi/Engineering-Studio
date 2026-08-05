@@ -3,26 +3,24 @@ interface LogoFullProps {
   className?: string
 }
 
+/**
+ * The full brand lockup (mark + "Engineering Studio" wordmark) is a single
+ * supplied asset, not type we set ourselves — the wordmark is drawn, so
+ * rebuilding it in Bossa never matches. Widths come from the Figma: the navbar
+ * lockup measures 134×26 @1920, and the intro frame uses the larger step.
+ */
 const sizeMap = {
-  sm: { icon: 'h-7 w-7', text: 'text-[11px] leading-[1.15]' },
-  lg: { icon: 'h-16 w-16', text: 'text-[28px] leading-[1.1]' },
+  sm: 'w-[8.375rem]',  // 134px @1920 — navbar
+  lg: 'w-[12.25rem]',  // 196px @1920 — intro frame
 }
 
 export function LogoFull({ size = 'sm', className = '' }: LogoFullProps) {
-  const { icon, text } = sizeMap[size]
   return (
-    <div className={`flex items-center gap-2.5 ${className}`}>
-      <img
-        src="/Assets/logo/Logo-seul.png"
-        alt=""
-        className={`${icon} object-contain select-none flex-shrink-0`}
-        draggable={false}
-      />
-      <span className={`font-display font-bold text-white tracking-tight ${text}`}>
-        Engineering
-        <br />
-        Studio
-      </span>
-    </div>
+    <img
+      src="/Assets/logo/LOGO_PRINCIPAL.png"
+      alt="Engineering Studio"
+      className={`${sizeMap[size]} h-auto object-contain select-none ${className}`}
+      draggable={false}
+    />
   )
 }

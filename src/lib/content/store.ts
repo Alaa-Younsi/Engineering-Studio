@@ -1,6 +1,9 @@
-import { supabase, isSupabaseConfigured, MEDIA_BUCKET } from '../supabase'
-import type { Article, Project, Submission, SubmissionKind } from './types'
+import { supabase, isSupabaseConfigured, MEDIA_BUCKET, DEVIS_BUCKET } from '../supabase'
+import type {
+  Article, Project, Submission, SubmissionAttachment, SubmissionInput, SubmissionKind,
+} from './types'
 import { seedArticles, seedProjects } from './seed'
+import { validateAttachments, validateSubmission } from './validation'
 
 /**
  * Single data-access layer for all content. When Supabase is configured every
@@ -11,7 +14,7 @@ import { seedArticles, seedProjects } from './seed'
 
 export type ArticleInput = Omit<Article, 'id' | 'updatedAt'>
 export type ProjectInput = Omit<Project, 'id' | 'updatedAt'>
-export type SubmissionInput = Omit<Submission, 'id' | 'createdAt' | 'read'>
+export type { SubmissionInput }
 
 const LS_ARTICLES = 'es_articles'
 const LS_PROJECTS = 'es_projects'
@@ -273,6 +276,7 @@ interface SubmissionRow {
   email: string
   phone: string | null
   fields: Submission['fields']
+  attachments: Submission['attachments'] | null
   read: boolean
   created_at: string
 }
@@ -284,21 +288,32 @@ const toSubmission = (r: SubmissionRow): Submission => ({
   email: r.email ?? '',
   phone: r.phone ?? undefined,
   fields: r.fields ?? [],
+  attachments: r.attachments ?? [],
   read: r.read,
   createdAt: r.created_at,
 })
 
-/** Saves a form submission. Called from the public site by anonymous visitors. */
+/**
+ * Saves a form submission. Called from the public site by anonymous visitors,
+ * so everything is normalised and bounds-checked before it leaves the browser
+ * (the database enforces the same limits again — see supabase/schema.sql).
+ *
+ * Throws on failure. Callers must surface that to the visitor rather than
+ * reporting a success they cannot vouch for.
+ */
 export async function createSubmission(input: SubmissionInput): Promise<Submission> {
+  const clean = validateSubmission(input)
+
   if (isSupabaseConfigured && supabase) {
     const { data, error } = await supabase
       .from('submissions')
       .insert({
-        kind: input.kind,
-        name: input.name,
-        email: input.email,
-        phone: input.phone ?? null,
-        fields: input.fields,
+        kind: clean.kind,
+        name: clean.name,
+        email: clean.email,
+        phone: clean.phone ?? null,
+        fields: clean.fields,
+        attachments: clean.attachments ?? [],
       })
       .select('*')
       .single()
@@ -306,7 +321,7 @@ export async function createSubmission(input: SubmissionInput): Promise<Submissi
     return toSubmission(data as SubmissionRow)
   }
   const all = readLS<Submission>(LS_SUBMISSIONS, [])
-  const record: Submission = { ...input, id: newId(), read: false, createdAt: new Date().toISOString() }
+  const record: Submission = { ...clean, id: newId(), read: false, createdAt: new Date().toISOString() }
   writeLS(LS_SUBMISSIONS, [record, ...all])
   return record
 }
@@ -342,6 +357,49 @@ export async function deleteSubmission(id: string): Promise<void> {
   }
   const all = readLS<Submission>(LS_SUBMISSIONS, [])
   writeLS(LS_SUBMISSIONS, all.filter(s => s.id !== id))
+}
+
+/* ── Devis attachments ────────────────────────────────────────────────────── */
+
+/**
+ * Uploads the plans attached to a devis request into the private bucket and
+ * returns the descriptors to store on the submission.
+ *
+ * Anonymous visitors can write here, so the caller must have already run
+ * validateAttachments(); storage policies enforce the same ceiling server-side.
+ */
+export async function uploadAttachments(files: File[]): Promise<SubmissionAttachment[]> {
+  validateAttachments(files)
+  if (files.length === 0) return []
+
+  // Without a backend there is nowhere to put them; record the names so the
+  // request still carries the context, and let the studio ask for the files.
+  if (!isSupabaseConfigured || !supabase) {
+    return files.map(f => ({ name: f.name, path: '', size: f.size }))
+  }
+
+  const folder = newId()
+  const out: SubmissionAttachment[] = []
+  for (const file of files) {
+    const safe = file.name.replace(/[^\w.-]+/g, '_').slice(-80)
+    const path = `${folder}/${safe}`
+    const { error } = await supabase.storage.from(DEVIS_BUCKET).upload(path, file, {
+      cacheControl: '3600',
+      upsert: false,
+      contentType: file.type || 'application/octet-stream',
+    })
+    if (error) throw error
+    out.push({ name: file.name, path, size: file.size })
+  }
+  return out
+}
+
+/** Short-lived download link for one attachment. Admin-only in practice. */
+export async function attachmentUrl(path: string, expiresInSeconds = 300): Promise<string | null> {
+  if (!isSupabaseConfigured || !supabase || !path) return null
+  const { data, error } = await supabase.storage.from(DEVIS_BUCKET).createSignedUrl(path, expiresInSeconds)
+  if (error) return null
+  return data.signedUrl
 }
 
 /* ── Media upload ─────────────────────────────────────────────────────────── */

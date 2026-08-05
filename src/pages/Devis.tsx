@@ -1,7 +1,9 @@
 import { useState, useRef, useCallback } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useTransition } from '../context/TransitionContext'
-import { createSubmission } from '../lib/content/store'
+import { createSubmission, uploadAttachments } from '../lib/content/store'
+import { ATTACHMENTS, isEmail, isPhone, validateAttachments } from '../lib/content/validation'
+import { HoneypotField, submissionErrorMessage, useFormGuard } from '../components/FormGuard'
 import { LogoField } from '../components/LogoField'
 
 interface FormData {
@@ -46,8 +48,10 @@ export default function Devis() {
     contexte: '',
   })
   const fileRef = useRef<HTMLInputElement>(null)
-  const [fileName, setFileName] = useState('')
+  const [files, setFiles] = useState<File[]>([])
   const [saving, setSaving] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const guard = useFormGuard()
 
   const update = (key: keyof FormData, value: string) =>
     setForm(prev => ({ ...prev, [key]: value }))
@@ -60,18 +64,54 @@ export default function Devis() {
         : [...prev.typeEtudes, type],
     }))
 
-  const next = () => setStep(s => s + 1)
-  const back = () => setStep(s => s - 1)
+  /** What must be answered before each step may be left. */
+  const stepError = (s: number): string | null => {
+    switch (s) {
+      case 1: return form.societyType ? null : 'Choisissez le type de votre société.'
+      case 2: return form.raisonSociale.trim() ? null : 'Indiquez la raison sociale.'
+      case 3: return form.nom.trim() && form.prenom.trim() ? null : 'Indiquez vos nom et prénom.'
+      case 4:
+        if (!isEmail(form.email.trim())) return 'Saisissez un email valide.'
+        if (form.mobile && !isPhone(form.mobile)) return 'Saisissez un numéro de mobile valide.'
+        return null
+      case 5: return form.titreProjet.trim() ? null : 'Indiquez le titre du projet.'
+      case 6: return form.typeEtudes.length > 0 ? null : "Choisissez au moins un type d'études."
+      default: return null
+    }
+  }
+
+  const next = () => {
+    const problem = stepError(step)
+    if (problem) { setError(problem); return }
+    setError(null)
+    setStep(s => s + 1)
+  }
+  const back = () => { setError(null); setStep(s => s - 1) }
+
+  const pickFiles = (list: FileList | null) => {
+    const picked = Array.from(list ?? [])
+    try {
+      validateAttachments(picked)
+      setFiles(picked)
+      setError(null)
+    } catch (err) {
+      setError(submissionErrorMessage(err))
+    }
+  }
 
   const submit = async () => {
     if (saving) return
     setSaving(true)
+    setError(null)
     try {
+      guard.check()
+      const attachments = await uploadAttachments(files)
       await createSubmission({
         kind: 'devis',
         name: `${form.prenom} ${form.nom}`.trim(),
         email: form.email,
         phone: form.mobile,
+        attachments,
         fields: [
           { label: 'Type de société', value: form.societyType },
           { label: 'Raison sociale', value: form.raisonSociale },
@@ -84,14 +124,15 @@ export default function Devis() {
           { label: 'Lieu de projet', value: form.lieuProjet },
           { label: "Type d'études", value: form.typeEtudes.join(', ') },
           { label: 'Contexte', value: form.contexte },
-          { label: 'Fichier joint', value: fileName },
         ].filter(f => f.value),
       })
-    } catch {
-      // The visitor shouldn't be blocked by a backend hiccup; still show success.
+      guard.mark()
+      setStep(s => s + 1)
+    } catch (err) {
+      // Only advance to the confirmation once the request is genuinely stored.
+      setError(submissionErrorMessage(err))
     } finally {
       setSaving(false)
-      next()
     }
   }
 
@@ -128,6 +169,10 @@ export default function Devis() {
 
   function NavRow({ nextLabel = 'Suivant', onNext = next }: { nextLabel?: string; onNext?: () => void }) {
     return (
+      <>
+      {error && (
+        <p role="alert" className="font-body text-red-300 text-sm mt-6 leading-relaxed">{error}</p>
+      )}
       <div className="flex items-center justify-center gap-4 mt-8">
         <button
           onClick={back}
@@ -145,6 +190,7 @@ export default function Devis() {
           {nextLabel}
         </button>
       </div>
+      </>
     )
   }
 
@@ -153,6 +199,7 @@ export default function Devis() {
 
       {/* Spaced logo-coin background */}
       <LogoField />
+      <HoneypotField value={guard.honeypot} onChange={guard.setHoneypot} />
 
       {/* Centered card area */}
       <div className="relative z-10 min-h-screen flex items-center justify-center py-24 px-4">
@@ -312,20 +359,33 @@ export default function Devis() {
                 ref={fileRef}
                 type="file"
                 multiple
+                accept={ATTACHMENTS.extensions.map(e => `.${e}`).join(',')}
                 className="hidden"
-                onChange={e => setFileName(e.target.files?.[0]?.name ?? '')}
+                onChange={e => pickFiles(e.target.files)}
               />
               <button
                 onClick={() => fileRef.current?.click()}
                 className="flex items-center justify-between gap-3 mx-auto bg-black/40 border border-white/15 rounded-full px-5 py-3 text-sm text-white/50 hover:border-white/30 hover:text-white/70 transition-colors w-60"
               >
-                <span className="truncate">{fileName || 'Ajouter des fichiers'}</span>
+                <span className="truncate">
+                  {files.length === 0
+                    ? 'Ajouter des fichiers'
+                    : `${files.length} fichier${files.length > 1 ? 's' : ''}`}
+                </span>
                 <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
                 </svg>
               </button>
+              {files.length > 0 && (
+                <ul className="mt-4 flex flex-col gap-1 text-left mx-auto w-60">
+                  {files.map(f => (
+                    <li key={f.name} className="font-body text-white/40 text-xs truncate">{f.name}</li>
+                  ))}
+                </ul>
+              )}
               <p className="font-body text-white/30 text-xs mt-4 leading-relaxed">
-                Envoyez-nous les pièces ce soir.<br />Vous avez un retour sous 24h
+                PDF, DWG, DXF, RVT, IFC, images — {ATTACHMENTS.maxFiles} fichiers max.
+                <br />Vous avez un retour sous 24h
               </p>
               <NavRow nextLabel={saving ? 'Envoi…' : 'Obtenez un devis'} onNext={submit} />
             </motion.div>

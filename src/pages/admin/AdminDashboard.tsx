@@ -19,6 +19,7 @@ export default function AdminDashboard() {
   const [projects, setProjects] = useState<Project[]>([])
   const [submissions, setSubmissions] = useState<Submission[]>([])
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     Promise.all([listArticles(), listProjects(), listSubmissions()])
@@ -27,10 +28,31 @@ export default function AdminDashboard() {
         setProjects(p)
         setSubmissions(s)
       })
+      .catch((e: unknown) => setError(e instanceof Error ? e.message : 'Erreur inconnue'))
       .finally(() => setLoading(false))
   }, [])
 
   if (loading) return <Spinner />
+
+  // A dashboard that silently shows zero of everything looks identical to a
+  // quiet week, so a backend failure has to say so out loud.
+  if (error) {
+    return (
+      <div>
+        <h1 className="font-display font-bold text-white text-3xl">Tableau de bord</h1>
+        <div className="mt-8 rounded-2xl border border-red-500/30 bg-red-500/10 p-6">
+          <p className="font-body text-sm text-red-200">
+            Impossible de charger les données. Les demandes et le contenu ne sont pas accessibles.
+          </p>
+          <p className="font-body text-xs text-red-200/70 mt-2 break-words">{error}</p>
+          <p className="font-body text-xs text-secondary mt-4">
+            Vérifiez que le projet Supabase est actif et que <code>VITE_SUPABASE_URL</code> /{' '}
+            <code>VITE_SUPABASE_ANON_KEY</code> sont corrects, puis rechargez la page.
+          </p>
+        </div>
+      </div>
+    )
+  }
 
   const publishedArticles = articles.filter(a => a.published).length
   const publishedProjects = projects.filter(p => p.published).length

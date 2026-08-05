@@ -3,68 +3,76 @@ import { useTransition } from '../context/TransitionContext'
 
 interface Studio {
   label: string
+  logo: string
   to: string
-  /** Desktop position, measured from the Figma. */
+  /** Desktop position, measured from the Figma (1920×1080). */
   pos: { left: string; top: string }
 }
 
 const STUDIOS: Studio[] = [
-  { label: 'MEP', to: '/prestations/mep', pos: { left: '30.4%', top: '37.2%' } },
-  { label: 'TOPO', to: '/prestations/topo', pos: { left: '60.2%', top: '37.2%' } },
-  { label: 'VRD', to: '/prestations/vrd', pos: { left: '30.4%', top: '55.2%' } },
-  { label: 'BIM', to: '/prestations/bim', pos: { left: '60.2%', top: '55.2%' } },
+  { label: 'MEP Studio',  logo: '/Assets/logo/MEP_STUDIO-LOGO.png',  to: '/prestations/mep',  pos: { left: '30.406%', top: '37.222%' } },
+  { label: 'TOPO Studio', logo: '/Assets/logo/TOPO_STUDIO-LOGO.png', to: '/prestations/topo', pos: { left: '60.224%', top: '37.222%' } },
+  { label: 'VRD Studio',  logo: '/Assets/logo/VRD_STUDIO-LOGO.png',  to: '/prestations/vrd',  pos: { left: '30.365%', top: '55.213%' } },
+  { label: 'BIM Studio',  logo: '/Assets/logo/BIM_STUDIO-LOGO.png',  to: '/prestations/bim',  pos: { left: '60.286%', top: '55.213%' } },
 ]
 
 export default function Prestations() {
   const { startTransition } = useTransition()
   const nav = useCallback((path: string) => startTransition(path), [startTransition])
 
-  const desktopLabel =
-    'hidden md:block absolute font-display font-bold text-white leading-[0.82] tracking-tight ' +
-    'text-4xl lg:text-[3.375rem] hover:opacity-70 transition-opacity text-left whitespace-nowrap'
-
   return (
     <main className="fixed inset-0 overflow-hidden bg-bg">
-      {/* Logo mark — the two grey petals of the design, centred */}
+      {/*
+        The mark is the page. In the Figma it is 1655px across on a 1920×1080
+        frame — centred, and deliberately taller than the viewport so the four
+        petals bleed off the top and bottom edges.
+      */}
       <div
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none select-none"
-        style={{ width: 'min(102vh, 96vw)', height: 'min(102vh, 96vw)' }}
+        style={{ width: 'min(86.22vw, 153.28vh)', height: 'min(86.22vw, 153.28vh)' }}
       >
         <img
           src="/Assets/logo/Logo-seul.png"
           alt=""
           className="w-full h-full object-contain"
-          style={{ opacity: 0.16 }}
+          style={{ opacity: 0.1 }}
           draggable={false}
         />
       </div>
 
-      {/* Cross dividers */}
-      <div className="absolute inset-y-0 left-1/2 w-px bg-white/10 pointer-events-none" />
-      <div className="absolute inset-x-0 top-1/2 h-px bg-white/10 pointer-events-none" />
-
-      {/* Desktop: four labels clustered around the centre cross (positions from Figma) */}
+      {/* Desktop: the four wordmarks clustered around the centre of the mark. */}
       {STUDIOS.map(s => (
-        <button key={s.to} onClick={() => nav(s.to)} className={desktopLabel} style={s.pos}>
-          {s.label}
-          <br />
-          Studio
+        <button
+          key={s.to}
+          onClick={() => nav(s.to)}
+          aria-label={s.label}
+          className="hidden md:block absolute hover:opacity-70 transition-opacity"
+          style={s.pos}
+        >
+          <img
+            src={s.logo}
+            alt={s.label}
+            className="h-[5.08rem] w-auto object-contain select-none"
+            draggable={false}
+          />
         </button>
       ))}
 
-      {/* Mobile / tablet: each studio centred in its own quadrant of the cross */}
+      {/* Mobile / tablet: one wordmark centred in each quadrant. */}
       <div className="md:hidden absolute inset-0 grid grid-cols-2 grid-rows-2">
         {STUDIOS.map(s => (
           <button
             key={s.to}
             onClick={() => nav(s.to)}
-            className="flex items-center justify-center hover:opacity-70 transition-opacity"
+            aria-label={s.label}
+            className="flex items-center justify-center px-4 hover:opacity-70 transition-opacity"
           >
-            <span className="font-display font-bold text-white text-3xl sm:text-5xl leading-[0.9] tracking-tight text-center">
-              {s.label}
-              <br />
-              Studio
-            </span>
+            <img
+              src={s.logo}
+              alt={s.label}
+              className="w-full max-w-[10rem] object-contain select-none"
+              draggable={false}
+            />
           </button>
         ))}
       </div>

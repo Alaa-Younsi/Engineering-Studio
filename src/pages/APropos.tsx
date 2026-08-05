@@ -211,32 +211,33 @@ export default function APropos() {
 
       {/* ── Stats ────────────────────────────────────────────────────────── */}
       <section className="px-6 sm:px-10 lg:px-gutter py-44 lg:py-60 border-t border-white/10">
-        <RevealText className="max-w-content mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
+        <RevealText className="max-w-content mx-auto grid grid-cols-1 lg:grid-cols-[47.3125rem_1fr] gap-16 lg:gap-0 items-start">
           <div>
-            <p className="font-body text-secondary text-xs tracking-widest uppercase mb-6">Solutions globale en ingénierie</p>
-            <h2 className="font-display font-bold text-4xl sm:text-5xl lg:text-6xl text-white leading-tight mb-14">
+            <p className="font-body font-light text-secondary text-xs lg:text-d-lead mb-4 lg:mb-[0.5rem]">Solutions globale en ingénierie</p>
+            <h2 className="font-display font-medium text-4xl sm:text-5xl lg:text-d-h2 text-white leading-tight mb-14 lg:mb-[5.9375rem]">
               Etudes techniques<br />pluridisciplinaire
             </h2>
-            <div className="grid grid-cols-3 gap-8 sm:gap-12 max-w-lg">
-              {[['120+', 'Études totales'], ['60+', 'Clients Totales'], ['13+', "Années d'expérience"]].map(([num, label]) => (
+            {/* Figma puts the caption above the figure, on a ~200px column pitch. */}
+            <div className="grid grid-cols-3 gap-8 lg:gap-0 lg:grid-cols-[12.5rem_12.5rem_1fr] max-w-lg lg:max-w-none">
+              {[['120+', 'Études\ntotales'], ['60+', 'Clients\nTotales'], ['13+', "Années\nd'expérience"]].map(([num, label]) => (
                 <div key={label}>
-                  <p className="font-display font-bold text-4xl sm:text-5xl text-white leading-none mb-1">{num}</p>
-                  <p className="font-body text-secondary text-xs leading-snug">{label}</p>
+                  <p className="font-body font-light text-secondary text-xs lg:text-d-xs whitespace-pre-line mb-1 lg:mb-[0.75rem]">{label}</p>
+                  <p className="font-display font-bold text-4xl sm:text-5xl lg:text-d-num text-white">{num}</p>
                 </div>
               ))}
             </div>
           </div>
-          <div className="flex flex-col gap-6 lg:pt-10">
-            <p className="font-body text-secondary text-sm leading-relaxed">
+          <div className="flex flex-col gap-6 lg:gap-[1.625rem]">
+            <p className="font-body font-light text-secondary text-sm lg:text-d-body">
               ENGINEERING STUDIO propose des études techniques pluridisciplinaire présent dans les domaines d'ingénieries du CVC/MEP/CET et VRD, actif dans la transition vers l'ère du BIM.
             </p>
-            <p className="font-body text-secondary text-sm leading-relaxed">
+            <p className="font-body font-light text-secondary text-sm lg:text-d-body">
               Nous intervenons tant en conception qu'en dimensionnement, sur les ouvrages neufs ou réhabilités.
             </p>
-            <p className="font-body text-secondary text-sm leading-relaxed">
+            <p className="font-body font-light text-secondary text-sm lg:text-d-body">
               Nous répartissons notre activité entre les bâtiments d'habitation, les bâtiments fonctionnels, les bâtiments industriels mais aussi les ouvrages d'art, les infrastructures, les voiries et les aménagements extérieurs.
             </p>
-            <p className="font-body text-secondary text-sm leading-relaxed">
+            <p className="font-body font-light text-secondary text-sm lg:text-d-body">
               Forts d'expériences significatives, Nous vous accompagnons tout au long de vos projets et offrent des prestations conduites par le triax Coût – Délai – Qualité.
             </p>
           </div>
@@ -327,18 +328,18 @@ export default function APropos() {
         </RevealText>
       </section>
 
-      {/* ── Process — circle+number ───────────────────────────────────────── */}
+      {/* ── Process — number over a faint mark, caption straddling it ────── */}
       <section className="px-6 sm:px-10 lg:px-gutter py-48 lg:py-64 border-t border-white/10">
         <div className="max-w-content mx-auto text-center">
           <RevealText>
-            <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-5xl text-white leading-tight mb-6">
+            <h2 className="font-display font-medium text-3xl sm:text-4xl lg:text-d-h2 text-white leading-tight mb-6 lg:mb-[2.8125rem]">
               Comment se déroule<br />le processus d'étude
             </h2>
-            <p className="font-body text-secondary text-sm mb-16">
+            <p className="font-body font-light text-secondary text-sm lg:text-d-body mb-16 lg:mb-[2.375rem]">
               Nos prestations d'études sur l'ensemble des techniques de construction
             </p>
           </RevealText>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-10 max-w-3xl mx-auto">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-0 max-w-3xl lg:max-w-[71.4375rem] mx-auto">
             {[
               { num: '01', title: 'Planification\ndu projet' },
               { num: '02', title: 'Préparation\ndu plan' },
@@ -346,14 +347,21 @@ export default function APropos() {
               { num: '04', title: 'Remise\nau client' },
             ].map((p, i) => (
               <RevealText key={p.num} delay={i * 0.08}>
-                <div className="flex flex-col items-center gap-4 hover:opacity-70 transition-opacity">
-                  <div className="relative w-16 h-16 rounded-full bg-surface overflow-hidden flex-shrink-0">
-                    <img src="/Assets/logo/Logo-seul.png" alt="" className="absolute inset-0 w-full h-full object-contain" style={{ opacity: 0.35 }} draggable={false} />
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <span className="font-display font-bold text-xl text-white leading-none">{p.num}</span>
-                    </div>
-                  </div>
-                  <p className="font-display font-bold text-white text-center text-xs sm:text-sm whitespace-pre-line">{p.title}</p>
+                <div className="relative flex flex-col items-center hover:opacity-70 transition-opacity">
+                  {/* The mark sits behind both the number and the caption. */}
+                  <img
+                    src="/Assets/logo/Logo-seul.png"
+                    alt=""
+                    className="absolute top-0 left-1/2 -translate-x-1/2 w-16 h-16 lg:w-[8.8125rem] lg:h-[8.875rem] object-contain pointer-events-none"
+                    style={{ opacity: 0.1 }}
+                    draggable={false}
+                  />
+                  <span className="relative font-display font-bold text-white text-xl lg:text-d-num mt-4 lg:mt-[1.375rem]">
+                    {p.num}
+                  </span>
+                  <p className="relative font-display font-medium text-white text-center text-xs sm:text-sm lg:text-d-lead whitespace-pre-line mt-3 lg:mt-[1.125rem]">
+                    {p.title}
+                  </p>
                 </div>
               </RevealText>
             ))}
@@ -438,22 +446,37 @@ export default function APropos() {
       </section>
 
       {/* ── Software — card grid ──────────────────────────────────────────── */}
-      <section className="border-t border-white/10 px-6 sm:px-10 lg:px-gutter py-44 lg:py-60">
-        <div className="max-w-content mx-auto">
+      {/* Wider than the usual content column: the Figma runs this grid to a
+          140px page margin (1640px of cards) rather than the 216px gutter. */}
+      <section className="border-t border-white/10 px-6 sm:px-10 lg:px-[8.75rem] py-44 lg:py-60">
+        <div className="max-w-none lg:max-w-[102.5rem] mx-auto">
           <RevealText>
-            <h2 className="font-display font-bold text-2xl sm:text-3xl lg:text-4xl text-white text-left leading-snug max-w-[32ch] ml-auto mb-16">
+            <h2 className="font-display font-medium text-2xl sm:text-3xl lg:text-d-h2 text-white text-left leading-snug lg:leading-[4.5625rem] max-w-[32ch] lg:max-w-[24ch] ml-auto mb-16 lg:mb-[3.5rem]">
               Utilisés les logiciels d'ingénierie couvrent la conception, calculs, simulation et la gestion de projets
             </h2>
           </RevealText>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-            {softwareItems.map((sw, i) => (
-              <RevealText key={`${sw.name}-${sw.category}`} delay={Math.min(i, 6) * 0.08}>
-                <div className="bg-[#1a1a1a] rounded-2xl p-5 h-full flex flex-col gap-8 hover:opacity-70 transition-opacity">
-                  <p className="font-display font-bold text-white text-base leading-snug">{sw.name}</p>
-                  <p className="font-body text-secondary text-xs">{sw.category}</p>
-                </div>
-              </RevealText>
-            ))}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 lg:gap-x-[2.8125rem] lg:gap-y-[2.875rem]">
+            {softwareItems.map((sw, i) => {
+              const [brand, ...rest] = sw.name.split(' ')
+              return (
+                <RevealText key={`${sw.name}-${sw.category}`} delay={Math.min(i, 6) * 0.08}>
+                  <div className="
+                    bg-surface rounded-2xl lg:rounded-[1.875rem]
+                    h-full lg:min-h-[14.875rem]
+                    px-5 lg:px-[1.8125rem] pt-6 lg:pt-[5.0625rem] pb-5 lg:pb-[1.8125rem]
+                    flex flex-col hover:opacity-70 transition-opacity
+                  ">
+                    <p className="font-display font-bold text-white text-base lg:text-d-card">
+                      {brand}
+                      {rest.length > 0 && <><br />{rest.join(' ')}</>}
+                    </p>
+                    <p className="font-body font-light text-secondary text-xs lg:text-d-sm mt-auto pt-8 lg:pt-[4.3125rem]">
+                      {sw.category}
+                    </p>
+                  </div>
+                </RevealText>
+              )
+            })}
           </div>
         </div>
       </section>
