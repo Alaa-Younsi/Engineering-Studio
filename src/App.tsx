@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { MenuProvider } from './context/MenuContext'
 import { TransitionProvider } from './context/TransitionContext'
 import { AuthProvider } from './context/AuthContext'
-import { Navbar } from './components/Navbar'
+import { SiteHeader } from './components/site/SiteHeader'
 import { MenuOverlay } from './components/MenuOverlay'
 import { PageTransition } from './components/PageTransition'
 import { IntroSequence } from './components/IntroSequence'
@@ -41,7 +41,7 @@ function PublicApp() {
       <TransitionProvider>
         <ScrollToTop />
         <IntroSequence />
-        <Navbar />
+        <SiteHeader />
         <MenuOverlay />
         <PageTransition />
         <Suspense fallback={null}>

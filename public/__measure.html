@@ -1,0 +1,25 @@
+<!doctype html><meta charset="utf-8">
+<style>
+@font-face{font-family:Bossa;src:url('/Assets/fonts/Bossa-Light-4.ttf') format('truetype');font-weight:300;font-style:normal;}
+@font-face{font-family:Bossa;src:url('/Assets/fonts/Bossa-Regular-1.ttf') format('truetype');font-weight:400;font-style:normal;}
+@font-face{font-family:Bossa;src:url('/Assets/fonts/Bossa-Medium-4.ttf') format('truetype');font-weight:500;font-style:normal;}
+@font-face{font-family:Bossa;src:url('/Assets/fonts/Bossa-Bold-4.ttf') format('truetype');font-weight:700;font-style:normal;}
+@font-face{font-family:Bossa;src:url('/Assets/fonts/Bossa-Black-4.ttf') format('truetype');font-weight:900;font-style:normal;}
+body{margin:0;background:#000;color:#fff}
+span{font-family:Bossa;white-space:pre;display:inline-block}
+</style>
+<div id="host"></div>
+<script>
+window.SAMPLES = [{"id":"hero-l1","w":500,"size":90,"text":"L'excellence dans","target":823.5},{"id":"hero-l3","w":500,"size":90,"text":"technique en BTP","target":843},{"id":"mep-h1","w":500,"size":69,"text":"Installations","target":441},{"id":"mep-h2","w":500,"size":69,"text":"MEP systèmes","target":544},{"id":"body-1","w":400,"size":20,"text":"Nous réalisons les études techniques des domaines CVC (chauffage,","target":728},{"id":"hero-b1","w":400,"size":20,"text":"ENGINEERING STUDIO, intervient sur tout type de projets et","target":659.5},{"id":"foot-lead","w":400,"size":24,"text":"Ingénierie du bâtiment","target":265},{"id":"apropos","w":400,"size":24,"text":"À propos","target":110.5},{"id":"copy","w":400,"size":16,"text":"Copyright © 2026 tous droits réservés. Design par le propriétaire Engineering Studio","target":680},{"id":"pill","w":400,"size":14,"text":"Obtenez un devis","target":0}]
+window.measure = (ls) => window.SAMPLES.map(s => {
+  const el = document.createElement('span')
+  el.style.fontSize = s.size + 'px'
+  el.style.fontWeight = s.w
+  el.style.letterSpacing = ls === 'auto' ? '0px' : ls + 'px'
+  el.textContent = s.text
+  document.getElementById('host').appendChild(el)
+  const r = el.getBoundingClientRect()
+  el.remove()
+  return { id: s.id, size: s.size, target: s.target, got: +r.width.toFixed(2) }
+})
+</script>

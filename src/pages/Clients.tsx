@@ -1,13 +1,35 @@
-import { useCallback, useRef } from 'react'
-import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion'
-import { CAPTURE } from '../lib/capture'
+import { useCallback } from 'react'
+import { Box, Frame, Txt } from '../design/canvas'
+import { CircleButton, CircleImage, Watermark } from '../components/site/atoms'
+import { SiteFooter } from '../components/site/SiteFooter'
+import { LogoMark } from '../brand/vectors'
+import { CLIENT_CARDS, TESTIMONIALS } from '../data/clients'
 import { useTransition } from '../context/TransitionContext'
-import { LogoButton } from '../components/LogoButton'
-import { Footer } from '../components/Footer'
-import { HeroShape } from '../components/HeroShape'
-import { Reveal, RevealText } from '../components/Reveal'
 
-const sectors = [
+/**
+ * Clients — Figma frame 1920 x 12960.
+ *
+ *   496      hero title
+ *   1411     "Nos clients" + the intro column
+ *   2583     "Des missions variées …"
+ *   3577.6   "Notre engagement envers nos clients" + three ringed statements
+ *   4707     "Secteurs d'activité" + the nine-item list
+ *   5758     "Voici quelques exemples …" + photo
+ *   6618     the 5 x 9 client grid
+ *   10056    "Un grand merci …"
+ *   11061.8  testimonials track
+ *   12012    footer
+ */
+const CANVAS_H = 12960
+
+/** Three ringed statements at y 3837.6 — ring x, then the label block. */
+const ENGAGEMENTS = [
+  { ring: 393, lx: 313, label: 'Nous sommes honorés\nqu’ils nous choisissent' },
+  { ring: 894, lx: 813, label: 'Notre client est notre\npartenaire. Quant il\nprospère, nous faisons\nde même' },
+  { ring: 1395, lx: 1323, label: 'Tout revient à… notre\nengagement envers\nnos clients!' },
+]
+
+const SECTORS = [
   "Bureaux d'études",
   'Entreprises de réalisation',
   'Bailleurs sociaux',
@@ -19,358 +41,135 @@ const sectors = [
   'Structure hospitalières',
 ]
 
-const engagements = [
-  'Nous sommes honorés qu’ils nous choisissent',
-  'Notre client est notre partenaire. Quant il prospère, nous faisons de même',
-  'Tout revient à… notre engagement envers nos clients !',
-]
-
-interface Client {
-  name: string
-  name2: string
-  category: string
-  number: string
-}
-
-const clients: Client[] = [
-  { name: 'Bouchellouga', name2: 'Chawki', category: 'Architecture', number: '21' },
-  { name: 'Best', name2: 'Concept', category: 'Architecture', number: '16' },
-  { name: 'ATM', name2: 'Architecture', category: 'Architecture', number: '16' },
-  { name: 'Kebab', name2: 'Abdeslem', category: 'Architecture', number: '16' },
-  { name: 'Saci Hadef', name2: 'Mohamed', category: 'Architecture', number: '21' },
-  { name: 'Nour El Afak', name2: 'Lilomrane', category: 'Architecture', number: '16' },
-  { name: 'Biodattes', name2: 'Algérie', category: 'Industrie', number: '07' },
-  { name: 'Hazi', name2: 'Bachir', category: 'Architecture', number: '19' },
-  { name: 'Salah', name2: 'Mourdi', category: 'Travaux publics', number: '21' },
-  { name: 'BET', name2: 'CAL', category: 'Architecture', number: '16' },
-  { name: 'Nour El Afak', name2: 'Lilomrane', category: 'Immobilière', number: '16' },
-  { name: 'Bahlouli', name2: 'F.', category: 'Architecture', number: '19' },
-  { name: 'AL ELEC', name2: 'Spa', category: 'Entreprise', number: '16' },
-  { name: 'AZ', name2: 'Architects', category: 'Travaux publics', number: '16' },
-  { name: 'Benmahmoud', name2: 'S.', category: 'Architecture', number: '19' },
-  { name: 'ACTARIS', name2: 'Sarl', category: 'Industrie', number: '16' },
-  { name: 'Wassim', name2: 'Sayeh', category: 'Architecture', number: '19' },
-  { name: 'Abdoun', name2: 'Radhwane', category: 'Architecture', number: '26' },
-  { name: 'Bendjama', name2: 'Chafik', category: 'Architecture', number: '21' },
-  { name: 'Boucherit', name2: 'Othmane', category: 'Architecture', number: '16' },
-  { name: 'BETA', name2: 'HMD', category: 'Architecture', number: '30' },
-  { name: 'Eurl', name2: 'BAUS', category: 'Architecture', number: '16' },
-  { name: 'Archi', name2: 'Gate', category: 'Architecture', number: '19' },
-  { name: 'Inter', name2: 'Plan', category: 'Architecture', number: '19' },
-  { name: 'Archi', name2: 'Box', category: 'Architecture', number: '16' },
-  { name: 'Baret', name2: 'Architectes', category: 'Architecture', number: '19' },
-  { name: 'Médina', name2: 'Architecture', category: 'Architecture', number: '19' },
-  { name: 'Agrodiv', name2: 'Spa', category: 'Industrie', number: '19' },
-  { name: 'Manar', name2: 'El Imara', category: 'Architecture', number: '19' },
-  { name: 'Rezzoug', name2: 'Lamine', category: 'Architecture', number: '09' },
-  { name: 'Debacha', name2: 'Badis', category: 'Architecture', number: '19' },
-  { name: 'Chettab', name2: 'Nabil', category: 'Architecture', number: '19' },
-  { name: 'Cons Belmas', name2: 'Sarl', category: 'Entreprise', number: '34' },
-  { name: 'Boumediene Consultant', name2: 'Engineering', category: 'Génie civil', number: '16' },
-  { name: 'Bougarne', name2: 'Adel', category: 'Architecture', number: '19' },
-  { name: 'Charm', name2: 'Design', category: 'Architecture', number: '23' },
-  { name: 'TT', name2: 'Architects', category: 'Architecture', number: '23' },
-  { name: 'Languer', name2: 'Mostapha', category: 'Architecture', number: '19' },
-  { name: 'Ouaar', name2: 'Mohamed', category: 'Architecture', number: '21' },
-  { name: 'Sarl', name2: 'S3ec', category: 'Entreprise', number: '16' },
-  { name: 'Laghouag', name2: 'S.', category: 'Architecture', number: '19' },
-  { name: 'RKM', name2: 'Studio', category: 'Architecture', number: '16' },
-]
-
-const testimonials = [
-  {
-    name: 'TT',
-    name2: 'Architects',
-    category: 'Architecture',
-    text: "J'apprécie particulièrement de travailler avec ENGINEERING STUDIO pour leur sérieux, leur rigueur et leur réactivité. Les dossiers études sont de grandes qualités avec rarement de problèmes en phase exécution.",
-  },
-  {
-    name: 'Best',
-    name2: 'Concept',
-    category: 'Architecture',
-    text: "Concevoir en équipe dans un dialogue permanent, s'impliquer résolument dans le suivi des projets et des chantiers, faire avec justesse et passion. Autant de valeurs partagées qui font de ENGINEERING STUDIO.",
-  },
-  {
-    name: 'Kebab',
-    name2: 'Abdslem',
-    category: 'Architecture',
-    text: "Une équipe Jeune, dynamique et volontaire toujours disponible. Leurs dossiers techniques sont d'une qualité rare. Sur le chantier, les entreprises sont vraiment bien pilotées.",
-  },
-  {
-    name: 'Manar',
-    name2: 'El Imara',
-    category: 'Architecture',
-    text: "Leur réactivité et conseils précieux lors de nos études, nous permettent d'être réactifs et pourvoyeurs de solutions techniques innovantes. Leurs plans et bilans thermiques sont toujours d'une grande précision.",
-  },
-  {
-    name: 'Baret',
-    name2: 'Architectes',
-    category: 'Architecture',
-    text: "Leur expérience pluridisciplinaire (CVC/CET et VRD) nous permet de pouvoir répondre favorablement et sans retenues sur les dossiers complets de nos clients.",
-  },
-]
-
-/**
- * Testimonials run as a continuous right-to-left marquee. The list is rendered
- * twice and the track is translated by exactly -50%; because every card carries
- * its own trailing margin (rather than the row using `gap`), the halves tile
- * seamlessly and the loop has no visible seam.
- */
-function TestimonialsSection() {
-  const reduceMotion = useReducedMotion()
-  const still = CAPTURE || reduceMotion
-
-  const card = (t: (typeof testimonials)[number], key: string) => (
-    <div
-      key={key}
-      className="
-        flex-shrink-0 w-[19rem] lg:w-[30rem] lg:h-[21.375rem]
-        mr-4 lg:mr-[1.5rem] bg-surface rounded-2xl lg:rounded-[1.875rem]
-        px-7 lg:px-[3.125rem] pt-7 lg:pt-[2.5rem] pb-7 lg:pb-[2.5rem]
-        flex flex-col
-      "
-    >
-      <img
-        src="/Assets/logo/Logo-seul.png"
-        alt=""
-        className="w-6 h-6 lg:w-[2rem] lg:h-[2rem] object-contain select-none"
-        draggable={false}
-      />
-      <p className="font-body font-light text-secondary text-sm lg:text-d-sm mt-5 lg:mt-[1.375rem] lg:max-w-[23.75rem]">
-        {t.text}
-      </p>
-      <div className="mt-auto pt-8">
-        <p className="font-display font-bold text-white text-sm lg:text-[1.25rem] lg:leading-[1.25rem]">
-          {t.name}
-          <br />
-          {t.name2}
-        </p>
-        <p className="font-body font-light text-secondary text-xs lg:text-d-xxs mt-1 lg:mt-[0.4375rem]">
-          {t.category}
-        </p>
-      </div>
-    </div>
-  )
-
-  return (
-    <section className="pl-6 sm:pl-10 lg:pl-gutter py-52 lg:py-64 border-t border-white/10 overflow-hidden">
-      <RevealText>
-        <p className="font-body font-light text-secondary text-sm lg:text-d-lead">Témoignages</p>
-        <h2 className="font-display font-medium text-2xl sm:text-3xl lg:text-d-h3 text-white mb-14 lg:mb-[2.75rem]">
-          Écoutez ce que nos clients ont à dire
-        </h2>
-      </RevealText>
-
-      {still ? (
-        <div className="flex overflow-hidden">{testimonials.map(t => card(t, t.name))}</div>
-      ) : (
-        <motion.div
-          className="flex w-max"
-          animate={{ x: ['0%', '-50%'] }}
-          transition={{ duration: testimonials.length * 8, ease: 'linear', repeat: Infinity }}
-        >
-          {testimonials.map(t => card(t, `a-${t.name}`))}
-          {testimonials.map(t => card(t, `b-${t.name}`))}
-        </motion.div>
-      )}
-    </section>
-  )
-}
-
 export default function Clients() {
   const { startTransition } = useTransition()
-  const nav = useCallback((path: string) => startTransition(path), [startTransition])
-
-  const heroRef = useRef<HTMLElement>(null)
-  const { scrollYProgress: heroProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] })
-  const heroLogoY = useTransform(heroProgress, [0, 1], ['0px', '-80px'])
-
-  const midRef = useRef<HTMLDivElement>(null)
-  const { scrollYProgress: midProgress } = useScroll({ target: midRef, offset: ['start end', 'end start'] })
-  const midLogoY = useTransform(midProgress, [0, 1], ['40px', '-40px'])
+  const nav = useCallback((p: string) => startTransition(p), [startTransition])
 
   return (
-    <main className="min-h-screen bg-bg">
+    <Frame h={CANVAS_H}>
+      <Watermark x={1067.4} y={168} size={744.6} />
+      <Txt t="displayTight" x={215} y={496}>Clients</Txt>
 
-      {/* ── Hero ────────────────────────────────────────────────────────────── */}
-      <section ref={heroRef} className="relative h-screen flex items-center overflow-hidden">
-        <div className="px-6 sm:px-10 lg:px-gutter relative z-10">
-          <h1 className="font-display font-bold text-[2.5rem] sm:text-6xl lg:text-[5.375rem] text-white leading-none lg:leading-none">
-            Clients
-          </h1>
+      {/* ── Intro ─────────────────────────────────────────────────────────── */}
+      <Txt t="leadLight" x={219} y={1411}>Nos clients</Txt>
+      <Txt t="h2" x={219} y={1446}>
+        {'Découvrez nos\nclients et comment\nnous collaborons\navec eux'}
+      </Txt>
+      <Txt t="bodyLight" x={973} y={1410} dim>
+        {`Nous travaillons principalement avec les installateurs, architectes,
+bureaux d’études, entreprises générales, sous-traitants, propriétaires
+industrielles, maîtres d’ouvrages, promoteurs.
+
+Quel que soit votre secteur d’activité, nous pouvons vous aider à réussir
+vos projets, même les plus complexes. Le tout en répondant aux différents
+enjeux liés au délai, au coût et à la qualité.
+
+Vous pouvez compter sur nous pour vous assister à chaque étape de
+votre projet d’études. De la conception à le dimensionnement, nous vous
+garantissons des études de qualité, que ce soit pour un projet neuve ou
+une rénovation. Nous possédons les meilleurs moyens et logiciels pour
+vous fournir des prestations de qualité.`}
+      </Txt>
+      <CircleButton x={219} y={1784} label="Nous contacter" onClick={() => nav('/contact')} />
+
+      {/* ── Missions variées ──────────────────────────────────────────────── */}
+      <Txt t="h2" centerX y={2583} align="center">
+        {'Des missions variées et des solutions \nadaptées à chaque client'}
+      </Txt>
+      <Txt t="bodyLight" centerX y={2774} align="center" dim>
+        {`Avec ENGINEERING STUDIO à vos côtés, vous bénéficiez des meilleures solutions en matière
+d'études techniques (réseaux extérieurs et réseaux intérieurs).`}
+      </Txt>
+
+      {/* ── Engagement ────────────────────────────────────────────────────── */}
+      <Txt t="h2" centerX y={3577.6} align="center">Notre engagement envers nos clients</Txt>
+      <Txt t="bodyLight" centerX y={3695.6} align="center" dim>
+        {`Notre engagement envers nos clients de partout en est un par lequel nous prenons réellement conscience que ce sont eux qui
+nous fournissent du travail et des avantages. Ces clients ont la possibilité de s’approvisionner à de nombreuses autres sources
+et nous sommes honorés qu’ils nous choisissent. Leurs besoins sont simples. Ils veulent que l'étude soit livrée tel que promis
+et que la qualité offre la performance prévue.`}
+      </Txt>
+      {ENGAGEMENTS.map((e) => (
+        <div key={e.ring}>
+          <Watermark x={e.ring} y={3837.6} size={141.4} />
+          <Txt t="leadMediumTight" x={e.lx} y={3882.4} align="center" dim>{e.label}</Txt>
         </div>
-        <HeroShape y={heroLogoY} />
-      </section>
+      ))}
 
-      {/* ── Intro ───────────────────────────────────────────────────────────── */}
-      <section className="px-6 sm:px-10 lg:px-gutter py-52 lg:py-64 border-t border-white/10">
-        <RevealText className="max-w-content mx-auto grid grid-cols-1 lg:grid-cols-[47.3125rem_1fr] gap-16 lg:gap-0 items-start">
-          <div>
-            <p className="font-body font-light text-secondary text-xs lg:text-d-lead mb-4 lg:mb-[0.5rem]">Nos clients</p>
-            <h2 className="font-display font-medium text-3xl sm:text-4xl lg:text-d-h2 text-white leading-tight lg:leading-[4.5625rem] lg:max-w-[17ch]">
-              Découvrez nos clients et comment nous collaborons avec eux
-            </h2>
-            <div className="mt-10 lg:mt-[5.5rem]">
-              <LogoButton onClick={() => nav('/contact')}>Travaillons ensemble</LogoButton>
-            </div>
-          </div>
-          <div className="flex flex-col gap-6 lg:gap-[1.625rem]">
-            <p className="font-body font-light text-secondary text-sm lg:text-d-body">
-              Nous travaillons principalement avec les installateurs, architectes, bureaux d'études, entreprises générales, sous-traitants, propriétaires industrielles, maîtres d'ouvrages, promoteurs.
-            </p>
-            <p className="font-body font-light text-secondary text-sm lg:text-d-body">
-              Quel que soit votre secteur d'activité, nous pouvons vous aider à réussir vos projets, même les plus complexes. Le tout en répondant aux différents enjeux liés au délai, au coût et à la qualité.
-            </p>
-            <p className="font-body font-light text-secondary text-sm lg:text-d-body">
-              Vous pouvez compter sur nous pour vous assister à chaque étape de votre projet d'études. De la conception à le dimensionnement, nous vous garantissons des études de qualité, que ce soit pour un projet neuve ou une rénovation. Nous possédons les meilleurs moyens et logiciels pour vous fournir des prestations de qualité.
-            </p>
-          </div>
-        </RevealText>
-      </section>
+      {/* ── Secteurs d'activité ───────────────────────────────────────────── */}
+      <Txt t="leadLight" x={219} y={4707}>Qui sont nos clients ?</Txt>
+      <Txt t="h2" x={219} y={4741}>Secteurs d’activité</Txt>
+      <Txt t="bodyLight" x={219} y={4859} dim>
+        {`ENGINEERING STUDIO intervient en Algérie et est spécialisé dans les études
+techniques d'ingénierie (réseaux extérieurs et réseaux intérieurs), également
+missionné pour des travaux topographiques.
+Nos clients proviennent de secteurs d’activité très variés.
+Cette diversité est une richesse qui nécessite une capacité d’adaptabilité et
+nous permet sans cesse de repousser nos limites.`}
+      </Txt>
+      {SECTORS.map((s, i) => (
+        <Txt key={s} t="lead" x={1224} y={4715 + i * 34}>{s}</Txt>
+      ))}
 
-      {/* ── Mission statement ───────────────────────────────────────────────── */}
-      <section className="px-6 sm:px-10 lg:px-gutter py-60 lg:py-80 bg-surface">
-        <RevealText className="max-w-content mx-auto text-center">
-          <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-5xl text-white leading-tight max-w-[32ch] mx-auto">
-            Des missions variées et des solutions adaptées à chaque client
-          </h2>
-          <p className="font-body text-secondary text-sm mt-8 max-w-[62ch] mx-auto leading-relaxed">
-            Avec ENGINEERING STUDIO à vos côtés, vous bénéficiez des meilleures solutions en matière d'études techniques (réseaux extérieurs et réseaux intérieurs).
-          </p>
-        </RevealText>
-      </section>
+      {/* ── Exemples de clients ───────────────────────────────────────────── */}
+      <Txt t="h2" x={217} y={5758}>
+        {'Voici quelques\nexemples de clients\navec lesquels nous\navons eu le plaisir\nde collaborer'}
+      </Txt>
+      <CircleImage x={1070} y={5624} size={633} src="/Assets/images/Clients-Clients.png" alt="Nos clients" />
 
-      {/* ── Engagement ──────────────────────────────────────────────────────── */}
-      <section className="px-6 sm:px-10 lg:px-gutter py-52 lg:py-64 border-t border-white/10">
-        <div className="max-w-content mx-auto">
-          <RevealText className="text-center">
-            <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-5xl text-white leading-tight mb-8">
-              Notre engagement envers nos clients
-            </h2>
-            <p className="font-body text-secondary text-sm leading-relaxed max-w-[90ch] mx-auto mb-16">
-              Notre engagement envers nos clients de partout en est un par lequel nous prenons réellement conscience que ce sont eux qui nous fournissent du travail et des avantages. Ces clients ont la possibilité de s'approvisionner à de nombreuses autres sources et nous sommes honorés qu'ils nous choisissent. Leurs besoins sont simples. Ils veulent que l'étude soit livrée tel que promis et que la qualité offre la performance prévue.
-            </p>
-          </RevealText>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-12">
-            {engagements.map((e, i) => (
-              <RevealText key={e} delay={i * 0.1}>
-                <div className="relative flex items-center justify-center px-4 py-8 hover:opacity-70 transition-opacity">
-                  <img
-                    src="/Assets/logo/Logo-seul.png"
-                    alt=""
-                    className="absolute w-32 h-32 object-contain pointer-events-none select-none"
-                    style={{ opacity: 0.12 }}
-                    draggable={false}
-                  />
-                  <p className="relative z-10 font-display font-bold text-white text-center text-lg leading-snug max-w-[22ch]">
-                    {e}
-                  </p>
-                </div>
-              </RevealText>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── Sectors ─────────────────────────────────────────────────────────── */}
-      <section className="px-6 sm:px-10 lg:px-gutter py-52 lg:py-64 border-t border-white/10">
-        {/* The Figma starts the sector list at x=1224 — a good bit right of a
-            plain 50/50 split, which is what made this block look off-centre. */}
-        <RevealText className="max-w-content mx-auto grid grid-cols-1 lg:grid-cols-[63rem_1fr] gap-16 lg:gap-0">
-          <div>
-            <p className="font-body font-light text-secondary text-sm lg:text-d-lead mb-3 lg:mb-[0.5rem]">Qui sont nos clients&nbsp;?</p>
-            <h2 className="font-display font-medium text-4xl sm:text-5xl lg:text-d-h2 text-white leading-tight mb-10 lg:mb-[2.8125rem]">
-              Secteurs d'activité
-            </h2>
-            <p className="font-body font-light text-secondary text-sm lg:text-d-body lg:max-w-[40rem]">
-              ENGINEERING STUDIO intervient en Algérie et est spécialisé dans les études techniques d'ingénierie (réseaux extérieurs et réseaux intérieurs), également missionné pour des travaux topographiques.
-              <br />
-              Nos clients proviennent de secteurs d'activité très variés.
-              <br />
-              Cette diversité est une richesse qui nécessite une capacité d'adaptabilité et nous permet sans cesse de repousser nos limites.
-            </p>
-          </div>
-          <div className="flex flex-col lg:pt-[0.5rem]">
-            {sectors.map(s => (
-              <p key={s} className="font-display font-normal text-white text-xl sm:text-2xl lg:text-d-lead leading-relaxed lg:leading-[2.125rem] whitespace-nowrap">
-                {s}
-              </p>
-            ))}
-          </div>
-        </RevealText>
-      </section>
-
-      {/* ── Client examples intro ───────────────────────────────────────────── */}
-      <section className="px-6 sm:px-10 lg:px-gutter py-52 lg:py-64 border-t border-white/10">
-        <div className="max-w-content mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          <RevealText>
-            <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-[2.6rem] text-white leading-tight lg:leading-tight">
-              Voici quelques exemples de clients avec lesquels nous avons eu le plaisir de collaborer
-            </h2>
-          </RevealText>
-          <Reveal direction="right">
-            <div ref={midRef} className="flex items-center justify-center">
-              <motion.div
-                style={{ y: midLogoY, width: 'min(55vw, 300px)', height: 'min(55vw, 300px)' }}
-                className="rounded-full overflow-hidden border border-white/10 hover:opacity-80 transition-opacity"
-              >
-                <img
-                  src="/Assets/images/Clients-Clients.png"
-                  alt="Nos clients"
-                  className="w-full h-full object-cover"
-                />
-              </motion.div>
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* ── Client cards ────────────────────────────────────────────────────── */}
-      <section className="px-6 sm:px-10 lg:px-gutter py-52 lg:py-64 border-t border-white/10">
-        <div className="max-w-content mx-auto grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-5">
-          {clients.map((c, i) => (
-            <RevealText key={`${c.name}-${c.name2}-${i}`} delay={Math.min(i % 5, 4) * 0.08}>
-              <div className="relative h-full min-h-[200px] overflow-hidden rounded-2xl bg-gradient-to-br from-[#1f1f1f] to-[#111111] p-6 flex flex-col justify-between hover:opacity-80 transition-opacity">
-                <p className="relative z-10 font-display font-bold text-white text-sm leading-tight">
-                  {c.name}
-                  <br />
-                  {c.name2}
-                </p>
-                <p className="relative z-10 font-body text-secondary text-xs">{c.category}</p>
-                <span
-                  aria-hidden
-                  className="absolute -right-2 -bottom-3 font-display font-bold text-white/[0.06] text-7xl leading-none select-none"
-                >
-                  {c.number}
-                </span>
-              </div>
-            </RevealText>
+      {/* ── Client grid ───────────────────────────────────────────────────── */}
+      {CLIENT_CARDS.map((c) => (
+        <Box key={`${c.x}-${c.y}`} x={c.x} y={c.y} w={c.w} h={c.h} bg="#1a1a1a" radius={30} clip>
+          {c.lines.map((l) => (
+            <Txt key={l.t} t={{ weight: 700, size: l.fs, ls: -0.0405 }} x={l.x} y={l.y}>{l.t}</Txt>
           ))}
-        </div>
-      </section>
+          <Txt t="cardMeta" x={c.sx} y={c.sy} opacity={0.5}>{c.sector}</Txt>
+          <Txt
+            t={{ weight: 700, size: 90, lh: 109, ls: -0.0405 }}
+            x={c.nx}
+            y={c.ny}
+            opacity={0.05}
+          >
+            {c.num}
+          </Txt>
+        </Box>
+      ))}
 
-      {/* ── Thank you ───────────────────────────────────────────────────────── */}
-      <section className="px-6 sm:px-10 lg:px-gutter py-60 lg:py-80 bg-surface text-center">
-        <RevealText className="max-w-content mx-auto flex flex-col items-center">
-          <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-5xl text-white leading-tight max-w-[28ch] mx-auto mb-8">
-            Un grand merci à tous nos clients pour leur fidélité et leur confiance
-          </h2>
-          <p className="font-body text-secondary text-sm leading-relaxed max-w-[70ch] mx-auto mb-12">
-            Nous tenons à remercier tous nos nouveaux clients qui nous ont confié la réalisation de leurs projets, ainsi que tous les clients qui sont fidèles aux ENGINEERING STUDIO depuis de nombreuses années.
-          </p>
-          <img
-            src="/Assets/logo/Logo-seul.png"
-            alt=""
-            className="w-[72px] h-[72px] object-contain select-none"
-            draggable={false}
-          />
-        </RevealText>
-      </section>
+      {/* ── Merci ─────────────────────────────────────────────────────────── */}
+      <Txt t="h2" centerX y={10056} align="center">
+        {'Un grand merci à tous nos clients \npour leur fidélité et leur confiance'}
+      </Txt>
+      <Txt t="bodyLight" centerX y={10247} align="center" dim>
+        {`Nous tenons à remercier tous nos nouveaux clients qui nous ont confié la réalisation
+de leurs projets, ainsi que tous les clients qui sont fidèles aux ENGINEERING STUDIO
+depuis de nombreuses années.`}
+      </Txt>
+      <Box x={906} y={10363} w={107.6} h={107.6}>
+        <LogoMark style={{ width: '100%', height: '100%', color: '#fff' }} />
+      </Box>
 
-      {/* ── Testimonials — self-scrolling marquee ───────────────────────────── */}
-      <TestimonialsSection />
+      {/* ── Témoignages ───────────────────────────────────────────────────── */}
+      <Box x={219} y={11061.8} w={2496} h={528.4}>
+        <Txt t="leadLightTall" x={0} y={0}>Témoignages</Txt>
+        <Txt t="h4Wide" x={0} y={62}>Écoutez ce que nos clients ont à dire</Txt>
+        <Box x={0} y={186} w={2496} h={342.4}>
+          {TESTIMONIALS.map((t) => (
+            <Box key={t.x} x={t.x} y={0} w={480} h={342.4} bg="#1a1a1a" radius={30}>
+              <Box x={50} y={40} w={380} h={261.4}>
+                <Box x={0} y={0} w={32} h={32}>
+                  <LogoMark style={{ width: '100%', height: '100%', color: '#fff' }} />
+                </Box>
+                <Txt t="quote" x={0} y={54.1} w={380} opacity={0.5}>{t.quote}</Txt>
+                <Txt t={{ weight: 700, size: 20, ls: -0.0405 }} x={0} y={200.4}>{t.name.split('\n')[0]}</Txt>
+                <Txt t={{ weight: 700, size: 21, ls: -0.0405 }} x={0} y={220.4}>{t.name.split('\n')[1]}</Txt>
+                <Txt t="quoteRole" x={0} y={247.4} opacity={0.5}>{t.role}</Txt>
+              </Box>
+            </Box>
+          ))}
+        </Box>
+      </Box>
 
-      <Footer />
-    </main>
+      <SiteFooter y={12012} />
+    </Frame>
   )
 }

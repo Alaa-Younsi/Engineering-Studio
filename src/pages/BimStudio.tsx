@@ -1,18 +1,17 @@
-import { StudioPage } from '../components/StudioPage'
+import { StudioPage, studioLogo } from '../components/site/StudioPage'
 
-const services = [
-  { name: 'Modélisation BIM',          image: '/Assets/images/BIM STUDIO-01.png' },
-  { name: 'Synthèse BIM',              image: '/Assets/images/BIM STUDIO-02.png' },
-  { name: 'Optimisation de la conception', image: '/Assets/images/BIM STUDIO-03.png' },
-  { name: 'Scan to BIM',               image: '/Assets/images/BIM STUDIO-04.png' },
-]
-
+/** BIM Studio — Figma frame 1920 x 5400 (hero + 4 rows). */
 export default function BimStudio() {
   return (
     <StudioPage
-      logo="/Assets/logo/BIM_STUDIO-LOGO.png"
-      logoAlt="BIM Studio"
-      services={services}
+      logo={studioLogo('bim-studio', 'BIM Studio', 725, 470.4)}
+      imgPrefix="BIM"
+      rows={[
+        { title: 'Modélisation\nBIM' },
+        { title: 'Synthèse\nBIM' },
+        { title: 'Optimisation\nde la\nconception' },
+        { title: 'Scan to BIM' },
+      ]}
     />
   )
 }

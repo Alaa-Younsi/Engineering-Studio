@@ -7,7 +7,7 @@
   src: url('/Assets/fonts/Bossa-Light-4.ttf') format('truetype');
   font-weight: 300;
   font-style: normal;
-  font-display: swap;
+  font-display: block;
 }
 
 @font-face {
@@ -15,7 +15,7 @@
   src: url('/Assets/fonts/Bossa-Regular-1.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
-  font-display: swap;
+  font-display: block;
 }
 
 @font-face {
@@ -23,7 +23,7 @@
   src: url('/Assets/fonts/Bossa-Medium-4.ttf') format('truetype');
   font-weight: 500;
   font-style: normal;
-  font-display: swap;
+  font-display: block;
 }
 
 @font-face {
@@ -31,7 +31,7 @@
   src: url('/Assets/fonts/Bossa-Bold-4.ttf') format('truetype');
   font-weight: 700;
   font-style: normal;
-  font-display: swap;
+  font-display: block;
 }
 
 @font-face {
@@ -39,32 +39,40 @@
   src: url('/Assets/fonts/Bossa-Black-4.ttf') format('truetype');
   font-weight: 900;
   font-style: normal;
-  font-display: swap;
+  font-display: block;
 }
 
 @layer base {
-  *, *::before, *::after {
+  *,
+  *::before,
+  *::after {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
   }
 
+  /*
+   * The design system is a fixed 1920px Figma canvas laid out in absolute
+   * coordinates (see src/design/canvas.tsx). Everything is expressed in rem,
+   * so the root font-size *is* the scale factor:
+   *
+   *   1rem === 16px  ⇔  viewport === 1920px  ⇔  120rem === one canvas width
+   *
+   * main.tsx keeps --root-fs in sync with documentElement.clientWidth (which,
+   * unlike 100vw, excludes the scrollbar — so the canvas never overflows and
+   * never mis-centres). The calc() here is the pre-hydration fallback.
+   *
+   * Below 1024px the absolute canvas stops making sense and the mobile
+   * layouts take over, so the scale is pinned there.
+   */
   html {
     overflow-x: hidden;
-    /* Mobile / small screens: fixed base — the stacked layouts handle reflow. */
     font-size: 16px;
   }
 
-  /*
-   * Fluid design system keyed to the 1920px Figma.
-   * 1rem === 16px at exactly 1920px wide, and every rem-based size scales
-   * proportionally with the viewport. Result: pixel-identical to the design
-   * at 1920, and a faithful proportional scale on other desktop widths.
-   * clamp() floors it for small laptops and caps it on ultra-wide monitors.
-   */
   @media (min-width: 1024px) {
     html {
-      font-size: clamp(11px, calc(100vw / 120), 24px);
+      font-size: var(--root-fs, clamp(8.5333px, calc(100vw / 120), 24px));
     }
   }
 
@@ -73,5 +81,10 @@
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Figma draws no focus rings; keep them for keyboard users only. */
+  :focus:not(:focus-visible) {
+    outline: none;
   }
 }

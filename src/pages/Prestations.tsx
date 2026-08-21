@@ -1,81 +1,50 @@
 import { useCallback } from 'react'
+import { Box, Frame, u } from '../design/canvas'
+import { Watermark } from '../components/site/atoms'
 import { useTransition } from '../context/TransitionContext'
 
-interface Studio {
-  label: string
-  logo: string
-  to: string
-  /** Desktop position, measured from the Figma (1920×1080). */
-  pos: { left: string; top: string }
-}
-
-const STUDIOS: Studio[] = [
-  { label: 'MEP Studio',  logo: '/Assets/logo/MEP_STUDIO-LOGO.png',  to: '/prestations/mep',  pos: { left: '30.406%', top: '37.222%' } },
-  { label: 'TOPO Studio', logo: '/Assets/logo/TOPO_STUDIO-LOGO.png', to: '/prestations/topo', pos: { left: '60.224%', top: '37.222%' } },
-  { label: 'VRD Studio',  logo: '/Assets/logo/VRD_STUDIO-LOGO.png',  to: '/prestations/vrd',  pos: { left: '30.365%', top: '55.213%' } },
-  { label: 'BIM Studio',  logo: '/Assets/logo/BIM_STUDIO-LOGO.png',  to: '/prestations/bim',  pos: { left: '60.286%', top: '55.213%' } },
-]
+/**
+ * Prestations — Figma frame 1920 x 1080.
+ * Four studio lockups on a 2x2 grid inside a 753.1 x 275.6 block at (583, 402),
+ * over a mark watermark that bleeds off the top and both sides.
+ *
+ * The lockups are the exact Figma vectors, split out of the export by
+ * tools/extract_logo.py — not re-typeset.
+ */
+const STUDIOS = [
+  { key: 'mep', label: 'MEP Studio', href: '/prestations/mep', x: 0.8, y: 0, w: 178.7, h: 81.3 },
+  { key: 'topo', label: 'TOPO Studio', href: '/prestations/topo', x: 573.3, y: 0, w: 177.7, h: 81.3 },
+  { key: 'vrd', label: 'VRD Studio', href: '/prestations/vrd', x: 0, y: 194.3, w: 179.5, h: 81.3 },
+  { key: 'bim', label: 'BIM Studio', href: '/prestations/bim', x: 574.5, y: 194.3, w: 178.7, h: 81.3 },
+] as const
 
 export default function Prestations() {
   const { startTransition } = useTransition()
-  const nav = useCallback((path: string) => startTransition(path), [startTransition])
+  const nav = useCallback((p: string) => startTransition(p), [startTransition])
 
   return (
-    <main className="fixed inset-0 overflow-hidden bg-bg">
-      {/*
-        The mark is the page. In the Figma it is 1655px across on a 1920×1080
-        frame — centred, and deliberately taller than the viewport so the four
-        petals bleed off the top and bottom edges.
-      */}
-      <div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none select-none"
-        style={{ width: 'min(86.22vw, 153.28vh)', height: 'min(86.22vw, 153.28vh)' }}
-      >
-        <img
-          src="/Assets/logo/Logo-seul.png"
-          alt=""
-          className="w-full h-full object-contain"
-          style={{ opacity: 0.1 }}
-          draggable={false}
-        />
-      </div>
+    <Frame h={1080}>
+      <Watermark x={132} y={-288} size={1655.4} />
 
-      {/* Desktop: the four wordmarks clustered around the centre of the mark. */}
-      {STUDIOS.map(s => (
-        <button
-          key={s.to}
-          onClick={() => nav(s.to)}
-          aria-label={s.label}
-          className="hidden md:block absolute hover:opacity-70 transition-opacity"
-          style={s.pos}
-        >
-          <img
-            src={s.logo}
-            alt={s.label}
-            className="h-[5.08rem] w-auto object-contain select-none"
-            draggable={false}
-          />
-        </button>
-      ))}
-
-      {/* Mobile / tablet: one wordmark centred in each quadrant. */}
-      <div className="md:hidden absolute inset-0 grid grid-cols-2 grid-rows-2">
-        {STUDIOS.map(s => (
+      <Box x={583} y={402} w={753.1} h={275.6}>
+        {STUDIOS.map((s) => (
           <button
-            key={s.to}
-            onClick={() => nav(s.to)}
+            key={s.key}
+            type="button"
+            onClick={() => nav(s.href)}
             aria-label={s.label}
-            className="flex items-center justify-center px-4 hover:opacity-70 transition-opacity"
+            className="absolute transition-opacity hover:opacity-70"
+            style={{ left: u(s.x), top: u(s.y), width: u(s.w), height: u(s.h) }}
           >
             <img
-              src={s.logo}
+              src={`/Assets/logo/svg/prestations-${s.key}.svg`}
               alt={s.label}
-              className="w-full max-w-[10rem] object-contain select-none"
+              className="h-full w-full"
               draggable={false}
             />
           </button>
         ))}
-      </div>
-    </main>
+      </Box>
+    </Frame>
   )
 }

@@ -1,497 +1,318 @@
-import { useCallback, useRef } from 'react'
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { useCallback } from 'react'
+import { Box, Frame, Txt } from '../design/canvas'
+import { CircleButton, CircleImage, PillButton, Watermark } from '../components/site/atoms'
+import { SiteFooter } from '../components/site/SiteFooter'
+import { LogoWordmark } from '../brand/vectors'
 import { useTransition } from '../context/TransitionContext'
-import { LogoButton } from '../components/LogoButton'
-import { Footer } from '../components/Footer'
-import { HeroShape } from '../components/HeroShape'
-import { RevealText } from '../components/Reveal'
 
-const softwareItems = [
-  { name: 'Sogelink Mensura',                category: 'VRD, Infrastructures' },
-  { name: 'Sogelink Covadis',                category: 'VRD, Infrastructures' },
-  { name: 'Sogelink Autopiste',              category: 'Travaux publics' },
-  { name: 'Bentley WaterCAD',                category: 'Alimentation en eau potable' },
-  { name: 'Bentley SewerCAD',                category: 'Assainissement' },
-  { name: 'Esri ArcGIS',                     category: 'SIG' },
-  { name: 'Global Mapper',                   category: 'SIG' },
-  { name: 'Caneco BT',                       category: 'Electricité CFO' },
-  { name: 'Caneco EP',                       category: 'Eclairage public' },
-  { name: 'Caneco IMP',                      category: 'Electricité CFO' },
-  { name: 'Caneco HT',                       category: 'Electricité CFO' },
-  { name: 'PVsyst',                          category: 'Photovoltaïque' },
-  { name: 'Dialux EVO',                      category: 'Eclairage' },
-  { name: 'Relux',                           category: 'Eclairage' },
-  { name: 'Legrand XLPRO',                   category: 'Electricité CFO' },
-  { name: 'Autodesk AutoCAD',                category: 'DAO, 2D/3D' },
-  { name: 'Autodesk Revit',                  category: 'MEP, Architecture' },
-  { name: 'Autodesk AutoCAD MEP',            category: 'MEP' },
-  { name: 'Autodesk Navisworks',             category: 'Révision 3D/BIM' },
-  { name: 'Autodesk Civil 3D',               category: 'VRD, Infrastructures' },
-  { name: 'Autodesk Infraworks',             category: 'VRD, Infrastructures' },
-  { name: 'Autodesk Robot Structural Analysis', category: 'Structure' },
-  { name: 'Cypecad MEP',                     category: 'MEP, Bilan thermique' },
-  { name: 'Cype HVAC',                       category: 'MEP' },
-  { name: 'Cype PLUMBING',                   category: 'Plomberie, Evacuation' },
-  { name: 'Cype FIRE Hydraulic Systems',     category: 'Anti-incendie' },
-  { name: 'Cype Thermloads',                 category: 'Bilan thermique' },
-  { name: 'Cype ELEC',                       category: 'Electricité CFO' },
-  { name: 'Cype LUX',                        category: 'Eclairage' },
-  { name: 'Traceo Autofluid',                category: 'MEP' },
-  { name: 'Cype HVAC Schematics',            category: 'Schémas de principe' },
-  { name: 'Cype HVAC Radiant floor',         category: 'Plancher chauffant' },
-  { name: 'Open BIM MIDEA',                  category: 'Système VRF, Aérothermie' },
-  { name: 'Open BIM DAIKIN',                 category: 'Système VRF, Aérothermie' },
-  { name: 'Cype ELEC PV Systems',            category: 'Photovoltaïque' },
-  { name: 'Eplan Electric',                  category: 'Electricité CFO' },
-  { name: 'Open BIM Switchboard',            category: 'Tableaux électriques' },
-  { name: 'Cype TEL Wireless',               category: 'Réseaux sans fil' },
-  { name: 'Fine GEO 5',                      category: 'Géotechnique' },
-  { name: 'Tekla Structure',                 category: 'Structure' },
-  { name: 'ArchiCAD',                        category: 'Architecture' },
-  { name: 'Lumion',                          category: 'Rendus 3D' },
-  { name: 'Twinmotion',                      category: 'Rendus 3D' },
-  { name: 'Microsoft Project',               category: 'Gestion de projets' },
+/**
+ * À propos — Figma frame 1920 x 16200.
+ *
+ *   496     hero title
+ *   1417    "Solutions globale en ingénierie" + the long intro column
+ *   1703    three stats
+ *   2580    "Etudes clé en main"
+ *   3514    "Présentation" + the four disciplines
+ *   4720    "Boostez vos projets" call to action
+ *   5741    BIM section + four keywords
+ *   6820    "Comment se déroule le processus d'étude" — four steps
+ *   7937    "Prêts à travailler ensemble" wordmark block
+ *   8883    "Nos points forts" — five outlined circles
+ *   9944    software photo + heading, then the 8x4 software grid
+ *   14262   "Nos garanties" diagram
+ *   15252   footer
+ */
+const CANVAS_H = 16200
+
+/** The four disciplines under "Présentation" — Figma (219 … 1537, 3903.8). */
+const DISCIPLINES = [
+  { n: '01', label: 'MEP', ring: 219, box: 255, w: 68, nx: 0, lx: 3 },
+  { n: '02', label: 'VRD', ring: 654, box: 685, w: 81, nx: 0, lx: 10 },
+  { n: '03', label: 'Topographie', ring: 1097, box: 1084, w: 167, nx: 43, lx: 0 },
+  { n: '04', label: 'BIM', ring: 1537, box: 1567, w: 82, nx: 0, lx: 15 },
 ]
 
-const strengths = ['Réactivité', 'Expertise', 'Expérience', 'Professionnalisme', 'Compétences']
+/** The four process steps — Figma (381 … 1410, 7075.9). */
+const STEPS = [
+  { n: '01', label: 'Planification\ndu projet', ring: 393, box: 381, w: 163, nx: 47 },
+  { n: '02', label: 'Préparation\ndu plan', ring: 712, box: 703, w: 159, nx: 39 },
+  { n: '03', label: 'Installation\ndu système', ring: 1051, box: 1045, w: 152, nx: 35 },
+  { n: '04', label: 'Remise\nau client', ring: 1395, box: 1410, w: 110, nx: 14 },
+]
 
-interface WheelLabel {
-  label: string[]
-  tx: number
-  ty: number
-  anchor: 'start' | 'middle' | 'end'
-}
+/** "Nos points forts" — five 340px outlined circles at y 9143. */
+const STRENGTHS = [
+  { ring: 217, label: 'Réactivité', lx: 331 },
+  { ring: 504, label: 'Expertise', lx: 620 },
+  { ring: 790, label: 'Expérience', lx: 899 },
+  { ring: 1077, label: 'Professionnalisme', lx: 1147 },
+  { ring: 1363, label: 'Compétences', lx: 1457 },
+]
 
-interface Wheel {
-  id: string
-  viewBox: string
-  /** Aspect ratio of the viewBox, as the padding-bottom percentage that reserves it. */
-  pad: string
-  cx: number
-  cy: number
-  titleSize: number
-  labelSize: number
-  lineStep: number
-  stroke: number
-  items: WheelLabel[]
-  /** Six 80° arcs, each springing from beside the wordmark out to an arrowhead. */
-  arcs: string[]
-}
+/** Centres measured off the reference render — the export's `left` values for
+ *  these centred runs are computed from the substituted font and land ~14px off. */
+const BIM_KEYWORDS = [
+  { cx: 347, label: 'Logiciel Revit' },
+  { cx: 727, label: 'Maquette BIM' },
+  { cx: 1125, label: 'Processus CAO' },
+  { cx: 1538, label: 'Plan en 2D et 3D' },
+]
 
-/* Wide layout: the wordmark centre sits at (450, 270) of a 900×540 viewBox. */
-const wideWheel: Wheel = {
-  id: 'arr-wide',
-  viewBox: '0 0 900 540',
-  pad: '60%',
-  cx: 450,
-  cy: 270,
-  titleSize: 60,
-  labelSize: 17,
-  lineStep: 18,
-  stroke: 1.2,
-  items: [
-    { label: ['Fluidité', "d'informations"], tx: 450, ty: 41,  anchor: 'middle' },
-    { label: ['Respect',  'des délais'],     tx: 706, ty: 227, anchor: 'start'  },
-    { label: ['Précision'],                  tx: 708, ty: 317, anchor: 'start'  },
-    { label: ['Professionnalisme'],          tx: 450, ty: 485, anchor: 'middle' },
-    { label: ['Écoute'],                     tx: 186, ty: 317, anchor: 'end'    },
-    { label: ['Rapidité', "d'exécution"],    tx: 187, ty: 227, anchor: 'end'    },
-  ],
-  arcs: [
-    'M 465 232.5 A 125 125 0 0 1 452.5 75',
-    'M 532.5 230 A 125 125 0 0 1 685 205',
-    'M 532.5 305 A 125 125 0 0 0 682.5 322.5',
-    'M 462.5 307.5 A 125 125 0 0 0 455 460',
-    'M 362.5 305 A 125 125 0 0 1 207.5 322.5',
-    'M 362.5 231 A 125 125 0 0 0 205 205',
-  ],
-}
+/**
+ * The software grid — four columns x eight rows of 291 x 238 cards.
+ * Columns start at x 140 / 477 / 815 / 1152 / 1489 (five columns), rows at
+ * y 10938, 11222, 11506, 12018, 12302, 12585, 13100, 13383, 13666.
+ */
+const SOFTWARE: { x: number; y: number; name: string; use: string }[] = [
+  { x: 140, y: 10938, name: 'Sogelink\nMensura', use: 'VRD, Infrastructures' },
+  { x: 477, y: 10938, name: 'Sogelink\nCovadis', use: 'VRD, Infrastructures' },
+  { x: 815, y: 10938, name: 'Sogelink\nAutopiste', use: 'Travaux publics' },
+  { x: 1152, y: 10938, name: 'Bentley\nWaterCAD', use: 'Alimentation en eau potable' },
+  { x: 1488, y: 10938, name: 'Bentley\nSewerCAD', use: 'Assainissement' },
 
-/* Narrow layout: same drawing, arcs pulled in to 62% so the labels stay legible
-   once the whole thing is scaled down to a phone's width. */
-const narrowWheel: Wheel = {
-  id: 'arr-narrow',
-  viewBox: '0 0 600 500',
-  pad: '83.33%',
-  cx: 300,
-  cy: 300,
-  titleSize: 40,
-  labelSize: 24,
-  lineStep: 26,
-  stroke: 1.4,
-  items: [
-    { label: ['Fluidité', "d'informations"], tx: 300, ty: 141, anchor: 'middle' },
-    { label: ['Respect',  'des délais'],     tx: 460, ty: 274, anchor: 'start'  },
-    { label: ['Précision'],                  tx: 460, ty: 329, anchor: 'start'  },
-    { label: ['Professionnalisme'],          tx: 300, ty: 455, anchor: 'middle' },
-    { label: ['Écoute'],                     tx: 140, ty: 329, anchor: 'end'    },
-    { label: ['Rapidité', "d'exécution"],    tx: 140, ty: 274, anchor: 'end'    },
-  ],
-  arcs: [
-    'M 309.3 276.75 A 77.5 77.5 0 0 1 301.55 179.1',
-    'M 351.2 275.2 A 77.5 77.5 0 0 1 445.7 259.7',
-    'M 351.2 321.7 A 77.5 77.5 0 0 0 444.2 332.6',
-    'M 307.75 323.25 A 77.5 77.5 0 0 0 303.1 417.8',
-    'M 245.75 321.7 A 77.5 77.5 0 0 1 149.6 332.6',
-    'M 245.75 275.8 A 77.5 77.5 0 0 0 148.1 259.7',
-  ],
-}
+  { x: 140, y: 11222, name: 'Esri\nArcGIS', use: 'SIG' },
+  { x: 477, y: 11222, name: 'Global\nMapper', use: 'SIG' },
+  { x: 815, y: 11222, name: 'Caneco\nBT', use: 'Electricité CFO' },
+  { x: 1152, y: 11222, name: 'Caneco\nEP', use: 'Eclairage public' },
+  { x: 1488, y: 11222, name: 'Caneco\nIMP', use: 'Electricité CFO' },
 
-function GarantiesWheel({ wheel }: { wheel: Wheel }) {
-  return (
-    <div className="relative w-full" style={{ paddingBottom: wheel.pad }}>
-      <svg className="absolute inset-0 w-full h-full" viewBox={wheel.viewBox} preserveAspectRatio="xMidYMid meet">
-        <defs>
-          <marker id={wheel.id} markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto">
-            <path d="M 0 0.5 L 8.5 4.5 L 0 8.5" fill="none" stroke="rgba(255,255,255,0.35)" strokeWidth="1.2" strokeLinecap="round" />
-          </marker>
-        </defs>
-        {wheel.arcs.map((d, i) => (
-          <path key={i} d={d} fill="none" stroke="rgba(255,255,255,0.35)" strokeWidth={wheel.stroke} markerEnd={`url(#${wheel.id})`} />
-        ))}
-        <text
-          x={wheel.cx}
-          y={wheel.cy}
-          textAnchor="middle"
-          dominantBaseline="middle"
-          fill="white"
-          fontSize={wheel.titleSize}
-          fontFamily="Bossa, sans-serif"
-          fontWeight="700"
-        >
-          Nos garanties
-        </text>
-        {wheel.items.map((item, idx) =>
-          item.label.map((line, li) => (
-            <text
-              key={`${idx}-${li}`}
-              x={item.tx}
-              y={item.ty + li * wheel.lineStep - ((item.label.length - 1) * wheel.lineStep) / 2}
-              textAnchor={item.anchor}
-              dominantBaseline="middle"
-              fill="white"
-              fontSize={wheel.labelSize}
-              fontFamily="Bossa, sans-serif"
-              fontWeight="500"
-            >
-              {line}
-            </text>
-          )),
-        )}
-      </svg>
-    </div>
-  )
-}
+  { x: 140, y: 11506, name: 'Caneco\nHT', use: 'Electricité CFO' },
+  { x: 477, y: 11506, name: 'PVsyst', use: 'Photovoltaïque' },
+  { x: 814, y: 11506, name: 'Dialux\nEVO', use: 'Eclairage' },
+  { x: 1152, y: 11506, name: 'Relux', use: 'Eclairage' },
+  { x: 1489, y: 11506, name: 'Legrand\nXLPRO', use: 'Electricité CFO' },
+
+  { x: 140, y: 12018, name: 'Autodesk\nAutoCAD', use: 'DAO, 2D/3D' },
+  { x: 477, y: 12018, name: 'Autodesk\nRevit', use: 'MEP, Architecture' },
+  { x: 815, y: 12018, name: 'Autodesk\nAutoCAD MEP', use: 'MEP' },
+  { x: 1152, y: 12018, name: 'Autodesk\nNavisworks', use: 'Révision 3D/BIM' },
+  { x: 1489, y: 12018, name: 'Autodesk\nCivil 3D', use: 'VRD, Infrastructures' },
+
+  { x: 140, y: 12302, name: 'Autodesk\nInfraworks', use: 'VRD, Infrastructures' },
+  { x: 477, y: 12302, name: 'Autodesk\nRobot Structural\nAnalysis', use: 'Structure' },
+  { x: 815, y: 12302, name: 'Cypecad\nMEP', use: 'MEP, Bilan thermique' },
+  { x: 1152, y: 12302, name: 'Cype\nHVAC', use: 'MEP' },
+  { x: 1489, y: 12302, name: 'Cype\nPLUMBING', use: 'Plomberie, Evacuation' },
+
+  { x: 140, y: 12585, name: 'Cype FIRE\nHydraulic Systems', use: 'Anti-incendie' },
+  { x: 477, y: 12585, name: 'Cype\nThermloads', use: 'Bilan thermique' },
+  { x: 815, y: 12585, name: 'Cype\nELEC', use: 'Electricité CFO' },
+  { x: 1152, y: 12585, name: 'Cype LUX', use: 'Eclairage' },
+  { x: 1489, y: 12585, name: 'Traceo\nAutofluid', use: 'MEP' },
+
+  { x: 140, y: 13100, name: 'Cype HVAC\nSchematics', use: 'Schémas de principe' },
+  { x: 477, y: 13100, name: 'Cype HVAC\nRadiant floor', use: 'Plancher chauffant' },
+  { x: 815, y: 13100, name: 'Open BIM\nMIDEA', use: 'Système VRF, Aérothermie' },
+  { x: 1152, y: 13100, name: 'Open BIM\nDAIKIN', use: 'Système VRF, Aérothermie' },
+  { x: 1489, y: 13100, name: 'Cype ELEC\nPV Systems', use: 'Photovoltaïque' },
+
+  { x: 140, y: 13383, name: 'Eplan\nElectric', use: 'Electricité CFO' },
+  { x: 477, y: 13383, name: 'Open BIM\nSwitchboard', use: 'Tableaux électriques' },
+  { x: 815, y: 13383, name: 'Cype TEL\nWireless', use: 'Réseaux sans fil' },
+  { x: 1152, y: 13383, name: 'Fine\nGEO 5', use: 'Géotechnique' },
+  { x: 1489, y: 13383, name: 'Tekla\nStructure', use: 'Structure' },
+
+  { x: 140, y: 13666, name: 'ArchiCAD', use: 'Architecture' },
+  { x: 477, y: 13666, name: 'Lumion', use: 'Rendus 3D' },
+  { x: 815, y: 13666, name: 'Twinmotion', use: 'Rendus 3D' },
+  { x: 1152, y: 13666, name: 'Microsoft\nProject', use: 'Gestion de projets' },
+]
+
+/** "Nos garanties" labels — the export drops this text, so it is placed from
+ *  the reference render's ink centres. */
+const GUARANTEES = [
+  { cx: 960, y: 14262, label: 'Fluidité\nd’informations' },
+  { cx: 527, y: 14514, label: 'Rapidité\nd’exécution' },
+  { cx: 1373, y: 14514, label: 'Respect\ndes délais' },
+  { cx: 556, y: 14645, label: 'Écoute' },
+  { cx: 1370, y: 14645, label: 'Précision' },
+  { cx: 960, y: 14876, label: 'Professionnalisme' },
+]
 
 export default function APropos() {
   const { startTransition } = useTransition()
-  const nav = useCallback((path: string) => startTransition(path), [startTransition])
-
-  const heroRef    = useRef<HTMLElement>(null)
-  const featureRef = useRef<HTMLElement>(null)
-
-  const { scrollYProgress: heroProgress }    = useScroll({ target: heroRef,    offset: ['start start', 'end start'] })
-  const { scrollYProgress: featureProgress } = useScroll({ target: featureRef, offset: ['start end',   'end start'] })
-
-  const heroLogoY    = useTransform(heroProgress,    [0, 1], ['0px', '-120px'])
-  const featureLogoY = useTransform(featureProgress, [0, 1], ['30px', '-30px'])
+  const nav = useCallback((p: string) => startTransition(p), [startTransition])
 
   return (
-    <main className="min-h-screen bg-bg">
+    <Frame h={CANVAS_H}>
+      <Watermark x={1067.4} y={168} size={744.6} />
+      <Txt t="displayTight" x={215} y={496}>À propos</Txt>
 
-      {/* ── Hero ─────────────────────────────────────────────────────────── */}
-      <section ref={heroRef} className="relative h-screen flex items-center overflow-hidden">
-        <div className="px-6 sm:px-10 lg:px-gutter relative z-10">
-          <h1 className="font-display font-bold text-[2.5rem] sm:text-6xl lg:text-[5.375rem] text-white leading-none lg:leading-none">
-            À propos
-          </h1>
+      {/* ── Intro ─────────────────────────────────────────────────────────── */}
+      <Txt t="leadLight" x={219} y={1427}>Solutions globale en ingénierie</Txt>
+      <Txt t="h2" x={219} y={1462}>{'Etudes techniques\npluridisciplinaire'}</Txt>
+      <Txt t="bodyLight" x={973} y={1426} dim>
+        {`ENGINEERING STUDIO propose des études techniques pluridisciplinaire
+présent dans les domaines d’ingénieries du CVC/MEP/CET et VRD,
+actif dans la transition vers l’ère du BIM.
+
+Nous intervenons tant en conception qu’en dimensionnement, sur les
+ouvrages neufs ou réhabilités.
+
+Nous répartissons notre activité entre les bâtiments d’habitation,
+les bâtiments fonctionnels, les bâtiments industriels mais aussi
+les ouvrages d’art, les infrastructures, les voiries et les aménagements
+extérieurs.
+
+Forts d’expériences significatives, Nous vous accompagnons tout au
+long de vos projets et offrent des prestations conduites par
+le triax Coût – Délai – Qualité.`}
+      </Txt>
+
+      {/* ── Stats ─────────────────────────────────────────────────────────── */}
+      <Stat x={219} label={'Études\ntotales'} value="120+" />
+      <Stat x={420} label={'Clients\nTotales'} value="60+" />
+      <Stat x={619} label={"Années\nd'expérience"} value="13+" />
+
+      {/* ── Etudes clé en main ────────────────────────────────────────────── */}
+      <Box x={219} y={2580} w={1519} h={239}>
+        <Txt t="h2" x={0} y={7}>{'Etudes\nclé en main'}</Txt>
+        <Txt t="bodyLight" x={754} y={0} dim>
+          {`Notre objectif est de maintenir le plus haut niveau de professionnalisme,
+d'intégrité, de satisfaction client.
+
+Notre offre clé en main permet au client de n'avoir qu'un seul
+interlocuteur vers qui se tourner. Nous nous engageons sur
+un contrat de résultat.`}
+        </Txt>
+        <CircleButton x={754} y={194} label="Nos prestations" onClick={() => nav('/prestations')} />
+      </Box>
+
+      {/* ── Présentation ──────────────────────────────────────────────────── */}
+      <Txt t="leadLight" x={219} y={3514.8}>Présentation</Txt>
+      <Txt t="h2" x={219} y={3549.8}>
+        {`Nous fournissons à nos clients un large
+éventail de compétences pour assurer la
+prestation d'ingénierie la plus exhaustive`}
+      </Txt>
+      <Txt t="bodyLight" x={219} y={3813.8} dim>
+        {`La synergie entre les différentes expertises permet de maximiser les résultats en combinant les forces de nos équipes d’ingénieurs,
+en évitant les doublons d’efforts et en tirant parti des complémentarités.`}
+      </Txt>
+      {DISCIPLINES.map((d) => (
+        <div key={d.n}>
+          <Watermark x={d.ring} y={3903.8} size={141.4} />
+          <Box x={d.box} y={3926} w={d.w} h={108}>
+            <Txt t="stat" x={d.nx} y={0} align="center">{d.n}</Txt>
+            <Txt t="leadMedium" x={d.lx} y={76} align="center" dim>{d.label}</Txt>
+          </Box>
         </div>
-        <HeroShape y={heroLogoY} />
-      </section>
+      ))}
 
-      {/* ── Stats ────────────────────────────────────────────────────────── */}
-      <section className="px-6 sm:px-10 lg:px-gutter py-44 lg:py-60 border-t border-white/10">
-        <RevealText className="max-w-content mx-auto grid grid-cols-1 lg:grid-cols-[47.3125rem_1fr] gap-16 lg:gap-0 items-start">
-          <div>
-            <p className="font-body font-light text-secondary text-xs lg:text-d-lead mb-4 lg:mb-[0.5rem]">Solutions globale en ingénierie</p>
-            <h2 className="font-display font-medium text-4xl sm:text-5xl lg:text-d-h2 text-white leading-tight mb-14 lg:mb-[5.9375rem]">
-              Etudes techniques<br />pluridisciplinaire
-            </h2>
-            {/* Figma puts the caption above the figure, on a ~200px column pitch. */}
-            <div className="grid grid-cols-3 gap-8 lg:gap-0 lg:grid-cols-[12.5rem_12.5rem_1fr] max-w-lg lg:max-w-none">
-              {[['120+', 'Études\ntotales'], ['60+', 'Clients\nTotales'], ['13+', "Années\nd'expérience"]].map(([num, label]) => (
-                <div key={label}>
-                  <p className="font-body font-light text-secondary text-xs lg:text-d-xs whitespace-pre-line mb-1 lg:mb-[0.75rem]">{label}</p>
-                  <p className="font-display font-bold text-4xl sm:text-5xl lg:text-d-num text-white">{num}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="flex flex-col gap-6 lg:gap-[1.625rem]">
-            <p className="font-body font-light text-secondary text-sm lg:text-d-body">
-              ENGINEERING STUDIO propose des études techniques pluridisciplinaire présent dans les domaines d'ingénieries du CVC/MEP/CET et VRD, actif dans la transition vers l'ère du BIM.
-            </p>
-            <p className="font-body font-light text-secondary text-sm lg:text-d-body">
-              Nous intervenons tant en conception qu'en dimensionnement, sur les ouvrages neufs ou réhabilités.
-            </p>
-            <p className="font-body font-light text-secondary text-sm lg:text-d-body">
-              Nous répartissons notre activité entre les bâtiments d'habitation, les bâtiments fonctionnels, les bâtiments industriels mais aussi les ouvrages d'art, les infrastructures, les voiries et les aménagements extérieurs.
-            </p>
-            <p className="font-body font-light text-secondary text-sm lg:text-d-body">
-              Forts d'expériences significatives, Nous vous accompagnons tout au long de vos projets et offrent des prestations conduites par le triax Coût – Délai – Qualité.
-            </p>
-          </div>
-        </RevealText>
-      </section>
+      {/* ── Boostez vos projets ───────────────────────────────────────────── */}
+      <Txt t="leadLight" centerX y={4720} align="center">Pour mieux construire</Txt>
+      <Txt t="h2" centerX y={4754.9} align="center">
+        {/* Trailing space is in the design; it shifts this centred line 9px left. */}
+        {'Boostez vos projets avec \nle BIM & BTP numérique'}
+      </Txt>
+      <PillButton x={875} y={4956} w={170} onClick={() => nav('/prestations/bim')}>
+        Découvrir le BIM
+      </PillButton>
 
-      {/* ── Études clé en main ───────────────────────────────────────────── */}
-      <section className="px-6 sm:px-10 lg:px-gutter py-44 lg:py-60 border-t border-white/10">
-        <RevealText className="max-w-content mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-10">
-          <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-5xl text-white leading-tight">
-            Etudes<br />clé en main
-          </h2>
-          <div className="max-w-[40ch]">
-            <p className="font-body text-secondary text-sm leading-relaxed mb-6">
-              Notre objectif est de maintenir le plus haut niveau de professionnalisme, d'intégrité, de satisfaction client.
-            </p>
-            <p className="font-body text-secondary text-sm leading-relaxed mb-8">
-              Notre offre clé en main permet au client de n'avoir qu'un seul interlocuteur vers qui se tourner. Nous nous engageons sur un contrat de résultat.
-            </p>
-            <LogoButton onClick={() => nav('/devis')}>Obtenir un devis</LogoButton>
-          </div>
-        </RevealText>
-      </section>
+      {/* ── Modélisation BIM ──────────────────────────────────────────────── */}
+      <Txt t="leadLight" x={219} y={5741}>La modélisation BIM au cœur de nos projets</Txt>
+      <Txt t="h2" x={219} y={5776}>
+        {'Modélisation BIM : réalisez vos ouvrages\nen 3D grâce à notre expertise'}
+      </Txt>
+      <Txt t="bodyLight" x={219} y={5967} dim>
+        {`Les projets en modélisation BIM sont devenus une habitude au cœur de notre société. Cette transformation numérique qui concerne un
+acteur sur deux dans l’univers du bâtiment est une compétence acquise. Tout comme nous développons la E-réputation de notre société
+d’études, la modélisation du bâtiment via est une discipline que nous maîtrisons. A vrai dire, elle est devenue indispensable pour répondre
+aux besoins de nos clients.`}
+      </Txt>
+      {BIM_KEYWORDS.map((k) => (
+        <Txt key={k.label} t="leadMedium" cx={k.cx} y={6114} align="center">{k.label}</Txt>
+      ))}
 
-      {/* ── Services — circle+number ──────────────────────────────────────── */}
-      <section className="px-6 sm:px-10 lg:px-gutter py-44 lg:py-60 border-t border-white/10">
-        <div className="max-w-content mx-auto">
-          <RevealText>
-            <p className="font-body text-secondary text-xs tracking-widest uppercase mb-6">Présentation</p>
-            <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-5xl text-white leading-tight max-w-[38ch] mb-8">
-              Nous fournissons à nos clients un large éventail de compétences pour assurer la prestation d'ingénierie la plus exhaustive
-            </h2>
-            <p className="font-body text-secondary text-sm leading-relaxed max-w-[80ch] mb-20">
-              La synergie entre les différentes expertises permet de maximiser les résultats en combinant les forces de nos équipes d'ingénieurs, en évitant les doublons d'efforts et en tirant parti des complémentarités.
-            </p>
-          </RevealText>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-12">
-            {[
-              { num: '01', title: 'MEP' },
-              { num: '02', title: 'VRD' },
-              { num: '03', title: 'Topographie' },
-              { num: '04', title: 'BIM' },
-            ].map((s, i) => (
-              <RevealText key={s.num} delay={i * 0.08}>
-                <div className="flex flex-col items-center gap-5 hover:opacity-70 transition-opacity">
-                  <div className="relative w-24 h-24 rounded-full bg-surface overflow-hidden flex-shrink-0">
-                    <img src="/Assets/logo/Logo-seul.png" alt="" className="absolute inset-0 w-full h-full object-contain" style={{ opacity: 0.35 }} draggable={false} />
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <span className="font-display font-bold text-4xl text-white leading-none">{s.num}</span>
-                    </div>
-                  </div>
-                  <p className="font-display font-bold text-white text-center text-sm sm:text-base">{s.title}</p>
-                </div>
-              </RevealText>
-            ))}
-          </div>
+      {/* ── Processus ─────────────────────────────────────────────────────── */}
+      <Txt t="h2" centerX y={6820.9} align="center">
+        {"Comment se déroule\nle processus d'étude"}
+      </Txt>
+      <Txt t="bodyLight" centerX y={7011.9} align="center" dim>
+        Nos prestations d'études sur l'ensemble des techniques de construction
+      </Txt>
+      {STEPS.map((s) => (
+        <div key={s.n}>
+          <Watermark x={s.ring} y={7075.9} size={141.4} />
+          <Box x={s.box} y={7098.1} w={s.w} h={125}>
+            <Txt t="stat" x={s.nx} y={0} align="center">{s.n}</Txt>
+            <Txt t="leadMediumTight" x={0} y={73} align="center" dim>{s.label}</Txt>
+          </Box>
         </div>
-      </section>
+      ))}
 
-      {/* ── BIM highlight ─────────────────────────────────────────────────── */}
-      <section className="bg-surface px-6 sm:px-10 lg:px-gutter py-52 lg:py-72">
-        <RevealText className="max-w-content mx-auto flex flex-col items-center text-center gap-8">
-          <p className="font-body text-secondary text-xs tracking-widest uppercase">Pour mieux construire</p>
-          <h2 className="font-display font-bold text-4xl sm:text-5xl lg:text-6xl xl:text-7xl text-white leading-tight max-w-[22ch]">
-            Boostez vos projets avec le BIM &amp; BTP numérique
-          </h2>
-          <LogoButton variant="pill" onClick={() => nav('/contact')}>Contactez-nous</LogoButton>
-        </RevealText>
-      </section>
+      {/* ── Prêts à travailler ensemble ───────────────────────────────────── */}
+      <Watermark x={471.9} y={7612.3} size={975.4} />
+      <Txt t="lead" x={800} y={7937.8} align="center">Prêts à travailler ensemble</Txt>
+      <Box x={553} y={7994.8} w={815} h={79.4}>
+        <LogoWordmark style={{ width: '100%', height: '100%', color: '#fff' }} />
+      </Box>
+      <Txt t="bodyLight" x={532} y={8099.8} align="center" dim>
+        {`Que vous ayez un projet et que vous recherchiez un partenaire d'étude technique
+fiable ou que vous souhaitiez franchir une nouvelle étape dans votre projet,
+nous voulons vous entendre !`}
+      </Txt>
+      <Txt t="lead" x={591.1} y={8222.8} align="right">Donnons vie à votre projet</Txt>
+      <CircleButton x={938} y={8215.8} label="Nous contacter" onClick={() => nav('/contact')} />
+      <Txt t="lead" x={1012} y={8222.8}>Appelez pour un rendez-vous</Txt>
 
-      {/* ── BIM expertise ─────────────────────────────────────────────────── */}
-      <section className="px-6 sm:px-10 lg:px-gutter py-44 lg:py-60 border-t border-white/10">
-        <RevealText className="max-w-content mx-auto">
-          <p className="font-body text-secondary text-xs tracking-widest uppercase mb-6">La modélisation BIM au cœur de nos projets</p>
-          <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-[2.8rem] text-white leading-tight lg:leading-tight max-w-[30ch] mb-8">
-            Modélisation BIM : réalisez vos ouvrages en 3D grâce à notre expertise
-          </h2>
-          <p className="font-body text-secondary text-sm leading-relaxed max-w-[90ch] mb-16">
-            Les projets en modélisation BIM sont devenus une habitude au cœur de notre société. Cette transformation numérique qui concerne un acteur sur deux dans l'univers du bâtiment est une compétence acquise. Tout comme nous développons la E-réputation de notre société d'études, la modélisation du bâtiment via est une discipline que nous maîtrisons. A vrai dire, elle est devenue indispensable pour répondre aux besoins de nos clients.
-          </p>
-          <div className="flex flex-wrap gap-x-16 gap-y-6">
-            {['Logiciel Revit', 'Maquette BIM', 'Processus CAO', 'Plan en 2D et 3D'].map(name => (
-              <span key={name} className="font-display font-bold text-white text-base">
-                {name}
-              </span>
-            ))}
-          </div>
-        </RevealText>
-      </section>
-
-      {/* ── Process — number over a faint mark, caption straddling it ────── */}
-      <section className="px-6 sm:px-10 lg:px-gutter py-48 lg:py-64 border-t border-white/10">
-        <div className="max-w-content mx-auto text-center">
-          <RevealText>
-            <h2 className="font-display font-medium text-3xl sm:text-4xl lg:text-d-h2 text-white leading-tight mb-6 lg:mb-[2.8125rem]">
-              Comment se déroule<br />le processus d'étude
-            </h2>
-            <p className="font-body font-light text-secondary text-sm lg:text-d-body mb-16 lg:mb-[2.375rem]">
-              Nos prestations d'études sur l'ensemble des techniques de construction
-            </p>
-          </RevealText>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-0 max-w-3xl lg:max-w-[71.4375rem] mx-auto">
-            {[
-              { num: '01', title: 'Planification\ndu projet' },
-              { num: '02', title: 'Préparation\ndu plan' },
-              { num: '03', title: 'Installation\ndu système' },
-              { num: '04', title: 'Remise\nau client' },
-            ].map((p, i) => (
-              <RevealText key={p.num} delay={i * 0.08}>
-                <div className="relative flex flex-col items-center hover:opacity-70 transition-opacity">
-                  {/* The mark sits behind both the number and the caption. */}
-                  <img
-                    src="/Assets/logo/Logo-seul.png"
-                    alt=""
-                    className="absolute top-0 left-1/2 -translate-x-1/2 w-16 h-16 lg:w-[8.8125rem] lg:h-[8.875rem] object-contain pointer-events-none"
-                    style={{ opacity: 0.1 }}
-                    draggable={false}
-                  />
-                  <span className="relative font-display font-bold text-white text-xl lg:text-d-num mt-4 lg:mt-[1.375rem]">
-                    {p.num}
-                  </span>
-                  <p className="relative font-display font-medium text-white text-center text-xs sm:text-sm lg:text-d-lead whitespace-pre-line mt-3 lg:mt-[1.125rem]">
-                    {p.title}
-                  </p>
-                </div>
-              </RevealText>
-            ))}
-          </div>
+      {/* ── Nos points forts ──────────────────────────────────────────────── */}
+      <Txt t="h2" centerX y={8883} align="center">Nos points forts</Txt>
+      <Txt t="bodyLight" centerX y={9001} align="center" dim>
+        {`Notre connaissance des contraintes des chargés d’affaires, maîtres d’œuvre et bureaux d’études nous permet d’être réactifs
+et efficaces pour satisfaire au mieux à vos attentes. Quelles que soient vos exigences, vous pouvez faire
+appel à ENGINEEING STUDIO pour vous aider à réussir vos projets les plus complexes.
+Le tout en répondant aux différents enjeux liés au délai, au coût et à la qualité.`}
+      </Txt>
+      {STRENGTHS.map((s) => (
+        <div key={s.label}>
+          <Box x={s.ring} y={9143} w={340} h={340} radius={170} border="#fff" opacity={0.2} />
+          <Txt t="cardTitle" x={s.lx} y={9303} align="center">{s.label}</Txt>
         </div>
-      </section>
+      ))}
 
-      {/* ── Prêts à travailler — centered circle CTA ─────────────────────── */}
-      <section ref={featureRef} className="relative bg-bg min-h-screen flex items-center justify-center overflow-hidden py-44 lg:py-60">
-        {/* Circle — centered background */}
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
-          <motion.div style={{ y: featureLogoY }}>
-            <img
-              src="/Assets/logo/Logo-seul.png"
-              alt=""
-              className="w-[min(80vh,90vw)] h-[min(80vh,90vw)] object-contain"
-              style={{ opacity: 0.4 }}
-              draggable={false}
-            />
-          </motion.div>
-        </div>
-        {/* Content */}
-        <RevealText className="relative z-10 flex flex-col items-center text-center px-6 gap-6 max-w-4xl">
-          <p className="font-body text-white text-xs tracking-widest uppercase">
-            Prêts à travailler ensemble
-          </p>
-          <h2 className="font-display font-bold text-5xl sm:text-6xl lg:text-7xl text-white leading-none">
-            Engineering Studio
-          </h2>
-          <p className="font-body text-white/75 text-sm max-w-[50ch] leading-relaxed">
-            Que vous ayez un projet et que vous recherchiez un partenaire d'étude technique fiable ou que vous souhaitiez franchir une nouvelle étape dans votre projet, nous voulons vous entendre !
-          </p>
-          <div className="flex items-center gap-4 sm:gap-6 flex-wrap sm:flex-nowrap justify-center mt-4">
-            <button onClick={() => nav('/contact')} className="flex-shrink-0 whitespace-nowrap font-body text-white text-sm hover:opacity-60 transition-opacity">
-              Donnons vie à votre projet
-            </button>
-            <LogoButton onClick={() => nav('/reunion')}>Demande un échange</LogoButton>
-            <button onClick={() => nav('/contact')} className="flex-shrink-0 whitespace-nowrap font-body text-white text-sm hover:opacity-60 transition-opacity">
-              Appelez pour un rendez-vous
-            </button>
-          </div>
-        </RevealText>
-      </section>
+      {/* ── Logiciels ─────────────────────────────────────────────────────── */}
+      <CircleImage x={217} y={9944} size={633} src="/Assets/images/A Propos-logiciels.png" alt="Logiciels d'ingénierie" />
+      <Txt t="h2" x={903} y={10078}>
+        {`Utilisés les logiciels
+d'ingénierie couvrent
+la conception, calculs,
+simulation et
+la gestion de projets`}
+      </Txt>
+      {SOFTWARE.map((s) => (
+        <SoftwareCard key={`${s.x}-${s.y}`} {...s} />
+      ))}
 
-      {/* ── Points forts — overlapping circles ───────────────────────────── */}
-      <section className="py-44 lg:py-60 border-t border-white/10">
-        <RevealText className="text-center px-6 sm:px-10 lg:px-gutter mb-20">
-          <h2 className="font-display font-bold text-4xl sm:text-5xl lg:text-6xl text-white mb-8">Nos points forts</h2>
-          <p className="font-body text-secondary text-sm leading-relaxed max-w-[80ch] mx-auto">
-            Notre connaissance des contraintes des chargés d'affaires, maîtres d'œuvre et bureaux d'études nous permet d'être réactifs et efficaces pour satisfaire au mieux à vos attentes. Quelles que soient vos exigences, vous pouvez faire appel à ENGINEERING STUDIO pour vous aider à réussir vos projets les plus complexes. Le tout en répondant aux différents enjeux liés au délai, au coût et à la qualité.
-          </p>
-        </RevealText>
+      {/* ── Nos garanties ─────────────────────────────────────────────────── */}
+      <Box x={451.9} y={14262} w={984.9} h={644.9}>
+        <img src="/Assets/images/svg/garanties-arrows.svg" alt="" className="h-full w-full" draggable={false} />
+      </Box>
+      <Txt t="h2" cx={962} y={14556}>Nos garanties</Txt>
+      {GUARANTEES.map((g) => (
+        <Txt key={g.label} t="garantie" cx={g.cx} y={g.y} align="center">{g.label}</Txt>
+      ))}
 
-        {/* Mobile: wrapped circle grid */}
-        <div className="lg:hidden flex flex-wrap justify-center gap-4 px-6">
-          {strengths.map((s, i) => (
-            <RevealText key={s} delay={Math.min(i, 6) * 0.08}>
-              <div className="w-36 h-36 sm:w-40 sm:h-40 rounded-full border border-white/20 bg-bg flex items-center justify-center hover:opacity-70 transition-opacity">
-                <span className="font-display font-medium text-white text-xs text-center leading-tight px-3">{s}</span>
-              </div>
-            </RevealText>
-          ))}
-        </div>
+      <SiteFooter y={15252} />
+    </Frame>
+  )
+}
 
-        {/* Desktop: overlapping circles row */}
-        <div className="hidden lg:flex justify-center">
-          <div className="flex items-center">
-            {strengths.map((s, i) => (
-              <RevealText
-                key={s}
-                delay={Math.min(i, 6) * 0.08}
-                style={{ marginLeft: i === 0 ? 0 : '-50px' }}
-                className="flex-shrink-0"
-              >
-                <div className="w-[220px] h-[220px] rounded-full border border-white/20 bg-bg flex items-center justify-center hover:opacity-70 transition-opacity">
-                  <span className="font-display font-medium text-white text-xs text-center leading-tight px-4">{s}</span>
-                </div>
-              </RevealText>
-            ))}
-          </div>
-        </div>
-      </section>
+function Stat({ x, label, value }: { x: number; label: string; value: string }) {
+  return (
+    <>
+      <Txt t="xsLight" x={x} y={1703} dim>{label}</Txt>
+      <Txt t="stat" x={x} y={1755}>{value}</Txt>
+    </>
+  )
+}
 
-      {/* ── Software — card grid ──────────────────────────────────────────── */}
-      {/* Wider than the usual content column: the Figma runs this grid to a
-          140px page margin (1640px of cards) rather than the 216px gutter. */}
-      <section className="border-t border-white/10 px-6 sm:px-10 lg:px-[8.75rem] py-44 lg:py-60">
-        <div className="max-w-none lg:max-w-[102.5rem] mx-auto">
-          <RevealText>
-            <h2 className="font-display font-medium text-2xl sm:text-3xl lg:text-d-h2 text-white text-left leading-snug lg:leading-[4.5625rem] max-w-[32ch] lg:max-w-[24ch] ml-auto mb-16 lg:mb-[3.5rem]">
-              Utilisés les logiciels d'ingénierie couvrent la conception, calculs, simulation et la gestion de projets
-            </h2>
-          </RevealText>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 lg:gap-x-[2.8125rem] lg:gap-y-[2.875rem]">
-            {softwareItems.map((sw, i) => {
-              const [brand, ...rest] = sw.name.split(' ')
-              return (
-                <RevealText key={`${sw.name}-${sw.category}`} delay={Math.min(i, 6) * 0.08}>
-                  <div className="
-                    bg-surface rounded-2xl lg:rounded-[1.875rem]
-                    h-full lg:min-h-[14.875rem]
-                    px-5 lg:px-[1.8125rem] pt-6 lg:pt-[5.0625rem] pb-5 lg:pb-[1.8125rem]
-                    flex flex-col hover:opacity-70 transition-opacity
-                  ">
-                    <p className="font-display font-bold text-white text-base lg:text-d-card">
-                      {brand}
-                      {rest.length > 0 && <><br />{rest.join(' ')}</>}
-                    </p>
-                    <p className="font-body font-light text-secondary text-xs lg:text-d-sm mt-auto pt-8 lg:pt-[4.3125rem]">
-                      {sw.category}
-                    </p>
-                  </div>
-                </RevealText>
-              )
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* ── Nos garanties — radial wheel ─────────────────────────────────── */}
-      <section className="border-t border-white/10 py-24">
-        <RevealText className="lg:hidden relative w-full max-w-[520px] mx-auto px-4">
-          <GarantiesWheel wheel={narrowWheel} />
-        </RevealText>
-        <RevealText className="hidden lg:block relative w-full max-w-[900px] mx-auto">
-          <GarantiesWheel wheel={wideWheel} />
-        </RevealText>
-      </section>
-
-      <Footer />
-    </main>
+/** Figma: 291 x 238, radius 30, #1a1a1a — name at y 80, use at y 190. */
+function SoftwareCard({ x, y, name, use }: { x: number; y: number; name: string; use: string }) {
+  return (
+    <Box x={x} y={y} w={291} h={238} bg="#1a1a1a" radius={30}>
+      <Txt t="cardTitle" x={29} y={80}>{name}</Txt>
+      <Txt t="cardMeta" x={29} y={190} opacity={0.5}>{use}</Txt>
+    </Box>
   )
 }
