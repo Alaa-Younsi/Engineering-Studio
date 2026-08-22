@@ -64,7 +64,12 @@ export function Toggle({ checked, onChange, label }: { checked: boolean; onChang
     >
       <span className={`relative h-6 w-11 rounded-full transition-colors ${checked ? 'bg-white' : 'bg-white/20'}`}>
         <span
-          className={`absolute top-0.5 h-5 w-5 rounded-full transition-transform ${checked ? 'translate-x-5 bg-black' : 'translate-x-0.5 bg-white'}`}
+          // `left-0` pins the static position explicitly — buttons default to
+          // `text-align: center` in the UA stylesheet, and Chrome resolves an
+          // all-auto absolute inset against that alignment, centring the knob
+          // instead of anchoring it left (visible as an overlap with the
+          // adjacent label once `translate-x-5` pushed it further still).
+          className={`absolute left-0 top-0.5 h-5 w-5 rounded-full transition-transform ${checked ? 'translate-x-5 bg-black' : 'translate-x-0.5 bg-white'}`}
         />
       </span>
       <span className="font-body text-sm text-white">{label}</span>

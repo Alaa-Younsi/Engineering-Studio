@@ -30,7 +30,13 @@ export default function AdminLayout() {
           </div>
         </div>
 
-        <nav className="px-3 flex flex-row lg:flex-col gap-1 overflow-x-auto">
+        {/*
+         * `flex-wrap` (not `overflow-x-auto`) below `lg`: on a narrow phone
+         * four tabs don't fit one row, and a scrollable row hid "Portefeuille"
+         * off-screen with no hint more tabs existed. Wrapping to a second row
+         * keeps every tab visible and reachable without discovery friction.
+         */}
+        <nav className="px-3 flex flex-row flex-wrap lg:flex-col lg:flex-nowrap gap-1">
           {NAV.map(item => (
             <NavLink
               key={item.to}
