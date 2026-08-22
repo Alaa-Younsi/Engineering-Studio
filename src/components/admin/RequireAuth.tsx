@@ -36,11 +36,22 @@ export function RequireAuth({ children }: { children: ReactNode }) {
     )
   }
 
+  /*
+   * Signing in is not enough: the account must also be listed in public.admins,
+   * which is a manual step after running schema.sql. That is the cause almost
+   * every time this screen appears, so show the fix rather than a dead end.
+   */
   if (!isAdmin) {
     return (
       <AdminNotice title="Accès refusé" onSignOut={() => void signOut()}>
-        Le compte {email} n'est pas autorisé à administrer ce site.
-        Contactez l'administrateur pour obtenir l'accès.
+        Le compte <strong className="text-white">{email}</strong> est authentifié mais ne figure
+        pas dans la liste des administrateurs.
+        <br />
+        <br />
+        Exécutez ceci dans le SQL Editor de Supabase, puis rechargez&nbsp;:
+        <code className="mt-3 block whitespace-pre-wrap rounded-lg bg-surface px-4 py-3 text-left text-[0.75rem] leading-relaxed text-white/80">
+          {`insert into public.admins (user_id)\nselect id from auth.users\nwhere email = '${email}'\non conflict do nothing;`}
+        </code>
       </AdminNotice>
     )
   }

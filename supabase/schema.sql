@@ -5,10 +5,12 @@
 -- safe and will bring an existing project up to date.
 --
 -- AFTER RUNNING, two manual steps:
---   1. Authentication → Users → "Add user": create the studio's admin account.
---   2. Run, with that account's email:
+--   1. Authentication → Users → "Add user": create the studio's admin account
+--      (admin@engineeringstudio.com), ticking "Auto Confirm User".
+--   2. Run supabase/grant-admin.sql — or inline:
 --        insert into public.admins (user_id)
---        select id from auth.users where email = 'admin@example.com';
+--        select id from auth.users
+--        where email = 'admin@engineeringstudio.com';
 --
 --   Only rows in public.admins can read submissions or edit site content.
 --   Being merely signed in is NOT enough — otherwise anyone who self-registers

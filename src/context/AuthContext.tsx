@@ -11,7 +11,12 @@ interface AuthValue {
    * non-admin session can see nothing regardless of what the UI does.
    */
   isAdmin: boolean
-  /** True while the initial session is being resolved. */
+  /**
+   * True while the session *or* the allow-list verdict is still unknown.
+   * Callers must not treat `isAdmin === false` as a refusal while this is set —
+   * the lookup is a round trip, and rendering "Accès refusé" during it tells a
+   * legitimate admin they have been locked out.
+   */
   loading: boolean
   /**
    * Set when the allow-list lookup could not be completed — almost always the
@@ -28,7 +33,9 @@ const AuthContext = createContext<AuthValue | null>(null)
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [email, setEmail] = useState<string | null>(null)
   const [isAdmin, setIsAdmin] = useState(false)
-  const [loading, setLoading] = useState(true)
+  const [sessionLoading, setSessionLoading] = useState(true)
+  /** False from the moment a session appears until its allow-list check lands. */
+  const [adminChecked, setAdminChecked] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
@@ -42,9 +49,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (!session?.user) {
         setIsAdmin(false)
         setError(null)
+        setAdminChecked(true)
         return
       }
 
+      setAdminChecked(false)
       try {
         const { data, error: queryError } = await supabase
           .from('admins')
@@ -60,12 +69,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         // Never grant access on a failed check — deny, and say why.
         setIsAdmin(false)
         setError(describeError(e))
+      } finally {
+        if (!cancelled) setAdminChecked(true)
       }
     }
 
     void supabase.auth.getSession().then(async ({ data }) => {
       await resolve(data.session)
-      if (!cancelled) setLoading(false)
+      if (!cancelled) setSessionLoading(false)
     })
 
     const { data: sub } = supabase.auth.onAuthStateChange((_event, session) => {
@@ -90,7 +101,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     await supabase.auth.signOut()
     setIsAdmin(false)
     setEmail(null)
+    setAdminChecked(true)
   }
+
+  // Signed in but the verdict is still in flight counts as loading.
+  const loading = sessionLoading || (email !== null && !adminChecked)
 
   return (
     <AuthContext.Provider value={{ email, isAdmin, loading, error, signIn, signOut }}>
