@@ -222,11 +222,18 @@ const toSubmission = (r: SubmissionRow): Submission => ({
  *
  * Throws on failure. Callers must surface that to the visitor rather than
  * reporting a success they cannot vouch for.
+ *
+ * Deliberately doesn't ask Postgres to hand the row back (`return=minimal`,
+ * i.e. no `.select()`): anon can insert but has no SELECT policy on this
+ * table — submissions are admin-only to read, by design — and requesting the
+ * row back turns `INSERT ... RETURNING` into a read too, which fails RLS and
+ * aborts the whole insert with an error that is indistinguishable from the
+ * insert itself being refused.
  */
-export async function createSubmission(input: SubmissionInput): Promise<Submission> {
+export async function createSubmission(input: SubmissionInput): Promise<void> {
   const clean = validateSubmission(input)
 
-  const { data, error } = await supabase
+  const { error } = await supabase
     .from('submissions')
     .insert({
       kind: clean.kind,
@@ -236,10 +243,7 @@ export async function createSubmission(input: SubmissionInput): Promise<Submissi
       fields: clean.fields,
       attachments: clean.attachments ?? [],
     })
-    .select('*')
-    .single()
   if (error) throw error
-  return toSubmission(data as SubmissionRow)
 }
 
 export async function listSubmissions(opts: { kind?: SubmissionKind } = {}): Promise<Submission[]> {
