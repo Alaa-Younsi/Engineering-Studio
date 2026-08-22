@@ -2,46 +2,96 @@
  * The four shapes the whole design is built from, at their Figma sizes:
  * the 45px circle button, the 45px-tall outlined pill, the 10%-opacity logo
  * watermark, and the circular photo crop.
+ *
+ * Hover behaviour is the site's established language, kept from the previous
+ * build: outlined pills invert to solid white, and the circular mark button
+ * grows sideways into a pill whose label slides out after a short beat.
+ * At rest both are pixel-identical to the Figma frames.
  */
 import type { ReactNode } from 'react'
 import { Box, Txt, u } from '../../design/canvas'
 import { LogoMark } from '../../brand/vectors'
 
-/** Figma: 45x45 white disc, 20.1x20.1 black mark inset at 12.5. */
+/**
+ * Figma: 45x45 white disc with the 20.1px mark inset at 12.5.
+ * With a `children` label it expands on hover into a pill.
+ */
 export function CircleButton({
-  x, y, onClick, label = 'En savoir plus', invert = false,
+  x, y, onClick, label = 'En savoir plus', children, invert = false, plain = false,
 }: {
   x?: number
   y?: number
   onClick?: () => void
   label?: string
+  /** Optional label revealed on hover. Defaults to `label`. */
+  children?: ReactNode
   /** Black disc with a white mark — used over photography. */
   invert?: boolean
+  /**
+   * Stay a disc on hover. For the few placements the design sets between two
+   * lines of copy, where expanding would run the label over the text beside it.
+   */
+  plain?: boolean
 }) {
+  const positioned = x != null || y != null
+  const text = plain ? null : children ?? label
+
   return (
     <button
       type="button"
       onClick={onClick}
       aria-label={label}
-      className="grid place-items-center transition-opacity hover:opacity-80"
+      className="group inline-flex h-fit w-fit flex-shrink-0 items-center overflow-hidden"
       style={{
-        position: x == null && y == null ? 'relative' : 'absolute',
+        position: positioned ? 'absolute' : 'relative',
         left: x != null ? u(x) : undefined,
         top: y != null ? u(y) : undefined,
-        width: u(45),
         height: u(45),
-        borderRadius: '50%',
+        borderRadius: u(45),
         backgroundColor: invert ? '#000' : '#fff',
       }}
     >
-      <LogoMark
-        style={{ width: u(20.1), height: u(20.1), color: invert ? '#fff' : '#000' }}
-      />
+      <span
+        className="flex flex-shrink-0 items-center justify-center"
+        style={{ width: u(45), height: u(45) }}
+      >
+        <LogoMark
+          style={{ width: u(20.1), height: u(20.1), color: invert ? '#fff' : '#000' }}
+        />
+      </span>
+
+      {/* A beat before the label slides out, so the mark reads first; the
+          collapse runs immediately on leave. */}
+      {text && (
+        <span className="grid [grid-template-columns:0fr] transition-[grid-template-columns] duration-300 ease-out group-hover:delay-150 group-hover:[grid-template-columns:1fr]">
+          <span className="overflow-hidden">
+            <span
+              className="block opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-hover:delay-[250ms]"
+              style={{ paddingRight: u(20) }}
+            >
+              {/*
+               * `Txt` defaults to pre-wrap; inside a track animating from 0fr
+               * that makes the label re-wrap on every frame, so it visibly
+               * reflows while the pill opens. Pin it to one line at its full
+               * width instead — the animation itself is unchanged.
+               */}
+              <Txt
+                t="btn"
+                flow
+                color={invert ? '#fff' : '#000'}
+                style={{ whiteSpace: 'nowrap', width: 'max-content' }}
+              >
+                {text}
+              </Txt>
+            </span>
+          </span>
+        </span>
+      )}
     </button>
   )
 }
 
-/** Figma: h=45, border-radius 23, 1px white stroke, label 14px inset 23/10. */
+/** Figma: h=45, border-radius 23, 1px white stroke, label 14px inset 23. */
 export function PillButton({
   x, y, w, children, onClick, type = 'button',
 }: {
@@ -58,7 +108,7 @@ export function PillButton({
     <button
       type={type}
       onClick={onClick}
-      className="flex items-center border-white text-white transition-colors hover:bg-white hover:text-black"
+      className="group flex items-center border-white text-white transition-colors duration-200 hover:bg-white hover:text-black"
       style={{
         position: positioned ? 'absolute' : 'relative',
         left: x != null ? u(x) : undefined,
@@ -72,7 +122,8 @@ export function PillButton({
         padding: `0 ${u(23)}`,
       }}
     >
-      <Txt t="btn" flow style={{ whiteSpace: 'nowrap' }}>
+      {/* Inherits, so the button's hover colour flip reaches the label. */}
+      <Txt t="btn" flow color="inherit" style={{ whiteSpace: 'nowrap' }}>
         {children}
       </Txt>
     </button>
@@ -108,7 +159,7 @@ export function CircleImage({
         src={src}
         alt={alt}
         onClick={onClick}
-        className={`h-full w-full object-cover ${onClick ? 'cursor-pointer' : ''}`}
+        className={`h-full w-full object-cover transition-transform duration-700 ease-out hover:scale-[1.04] ${onClick ? 'cursor-pointer' : ''}`}
         draggable={false}
       />
     </Box>

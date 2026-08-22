@@ -5,6 +5,9 @@ import { ChevronDownIcon, LinkedInIcon, PhoneIcon } from '../brand/vectors'
 import { createSubmission } from '../lib/content/store'
 import { HoneypotField, submissionErrorMessage, useFormGuard } from '../components/FormGuard'
 import { LIMITS } from '../lib/content/validation'
+import { useIsDesktop } from '../design/useIsDesktop'
+import { MBody, MCard, MH1, MH2, MH3, MHero, MPage, MSection } from '../components/mobile/kit'
+import { Rise } from '../design/Rise'
 
 /**
  * Contact — Figma frame 1920 x 5400.
@@ -46,6 +49,9 @@ BIM et synthèses techniques — livrés aux formats natifs et PDF,
 ]
 
 export default function Contact() {
+  const isDesktop = useIsDesktop()
+  if (!isDesktop) return <ContactMobile />
+
   return (
     <Frame h={CANVAS_H}>
       <Watermark x={1067.4} y={168} size={744.6} />
@@ -92,22 +98,24 @@ nos services correspond le mieux à vos besoins.`}
       <Box x={140} y={3631} w={1640}>
         {[0, 1].map((col) => (
           <Box key={col} x={col * 837} y={0} w={803}>
-            {FAQS.slice(col * 2, col * 2 + 2).map((f) => (
-              <FaqCard key={f.q} {...f} />
+            {FAQS.slice(col * 2, col * 2 + 2).map((f, i) => (
+              <Rise key={f.q} delay={i * 90}><FaqCard {...f} /></Rise>
             ))}
           </Box>
         ))}
       </Box>
 
       {/* ── LinkedIn band ─────────────────────────────────────────────────── */}
-      <Box x={0} y={4320} w={1920} h={1080} clip>
-        <img
-          src="/Assets/images/Contact-img linkedin.png"
-          alt="Sétif, Algérie"
-          className="h-full w-full object-cover"
-          draggable={false}
-        />
-      </Box>
+      <Rise>
+        <Box x={0} y={4320} w={1920} h={1080} clip>
+          <img
+            src="/Assets/images/Contact-img linkedin.png"
+            alt="Sétif, Algérie"
+            className="h-full w-full object-cover"
+            draggable={false}
+          />
+        </Box>
+      </Rise>
       <Box x={1394} y={4618} w={482} h={199}>
         <Txt t="h5" x={0} y={0} color="#000">
           {'Suivez notre actualités\net découvrez nos\ntravaux récentes'}
@@ -172,7 +180,7 @@ function FaqCard({ q, a }: { q: string; a: string }) {
  * Figma: 472 x 318 grid — two 229-wide columns 14px apart, a 471-wide
  * textarea, then the pill. Fields are #1a1a1a, radius 8, 14px Light.
  */
-function ContactForm() {
+function ContactForm({ mobile = false }: { mobile?: boolean }) {
   const [form, setForm] = useState({ nom: '', prenom: '', tel: '', email: '', message: '' })
   const [sent, setSent] = useState(false)
   const [saving, setSaving] = useState(false)
@@ -212,6 +220,28 @@ function ContactForm() {
     }
   }
 
+  const label = saving ? 'Envoi…' : sent ? 'Message envoyé' : 'Envoyer le message'
+
+  if (mobile) {
+    return (
+      <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+        <MField placeholder="Votre nom" value={form.nom} onChange={set('nom')} maxLength={LIMITS.name} required />
+        <MField placeholder="Votre prénom" value={form.prenom} onChange={set('prenom')} maxLength={LIMITS.name} required />
+        <MField placeholder="Numéro de téléphone" value={form.tel} onChange={set('tel')} maxLength={LIMITS.phone} type="tel" />
+        <MField placeholder="Email" value={form.email} onChange={set('email')} maxLength={LIMITS.email} type="email" required />
+        <MField placeholder="Rédigez votre message" value={form.message} onChange={set('message')} maxLength={LIMITS.long} textarea required />
+        <HoneypotField value={guard.honeypot} onChange={guard.setHoneypot} />
+        <button
+          type="submit"
+          className="mt-3 h-12 rounded-full border border-white font-body text-[0.9375rem] text-white active:bg-white active:text-black"
+        >
+          {label}
+        </button>
+        {error && <p className="font-body text-[0.8125rem] text-red-300">{error}</p>}
+      </form>
+    )
+  }
+
   return (
     <Box x={1229} y={1440} w={472} h={318}>
       <form onSubmit={handleSubmit} className="h-full">
@@ -224,7 +254,7 @@ function ContactForm() {
         <HoneypotField value={guard.honeypot} onChange={guard.setHoneypot} />
 
         <PillButton x={0} y={273} w={196} type="submit">
-          {saving ? 'Envoi…' : sent ? 'Message envoyé' : 'Envoyer le message'}
+          {label}
         </PillButton>
 
         {error && (
@@ -233,6 +263,18 @@ function ContactForm() {
       </form>
     </Box>
   )
+}
+
+/** Flow-layout field for the mobile form — same shape, thumb-sized. */
+function MField({
+  placeholder, value, onChange, maxLength, type = 'text', required, textarea,
+}: Omit<FieldProps, 'x' | 'y' | 'w' | 'h'>) {
+  const cls =
+    'w-full rounded-lg bg-surface px-4 font-body text-[1rem] font-light text-white placeholder:text-white/50 focus:outline-none focus:ring-1 focus:ring-white/40'
+  const shared = { placeholder, value, onChange, maxLength, required, 'aria-label': placeholder }
+  return textarea
+    ? <textarea {...shared} rows={5} className={`${cls} resize-none py-3`} />
+    : <input {...shared} type={type} className={`${cls} h-12`} />
 }
 
 interface FieldProps {
@@ -271,3 +313,95 @@ function Field({ x, y, w, h = 47, placeholder, value, onChange, maxLength, type 
     ? <textarea {...shared} className="placeholder:text-white/50" />
     : <input {...shared} type={type} className="placeholder:text-white/50" />
 }
+
+/* ── Mobile ──────────────────────────────────────────────────────────────── */
+
+function ContactMobile() {
+  return (
+    <MPage>
+      <MHero>
+        <MH1>Contact</MH1>
+      </MHero>
+
+      <MSection className="py-8">
+        <p className="font-body text-[0.8125rem] font-light text-white/80">Contactez-nous</p>
+        <MH2 className="mt-3">
+          Nous adorons les challenges, mettez-nous à contribution !. N'hésitez pas à nous contacter !
+        </MH2>
+        <MBody className="mt-5">
+          Nous serons heureux de répondre à toutes vos questions et de vous aider à déterminer
+          lequel de nos services correspond le mieux à vos besoins.
+        </MBody>
+
+        <a href="tel:+213773876214" className="mt-8 flex items-center gap-4">
+          <PhoneIcon style={{ width: 38, height: 38, color: '#fff' }} />
+          <span>
+            <span className="block font-body text-[0.75rem] font-light text-white/80">Appelez-nous au :</span>
+            <span className="block font-display text-[1.25rem] font-bold text-white">+213 (0) 773 87 62 14</span>
+          </span>
+        </a>
+      </MSection>
+
+      <MSection className="py-8">
+        <ContactForm mobile />
+      </MSection>
+
+      <MSection className="py-12">
+        <p className="text-center font-body text-[0.9375rem] text-white">Vous avez des questions ?</p>
+        <MH2 className="mt-2 text-center">Voici les questions fréquemment posées.</MH2>
+        <div className="mt-8 flex flex-col gap-3">
+          {FAQS.map((f, i) => (
+            <Rise key={f.q} delay={i * 70}><FaqCardMobile {...f} /></Rise>
+          ))}
+        </div>
+      </MSection>
+
+      <section className="relative">
+        <img
+          src="/Assets/images/Contact-img linkedin.png"
+          alt="Sétif, Algérie"
+          className="h-[70vh] w-full object-cover"
+          draggable={false}
+        />
+        <div className="absolute inset-x-6 bottom-10">
+          <MH3 className="!text-black !font-bold !text-[1.5rem]">
+            Suivez notre actualités et découvrez nos travaux récentes
+          </MH3>
+          <a
+            href="https://www.linkedin.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="LinkedIn"
+            className="mt-5 grid h-11 w-11 place-items-center rounded-full bg-black"
+          >
+            <LinkedInIcon style={{ width: 14, height: 14, color: '#fff' }} />
+          </a>
+        </div>
+      </section>
+    </MPage>
+  )
+}
+
+function FaqCardMobile({ q, a }: { q: string; a: string }) {
+  const [open, setOpen] = useState(false)
+  return (
+    <MCard>
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        className="flex w-full items-start justify-between gap-4 text-left"
+      >
+        <span className="font-display text-[1.0625rem] font-medium leading-[1.25] text-white">
+          {q.split('\n').join(' ')}
+        </span>
+        <ChevronDownIcon
+          style={{ width: 15, height: 9, marginTop: 6, color: '#fff', flexShrink: 0,
+                   transform: open ? 'rotate(180deg)' : undefined }}
+        />
+      </button>
+      {open && <MBody className="mt-4">{a}</MBody>}
+    </MCard>
+  )
+}
+

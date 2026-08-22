@@ -4,6 +4,7 @@ import { createArticle, getArticleById, updateArticle } from '../../lib/content/
 import type { ArticleBlock } from '../../lib/content/types'
 import { slugify } from '../../lib/content/types'
 import { AdminButton, Card, Field, MediaUploader, Spinner, TagEditor, TextArea, TextInput, Toggle } from '../../components/admin/ui'
+import { describeError } from '../../lib/supabase'
 
 const emptyBlock = (): ArticleBlock => ({ heading: '', paragraphs: [''] })
 const today = () => new Date().toISOString().slice(0, 10)
@@ -80,7 +81,7 @@ export default function AdminArticleEditor() {
       else await updateArticle(id as string, input)
       navigate('/admin/nouvelles')
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Échec de l'enregistrement.")
+      setError(describeError(err))
     } finally {
       setSaving(false)
     }

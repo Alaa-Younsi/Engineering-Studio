@@ -4,6 +4,7 @@ import { listArticles, listProjects, listSubmissions } from '../../lib/content/s
 import type { Article, Project, Submission } from '../../lib/content/types'
 import { formatArticleDate, SUBMISSION_LABELS } from '../../lib/content/types'
 import { AdminButton, Card, Spinner } from '../../components/admin/ui'
+import { describeError } from '../../lib/supabase'
 
 interface RecentItem {
   key: string
@@ -28,7 +29,7 @@ export default function AdminDashboard() {
         setProjects(p)
         setSubmissions(s)
       })
-      .catch((e: unknown) => setError(e instanceof Error ? e.message : 'Erreur inconnue'))
+      .catch((e: unknown) => setError(describeError(e)))
       .finally(() => setLoading(false))
   }, [])
 

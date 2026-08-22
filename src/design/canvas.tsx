@@ -131,6 +131,12 @@ export const typeCss = (t: TypeName | TypeStyle): CSSProperties => {
 interface FrameProps {
   /** Canvas height in design px — the Figma frame height. */
   h: number
+  /**
+   * Single-screen frames (Prestations) must never scroll: pin the viewport
+   * height and centre the canvas inside it, so a browser window shorter than
+   * the 1080-tall design crops evenly instead of introducing a scrollbar.
+   */
+  fit?: boolean
   children: ReactNode
   className?: string
   style?: CSSProperties
@@ -140,14 +146,19 @@ interface FrameProps {
  * A page canvas: 1920 design px wide, `h` tall, centred, clipping anything
  * that bleeds past its edges (the oversized logo watermarks do exactly that).
  */
-export function Frame({ h, children, className = '', style }: FrameProps) {
-  return (
+export function Frame({ h, fit, children, className = '', style }: FrameProps) {
+  const canvas = (
     <div
-      className={`relative mx-auto overflow-hidden ${className}`}
+      className={`relative mx-auto overflow-hidden ${fit ? 'flex-shrink-0' : ''} ${className}`}
       style={{ width: u(DESIGN_W), height: u(h), ...style }}
     >
       {children}
     </div>
+  )
+
+  if (!fit) return canvas
+  return (
+    <div className="flex h-[100dvh] items-center justify-center overflow-hidden">{canvas}</div>
   )
 }
 
@@ -208,6 +219,7 @@ export interface TxtProps extends Omit<React.HTMLAttributes<HTMLElement>, 'style
   /** Explicit box width; omit for `max-content` (how Figma exports text). */
   w?: number
   t: TypeName | TypeStyle
+  /** Pass `'inherit'` to let an ancestor (e.g. a hover-flipping button) own it. */
   color?: string
   /** Figma renders most secondary copy at 80% white. */
   dim?: boolean
@@ -254,7 +266,7 @@ export function Txt({
         width: centerX ? 'auto' : w != null ? u(w) : 'max-content',
         maxWidth: '100%',
         whiteSpace: 'pre-wrap',
-        color,
+        ...(color === 'inherit' ? {} : { color }),
         opacity: opacity ?? (dim ? 0.8 : undefined),
         textAlign: align,
         ...typeCss(t),

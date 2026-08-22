@@ -10,7 +10,7 @@ const NAV = [
 ]
 
 export default function AdminLayout() {
-  const { email, signOut, configured } = useAuth()
+  const { email, signOut } = useAuth()
   const navigate = useNavigate()
 
   const handleSignOut = async () => {
@@ -58,15 +58,6 @@ export default function AdminLayout() {
 
       {/* Content */}
       <main className="flex-1 min-w-0">
-        {!configured && (
-          <div className="bg-amber-500/10 border-b border-amber-500/20 px-6 lg:px-10 py-3">
-            <p className="font-body text-xs text-amber-200/90">
-              Mode démo — Supabase n'est pas encore connecté. Les modifications sont enregistrées localement dans ce navigateur.
-              Ajoutez vos identifiants dans <code className="text-amber-100">.env</code> pour passer en production.
-            </p>
-          </div>
-        )}
-
         <div className="lg:hidden flex items-center justify-between px-6 py-3 border-b border-white/10">
           <span className="font-body text-xs text-secondary truncate">{email}</span>
           <AdminButton variant="ghost" onClick={handleSignOut} className="!py-1.5 !px-4 text-xs">Déconnexion</AdminButton>

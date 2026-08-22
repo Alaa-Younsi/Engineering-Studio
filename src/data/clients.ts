@@ -81,3 +81,22 @@ export const TESTIMONIALS: Testimonial[] = [
   { x: 1512.0, quote: "Leur réactivité et conseils précieux lors de nos études, nous permettent d’être réactifs et pourvoyeurs de solutions techniques innovantes. Leurs plans et bilans thermiques sont toujours d’une grande précision.", name: "Manar\nEl Imara", role: "Architecture" },
   { x: 2016.0, quote: "Leur expérience pluridisciplinaire (CVC/CET et VRD) nous permet de pouvoir répondre favorablement et sans retenues sur les dossiers complets de nos clients.", name: "Baret\nArchitectes", role: "Architecture" },
 ]
+
+/** Three ringed statements at y 3837.6 — ring x, then the label block. */
+export const ENGAGEMENTS = [
+  { ring: 393, lx: 313, label: 'Nous sommes honorés\nqu’ils nous choisissent' },
+  { ring: 894, lx: 813, label: 'Notre client est notre\npartenaire. Quant il\nprospère, nous faisons\nde même' },
+  { ring: 1395, lx: 1323, label: 'Tout revient à… notre\nengagement envers\nnos clients!' },
+]
+
+export const SECTORS = [
+  "Bureaux d'études",
+  'Entreprises de réalisation',
+  'Bailleurs sociaux',
+  'Immobiliers de commerces',
+  'Bâtiments industriels',
+  'Immobiliers de bureaux',
+  'Promoteurs immobiliers',
+  'Bâtiments administratifs',
+  'Structure hospitalières',
+]

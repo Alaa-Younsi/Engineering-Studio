@@ -3,8 +3,11 @@ import { Box, Frame, Txt } from '../design/canvas'
 import { CircleButton, CircleImage, Watermark } from '../components/site/atoms'
 import { SiteFooter } from '../components/site/SiteFooter'
 import { LogoMark } from '../brand/vectors'
-import { CLIENT_CARDS, TESTIMONIALS } from '../data/clients'
+import { CLIENT_CARDS, ENGAGEMENTS, SECTORS, TESTIMONIALS } from '../data/clients'
 import { useTransition } from '../context/TransitionContext'
+import { useIsDesktop } from '../design/useIsDesktop'
+import { ClientsMobile } from './mobile/ClientsMobile'
+import { Rise } from '../design/Rise'
 
 /**
  * Clients — Figma frame 1920 x 12960.
@@ -22,28 +25,12 @@ import { useTransition } from '../context/TransitionContext'
  */
 const CANVAS_H = 12960
 
-/** Three ringed statements at y 3837.6 — ring x, then the label block. */
-const ENGAGEMENTS = [
-  { ring: 393, lx: 313, label: 'Nous sommes honorés\nqu’ils nous choisissent' },
-  { ring: 894, lx: 813, label: 'Notre client est notre\npartenaire. Quant il\nprospère, nous faisons\nde même' },
-  { ring: 1395, lx: 1323, label: 'Tout revient à… notre\nengagement envers\nnos clients!' },
-]
-
-const SECTORS = [
-  "Bureaux d'études",
-  'Entreprises de réalisation',
-  'Bailleurs sociaux',
-  'Immobiliers de commerces',
-  'Bâtiments industriels',
-  'Immobiliers de bureaux',
-  'Promoteurs immobiliers',
-  'Bâtiments administratifs',
-  'Structure hospitalières',
-]
-
 export default function Clients() {
   const { startTransition } = useTransition()
   const nav = useCallback((p: string) => startTransition(p), [startTransition])
+  const isDesktop = useIsDesktop()
+
+  if (!isDesktop) return <ClientsMobile nav={nav} />
 
   return (
     <Frame h={CANVAS_H}>
@@ -115,11 +102,15 @@ nous permet sans cesse de repousser nos limites.`}
       <Txt t="h2" x={217} y={5758}>
         {'Voici quelques\nexemples de clients\navec lesquels nous\navons eu le plaisir\nde collaborer'}
       </Txt>
-      <CircleImage x={1070} y={5624} size={633} src="/Assets/images/Clients-Clients.png" alt="Nos clients" />
+      <Rise>
+        <CircleImage x={1070} y={5624} size={633} src="/Assets/images/Clients-Clients.png" alt="Nos clients" />
+      </Rise>
 
       {/* ── Client grid ───────────────────────────────────────────────────── */}
-      {CLIENT_CARDS.map((c) => (
-        <Box key={`${c.x}-${c.y}`} x={c.x} y={c.y} w={c.w} h={c.h} bg="#1a1a1a" radius={30} clip>
+      {CLIENT_CARDS.map((c, i) => (
+        // Stagger across each row of five so a row arrives as a sweep.
+        <Rise key={`${c.x}-${c.y}`} delay={(i % 5) * 70}>
+        <Box x={c.x} y={c.y} w={c.w} h={c.h} bg="#1a1a1a" radius={30} clip>
           {c.lines.map((l) => (
             <Txt key={l.t} t={{ weight: 700, size: l.fs, ls: -0.0405 }} x={l.x} y={l.y}>{l.t}</Txt>
           ))}
@@ -133,6 +124,7 @@ nous permet sans cesse de repousser nos limites.`}
             {c.num}
           </Txt>
         </Box>
+        </Rise>
       ))}
 
       {/* ── Merci ─────────────────────────────────────────────────────────── */}
@@ -149,12 +141,25 @@ depuis de nombreuses années.`}
       </Box>
 
       {/* ── Témoignages ───────────────────────────────────────────────────── */}
-      <Box x={219} y={11061.8} w={2496} h={528.4}>
+      <Box x={219} y={11061.8} w={1701} h={528.4}>
         <Txt t="leadLightTall" x={0} y={0}>Témoignages</Txt>
         <Txt t="h4Wide" x={0} y={62}>Écoutez ce que nos clients ont à dire</Txt>
-        <Box x={0} y={186} w={2496} h={342.4}>
-          {TESTIMONIALS.map((t) => (
-            <Box key={t.x} x={t.x} y={0} w={480} h={342.4} bg="#1a1a1a" radius={30}>
+        {/*
+         * The Figma track is 2496 wide inside a 1920 frame, so the last cards
+         * are cut off. Make it a real horizontal scroller — same resting
+         * layout, but the cards can now be dragged/scrolled into view.
+         */}
+        <Box
+          x={0}
+          y={186}
+          w={1701}
+          h={342.4}
+          className="snap-x snap-mandatory overflow-x-auto overscroll-x-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        >
+          <Box x={0} y={0} w={2496} h={342.4}>
+          {TESTIMONIALS.map((t, i) => (
+            <Rise key={t.x} delay={i * 70}>
+            <Box x={t.x} y={0} w={480} h={342.4} bg="#1a1a1a" radius={30} className="snap-start">
               <Box x={50} y={40} w={380} h={261.4}>
                 <Box x={0} y={0} w={32} h={32}>
                   <LogoMark style={{ width: '100%', height: '100%', color: '#fff' }} />
@@ -165,7 +170,9 @@ depuis de nombreuses années.`}
                 <Txt t="quoteRole" x={0} y={247.4} opacity={0.5}>{t.role}</Txt>
               </Box>
             </Box>
+            </Rise>
           ))}
+          </Box>
         </Box>
       </Box>
 

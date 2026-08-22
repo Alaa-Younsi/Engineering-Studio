@@ -50,9 +50,10 @@ export function MenuOverlay() {
           aria-label="Menu"
         >
           {/* Desktop: the Figma canvas, 1:1. */}
+          <div className="hidden h-full items-center justify-center overflow-hidden lg:flex">
           <div
-            className="relative mx-auto hidden h-full lg:block"
-            style={{ width: u(DESIGN_W) }}
+            className="relative flex-shrink-0"
+            style={{ width: u(DESIGN_W), height: u(1080) }}
           >
             <Txt t="small" x={108} y={56} dim>contact@engineering-studio.net</Txt>
 
@@ -75,8 +76,14 @@ export function MenuOverlay() {
               <PillButton x={103} y={0} w={214} onClick={() => go('/reunion')}>
                 Demander un échange
               </PillButton>
-              <CircleButton x={332} y={0} label="Nous contacter" onClick={() => go('/contact')} />
             </Box>
+            {/*
+             * Positioned against the canvas rather than the 377-wide row: an
+             * absolutely positioned, shrink-to-fit box is capped by the space
+             * left in its containing block, which would pin this at 45px and
+             * stop the hover from opening.
+             */}
+            <CircleButton x={679} y={586} label="Contact" onClick={() => go('/contact')} />
 
             {LINKS.map((l, i) => (
               <motion.div
@@ -110,6 +117,7 @@ export function MenuOverlay() {
               <Txt t="small" x={834.1} y={0} dim>Solutions Globales en Ingénierie</Txt>
               <Txt t="small" x={1631.1} y={0} dim align="right">+213 (0) 773 87 62 14</Txt>
             </Box>
+          </div>
           </div>
 
           {/* Mobile: the same content, stacked. */}

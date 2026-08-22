@@ -1,40 +1,28 @@
-import { useCallback, useRef } from 'react'
-import { useScroll, useTransform } from 'framer-motion'
+import { useCallback } from 'react'
 import { useTransition } from '../context/TransitionContext'
-import { Footer } from '../components/Footer'
-import { HeroShape } from '../components/HeroShape'
+import { UnderConstruction } from '../components/site/UnderConstruction'
 import { NouvellesArchive } from '../components/NouvellesArchive'
-import { UnderConstruction } from '../components/UnderConstruction'
-import { FEATURES } from '../config/features'
+import { useArticles } from '../lib/content/hooks'
 
+/**
+ * Nouvelles. Until something is published the design's "En cours de
+ * construction" frame stands in for the archive — driven by the data, not a
+ * flag, so the grid appears on its own the moment an article goes live.
+ */
 export default function Nouvelles() {
   const { startTransition } = useTransition()
   const nav = useCallback((path: string) => startTransition(path), [startTransition])
+  const { data: articles, loading } = useArticles()
 
-  const heroRef = useRef<HTMLElement>(null)
-  const { scrollYProgress: heroProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] })
-  const heroLogoY = useTransform(heroProgress, [0, 1], ['0px', '-80px'])
+  if (loading || articles.length === 0) {
+    return (
+      <UnderConstruction
+        title="Nouvelles"
+        actionLabel="Retour à l'accueil"
+        onAction={() => nav('/')}
+      />
+    )
+  }
 
-  return (
-    <main className="min-h-screen bg-bg">
-      {/* Hero */}
-      <section ref={heroRef} className="relative h-screen flex items-center overflow-hidden">
-        <div className="px-6 sm:px-10 lg:px-gutter relative z-10">
-          <h1 className="font-display font-bold text-[2.5rem] sm:text-6xl lg:text-[5.375rem] text-white leading-none lg:leading-none">
-            Nouvelles
-          </h1>
-        </div>
-
-        <HeroShape y={heroLogoY} />
-      </section>
-
-      {FEATURES.nouvelles ? (
-        <NouvellesArchive />
-      ) : (
-        <UnderConstruction label="Retour à l'accueil" onClick={() => nav('/')} />
-      )}
-
-      <Footer />
-    </main>
-  )
+  return <NouvellesArchive />
 }

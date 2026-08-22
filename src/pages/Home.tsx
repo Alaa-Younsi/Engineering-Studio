@@ -3,6 +3,10 @@ import { Box, Frame, Txt } from '../design/canvas'
 import { CircleButton, CircleImage, PillButton, Watermark } from '../components/site/atoms'
 import { SiteFooter } from '../components/site/SiteFooter'
 import { useTransition } from '../context/TransitionContext'
+import { useIsDesktop } from '../design/useIsDesktop'
+import { Rise } from '../design/Rise'
+import { MobileFooter } from '../components/mobile/MobileFooter'
+import { MBody, MCircleImage, MH1, MH2, MHero, MMarkButton, MPage, MPill, MSection } from '../components/mobile/kit'
 
 /**
  * Accueil — Figma frame 1920 x 6480.
@@ -81,6 +85,9 @@ des éléments techniques qui le composent (fluides, réseaux électriques,
 export default function Home() {
   const { startTransition } = useTransition()
   const nav = useCallback((p: string) => startTransition(p), [startTransition])
+  const isDesktop = useIsDesktop()
+
+  if (!isDesktop) return <HomeMobile nav={nav} />
 
   return (
     <Frame h={CANVAS_H}>
@@ -117,12 +124,51 @@ function ServiceSection({
 }: Service & { onOpen: () => void }) {
   return (
     <>
-      <CircleImage x={ix} y={iy} size={633} src={img} alt={title.replace('\n', ' ')} onClick={onOpen} />
-      <Box x={tx} y={ty} w={tw}>
-        <Txt t="h2" x={0} y={0}>{title}</Txt>
-        <Txt t="body" x={0} y={160} dim>{body}</Txt>
-        <CircleButton x={0} y={by} onClick={onOpen} />
-      </Box>
+      <Rise>
+        <CircleImage x={ix} y={iy} size={633} src={img} alt={title.replace('\n', ' ')} onClick={onOpen} />
+      </Rise>
+      <Rise delay={90}>
+        <Box x={tx} y={ty} w={tw}>
+          <Txt t="h2" x={0} y={0}>{title}</Txt>
+          <Txt t="body" x={0} y={160} dim>{body}</Txt>
+          <CircleButton x={0} y={by} onClick={onOpen} />
+        </Box>
+      </Rise>
     </>
+  )
+}
+
+/* ── Mobile ──────────────────────────────────────────────────────────────── */
+
+function HomeMobile({ nav }: { nav: (p: string) => void }) {
+  return (
+    <MPage>
+      <MHero>
+        <MH1>{"L'excellence dans l'ingénierie d'étude technique en BTP"}</MH1>
+        <MBody className="mt-6">
+          ENGINEERING STUDIO, intervient sur tout type de projets et à n’importe quelle phase du
+          projet, de l'étude à la modélisation BIM.
+        </MBody>
+        <div className="mt-8 flex flex-wrap items-center gap-3">
+          <MPill onClick={() => nav('/devis')}>Obtenez un devis</MPill>
+          <MMarkButton onClick={() => nav('/a-propos')}>Qui sommes-nous</MMarkButton>
+        </div>
+      </MHero>
+
+      {SERVICES.map((s) => (
+        <MSection key={s.href}>
+          <Rise><MCircleImage src={s.img} alt={s.title.replace('\n', ' ')} /></Rise>
+          <Rise delay={80}>
+            <MH2 className="mt-10">{s.title.replace('\n', ' ')}</MH2>
+            <MBody className="mt-4">{s.body}</MBody>
+            <div className="mt-7">
+              <MMarkButton onClick={() => nav(s.href)}>En savoir plus</MMarkButton>
+            </div>
+          </Rise>
+        </MSection>
+      ))}
+
+      <MobileFooter eyebrow />
+    </MPage>
   )
 }

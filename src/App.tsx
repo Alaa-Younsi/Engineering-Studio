@@ -1,4 +1,4 @@
-import { lazy, Suspense } from 'react'
+import { lazy, Suspense, useEffect } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { MenuProvider } from './context/MenuContext'
 import { TransitionProvider } from './context/TransitionContext'
@@ -68,6 +68,12 @@ function PublicApp() {
 }
 
 function AdminApp() {
+  // Opt the dashboard out of the site's fluid root font-size (see index.css).
+  useEffect(() => {
+    document.documentElement.dataset.admin = 'true'
+    return () => { delete document.documentElement.dataset.admin }
+  }, [])
+
   return (
     <AuthProvider>
       <ScrollToTop />

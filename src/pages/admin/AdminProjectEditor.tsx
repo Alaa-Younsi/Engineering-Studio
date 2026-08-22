@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 import { createProject, getProject, updateProject } from '../../lib/content/store'
 import type { ProjectMedia } from '../../lib/content/types'
 import { AdminButton, Card, Field, MediaUploader, Spinner, TagEditor, TextInput, Toggle } from '../../components/admin/ui'
+import { describeError } from '../../lib/supabase'
 
 export default function AdminProjectEditor() {
   const { id } = useParams<{ id: string }>()
@@ -59,7 +60,7 @@ export default function AdminProjectEditor() {
       else await updateProject(id as string, input)
       navigate('/admin/portefeuille')
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Échec de l'enregistrement.")
+      setError(describeError(err))
     } finally {
       setSaving(false)
     }

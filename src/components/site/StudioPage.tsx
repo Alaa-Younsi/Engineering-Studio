@@ -1,5 +1,8 @@
 import { Box, Frame, Txt } from '../../design/canvas'
 import { Watermark } from './atoms'
+import { useIsDesktop } from '../../design/useIsDesktop'
+import { MBody, MHero, MPage, MSection } from '../mobile/kit'
+import { Rise } from '../../design/Rise'
 
 /**
  * The shared layout behind MEP / VRD / TOPO / BIM Studio.
@@ -32,6 +35,41 @@ const ROW = 1080
 const lift = (title: string) => Math.floor(36.5 * (title.split('\n').length - 1))
 
 export function StudioPage({ logo, rows, imgPrefix }: StudioPageProps) {
+  const isDesktop = useIsDesktop()
+
+  if (!isDesktop) {
+    return (
+      <MPage>
+        <MHero center>
+          <img src={logo.src} alt={logo.alt} className="w-[78%] max-w-[17rem]" draggable={false} />
+        </MHero>
+        {rows.map((row, i) => {
+          const n = String(i + 1).padStart(2, '0')
+          return (
+            <MSection key={n} className="py-10">
+              <Rise>
+                <div className="mx-auto aspect-square w-[70vw] max-w-[19rem] overflow-hidden rounded-full">
+                  <img
+                    src={`/Assets/images/${imgPrefix} STUDIO-${n}.png`}
+                    alt={row.title.split('\n').join(' ')}
+                    className="h-full w-full object-cover"
+                    draggable={false}
+                  />
+                </div>
+              </Rise>
+              <Rise delay={80}>
+                <MBody className="mt-7 text-center">{`${n}.`}</MBody>
+                <h2 className="mt-1 text-center font-display text-[1.75rem] font-medium leading-[1.12] tracking-[-0.0133em] text-white">
+                  {row.title.split('\n').join(' ')}
+                </h2>
+              </Rise>
+            </MSection>
+          )
+        })}
+      </MPage>
+    )
+  }
+
   return (
     <Frame h={ROW * (rows.length + 1)}>
       <Watermark x={588} y={168} size={744.6} />
@@ -47,24 +85,28 @@ export function StudioPage({ logo, rows, imgPrefix }: StudioPageProps) {
         const n = String(k).padStart(2, '0')
         return (
           <Box key={n} x={0} y={top} w={1920} h={ROW}>
-            <Box
-              x={k % 2 === 1 ? 1262 : 108}
-              y={265}
-              w={550}
-              h={550}
-              clip
-              style={{ borderRadius: '50%' }}
-            >
-              <img
-                src={`/Assets/images/${imgPrefix} STUDIO-${n}.png`}
-                alt={row.title.replace(/\n/g, ' ')}
-                className="h-full w-full object-cover"
-                draggable={false}
-              />
-            </Box>
+            <Rise>
+              <Box
+                x={k % 2 === 1 ? 1262 : 108}
+                y={265}
+                w={550}
+                h={550}
+                clip
+                style={{ borderRadius: '50%' }}
+              >
+                <img
+                  src={`/Assets/images/${imgPrefix} STUDIO-${n}.png`}
+                  alt={row.title.replace(/\n/g, ' ')}
+                  className="h-full w-full object-cover"
+                  draggable={false}
+                />
+              </Box>
+            </Rise>
 
-            <Txt t="h6" y={449 - l} centerX align="center" dim>{`${n}.`}</Txt>
-            <Txt t="h2" y={537 - l} centerX align="center">{row.title}</Txt>
+            <Rise delay={90}>
+              <Txt t="h6" y={449 - l} centerX align="center" dim>{`${n}.`}</Txt>
+              <Txt t="h2" y={537 - l} centerX align="center">{row.title}</Txt>
+            </Rise>
           </Box>
         )
       })}

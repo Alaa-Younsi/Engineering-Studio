@@ -76,6 +76,15 @@
     }
   }
 
+  /*
+   * The admin dashboard is a normal responsive app, not a Figma canvas — it
+   * must not inherit the fluid scale (which would shrink the CMS to 10px type
+   * on a 1440 laptop). The attribute selector outranks the rule above.
+   */
+  html[data-admin] {
+    font-size: 16px;
+  }
+
   body {
     @apply bg-bg text-white font-body;
     overflow-x: hidden;
@@ -86,5 +95,35 @@
   /* Figma draws no focus rings; keep them for keyboard users only. */
   :focus:not(:focus-visible) {
     outline: none;
+  }
+
+  /*
+   * Scroll reveal (src/design/Rise.tsx). Driven by one IntersectionObserver
+   * flipping data-rise, so the animation itself costs nothing per element.
+   */
+  [data-rise='out'] {
+    opacity: 0;
+    transform: translateY(1.75rem);
+  }
+
+  [data-rise] {
+    transition:
+      opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+  }
+
+  [data-rise='in'] {
+    opacity: 1;
+    transform: none;
+    will-change: auto;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-rise] {
+      opacity: 1 !important;
+      transform: none !important;
+      transition: none !important;
+    }
   }
 }

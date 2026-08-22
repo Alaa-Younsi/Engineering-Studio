@@ -1,7 +1,6 @@
 import { useState, useCallback } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useTransition } from '../context/TransitionContext'
-import { LogoFull } from '../components/LogoFull'
 import { createSubmission } from '../lib/content/store'
 import { isEmail, isPhone } from '../lib/content/validation'
 import { HoneypotField, submissionErrorMessage, useFormGuard } from '../components/FormGuard'
@@ -169,21 +168,7 @@ export default function Reunion() {
       <LogoField />
       <HoneypotField value={guard.honeypot} onChange={guard.setHoneypot} />
 
-      {/* Top bar */}
-      <div className="fixed top-0 left-0 right-0 h-16 z-20 flex items-center justify-between px-6 sm:px-8">
-        <button onClick={() => nav('/')} className="cursor-pointer">
-          <LogoFull size="sm" />
-        </button>
-        <button
-          onClick={() => nav('/')}
-          aria-label="Retour à l'accueil"
-          className="text-white hover:opacity-70 transition-opacity"
-        >
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden>
-            <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </button>
-      </div>
+      {/* The global SiteHeader draws this page's logo and back arrow. */}
 
       {/* Centered card area */}
       <div className="relative z-10 min-h-screen flex items-center justify-center py-24 px-4">

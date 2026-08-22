@@ -2,9 +2,10 @@ import { useState, type FormEvent } from 'react'
 import { Navigate, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import { AdminButton, Field, TextInput } from '../../components/admin/ui'
+import { describeError } from '../../lib/supabase'
 
 export default function AdminLogin() {
-  const { email: session, signIn, loading, configured } = useAuth()
+  const { email: session, signIn, loading } = useAuth()
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -21,7 +22,7 @@ export default function AdminLogin() {
       await signIn(email, password)
       navigate('/admin')
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Connexion impossible.')
+      setError(describeError(err))
     } finally {
       setBusy(false)
     }
@@ -41,7 +42,7 @@ export default function AdminLogin() {
             <TextInput type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="vous@exemple.com" autoComplete="email" required />
           </Field>
           <Field label="Mot de passe">
-            <TextInput type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="••••••••" autoComplete="current-password" />
+            <TextInput type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="••••••••" autoComplete="current-password" required />
           </Field>
 
           {error && <p className="font-body text-sm text-red-300">{error}</p>}
@@ -50,13 +51,6 @@ export default function AdminLogin() {
             {busy ? 'Connexion…' : 'Se connecter'}
           </AdminButton>
         </form>
-
-        {!configured && (
-          <p className="font-body text-xs text-secondary text-center mt-6 leading-relaxed">
-            Mode démo actif : saisissez n'importe quel email pour explorer le tableau de bord.
-            La connexion réelle s'activera dès que Supabase sera lié.
-          </p>
-        )}
 
         <div className="text-center mt-8">
           <a href="/" className="font-body text-xs text-secondary hover:text-white transition-colors">← Retour au site</a>

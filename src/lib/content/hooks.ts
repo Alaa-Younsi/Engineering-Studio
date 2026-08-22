@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import type { Article, Project } from './types'
 import { getArticle, listArticles, listProjects } from './store'
+import { describeError } from '../supabase'
 
 interface AsyncState<T> {
   data: T
@@ -19,7 +20,7 @@ export function useArticles(publishedOnly = true): AsyncState<Article[]> {
     setLoading(true)
     listArticles({ publishedOnly })
       .then(setData)
-      .catch((e: unknown) => setError(e instanceof Error ? e.message : 'Erreur de chargement'))
+      .catch((e: unknown) => setError(describeError(e)))
       .finally(() => setLoading(false))
   }, [publishedOnly])
 
@@ -42,7 +43,7 @@ export function useArticle(slug: string | undefined): AsyncState<Article | null>
     setLoading(true)
     getArticle(slug)
       .then(setData)
-      .catch((e: unknown) => setError(e instanceof Error ? e.message : 'Erreur de chargement'))
+      .catch((e: unknown) => setError(describeError(e)))
       .finally(() => setLoading(false))
   }, [slug])
 
@@ -60,7 +61,7 @@ export function useProjects(publishedOnly = true): AsyncState<Project[]> {
     setLoading(true)
     listProjects({ publishedOnly })
       .then(setData)
-      .catch((e: unknown) => setError(e instanceof Error ? e.message : 'Erreur de chargement'))
+      .catch((e: unknown) => setError(describeError(e)))
       .finally(() => setLoading(false))
   }, [publishedOnly])
 

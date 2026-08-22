@@ -2,6 +2,9 @@ import { useCallback } from 'react'
 import { Box, Frame, u } from '../design/canvas'
 import { Watermark } from '../components/site/atoms'
 import { useTransition } from '../context/TransitionContext'
+import { useIsDesktop } from '../design/useIsDesktop'
+import { MHero, MPage } from '../components/mobile/kit'
+import { Rise } from '../design/Rise'
 
 /**
  * Prestations — Figma frame 1920 x 1080.
@@ -21,9 +24,38 @@ const STUDIOS = [
 export default function Prestations() {
   const { startTransition } = useTransition()
   const nav = useCallback((p: string) => startTransition(p), [startTransition])
+  const isDesktop = useIsDesktop()
+
+  if (!isDesktop) {
+    return (
+      <MPage>
+        <MHero center>
+          <div className="grid w-full grid-cols-2 gap-x-6 gap-y-16">
+            {STUDIOS.map((s, i) => (
+              <Rise key={s.key} delay={i * 90}>
+                <button
+                  type="button"
+                  onClick={() => nav(s.href)}
+                  aria-label={s.label}
+                  className="flex w-full items-center justify-center"
+                >
+                  <img
+                    src={`/Assets/logo/svg/prestations-${s.key}.svg`}
+                    alt={s.label}
+                    className="w-full"
+                    draggable={false}
+                  />
+                </button>
+              </Rise>
+            ))}
+          </div>
+        </MHero>
+      </MPage>
+    )
+  }
 
   return (
-    <Frame h={1080}>
+    <Frame h={1080} fit>
       <Watermark x={132} y={-288} size={1655.4} />
 
       <Box x={583} y={402} w={753.1} h={275.6}>
@@ -33,7 +65,7 @@ export default function Prestations() {
             type="button"
             onClick={() => nav(s.href)}
             aria-label={s.label}
-            className="absolute transition-opacity hover:opacity-70"
+            className="absolute"
             style={{ left: u(s.x), top: u(s.y), width: u(s.w), height: u(s.h) }}
           >
             <img

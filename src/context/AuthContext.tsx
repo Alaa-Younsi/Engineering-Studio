@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
 import type { Session } from '@supabase/supabase-js'
-import { supabase, isSupabaseConfigured } from '../lib/supabase'
+import { supabase, describeError } from '../lib/supabase'
 
 interface AuthValue {
   /** Signed-in email, or null when logged out. */
@@ -11,79 +11,89 @@ interface AuthValue {
    * non-admin session can see nothing regardless of what the UI does.
    */
   isAdmin: boolean
+  /** True while the initial session is being resolved. */
   loading: boolean
-  /** True only when the real Supabase backend is wired. */
-  configured: boolean
+  /**
+   * Set when the allow-list lookup could not be completed — almost always the
+   * backend being unreachable. Distinguishes "not an admin" from "we could not
+   * find out", which are very different things to show someone.
+   */
+  error: string | null
   signIn: (email: string, password: string) => Promise<void>
   signOut: () => Promise<void>
 }
 
 const AuthContext = createContext<AuthValue | null>(null)
 
-const DEMO_KEY = 'es_demo_admin'
-
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [email, setEmail] = useState<string | null>(null)
   const [isAdmin, setIsAdmin] = useState(false)
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    if (isSupabaseConfigured && supabase) {
-      const client = supabase
+    let cancelled = false
 
-      const resolve = async (session: Session | null) => {
-        setEmail(session?.user.email ?? null)
-        if (!session?.user) {
-          setIsAdmin(false)
-          return
-        }
-        const { data } = await client
+    /** Resolve the session into an email plus an allow-list verdict. */
+    const resolve = async (session: Session | null) => {
+      if (cancelled) return
+      setEmail(session?.user.email ?? null)
+
+      if (!session?.user) {
+        setIsAdmin(false)
+        setError(null)
+        return
+      }
+
+      try {
+        const { data, error: queryError } = await supabase
           .from('admins')
           .select('user_id')
           .eq('user_id', session.user.id)
           .maybeSingle()
+        if (cancelled) return
+        if (queryError) throw queryError
         setIsAdmin(Boolean(data))
+        setError(null)
+      } catch (e) {
+        if (cancelled) return
+        // Never grant access on a failed check — deny, and say why.
+        setIsAdmin(false)
+        setError(describeError(e))
       }
-
-      client.auth.getSession().then(async ({ data }) => {
-        await resolve(data.session)
-        setLoading(false)
-      })
-      const { data: sub } = client.auth.onAuthStateChange((_event, session: Session | null) => {
-        void resolve(session)
-      })
-      return () => sub.subscription.unsubscribe()
     }
-    // Demo mode: restore a local session flag.
-    setEmail(localStorage.getItem(DEMO_KEY))
-    setIsAdmin(true)
-    setLoading(false)
+
+    void supabase.auth.getSession().then(async ({ data }) => {
+      await resolve(data.session)
+      if (!cancelled) setLoading(false)
+    })
+
+    const { data: sub } = supabase.auth.onAuthStateChange((_event, session) => {
+      void resolve(session)
+    })
+
+    return () => {
+      cancelled = true
+      sub.subscription.unsubscribe()
+    }
   }, [])
 
   const signIn = async (emailInput: string, password: string) => {
-    if (isSupabaseConfigured && supabase) {
-      const { error } = await supabase.auth.signInWithPassword({ email: emailInput, password })
-      if (error) throw error
-      return
-    }
-    // Demo mode: accept any credentials so the dashboard is explorable now.
-    if (!emailInput.trim()) throw new Error('Veuillez saisir un email.')
-    localStorage.setItem(DEMO_KEY, emailInput)
-    setEmail(emailInput)
+    const { error: signInError } = await supabase.auth.signInWithPassword({
+      email: emailInput.trim(),
+      password,
+    })
+    if (signInError) throw new Error(describeError(signInError))
   }
 
   const signOut = async () => {
-    if (isSupabaseConfigured && supabase) {
-      await supabase.auth.signOut()
-      setIsAdmin(false)
-    } else {
-      localStorage.removeItem(DEMO_KEY)
-      setEmail(null)
-    }
+    await supabase.auth.signOut()
+    setIsAdmin(false)
+    setEmail(null)
   }
 
   return (
-    <AuthContext.Provider value={{ email, isAdmin, loading, configured: isSupabaseConfigured, signIn, signOut }}>
+    <AuthContext.Provider value={{ email, isAdmin, loading, error, signIn, signOut }}>
       {children}
     </AuthContext.Provider>
   )

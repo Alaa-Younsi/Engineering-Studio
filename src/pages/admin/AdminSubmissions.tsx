@@ -3,6 +3,7 @@ import { attachmentUrl, deleteSubmission, listSubmissions, markSubmissionRead } 
 import type { Submission, SubmissionAttachment, SubmissionKind } from '../../lib/content/types'
 import { SUBMISSION_LABELS, formatSubmissionDate } from '../../lib/content/types'
 import { AdminButton, Card, Spinner } from '../../components/admin/ui'
+import { describeError } from '../../lib/supabase'
 
 type Filter = 'all' | SubmissionKind
 
@@ -74,7 +75,7 @@ export default function AdminSubmissions() {
     setLoadError(null)
     listSubmissions()
       .then(setSubmissions)
-      .catch((e: unknown) => setLoadError(e instanceof Error ? e.message : 'Erreur inconnue'))
+      .catch((e: unknown) => setLoadError(describeError(e)))
       .finally(() => setLoading(false))
   }
   useEffect(load, [])
