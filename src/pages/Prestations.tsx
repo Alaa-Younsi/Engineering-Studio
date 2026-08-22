@@ -1,6 +1,7 @@
 import { useCallback } from 'react'
 import { Box, Frame, u } from '../design/canvas'
 import { Watermark } from '../components/site/atoms'
+import { LogoMark } from '../brand/vectors'
 import { useTransition } from '../context/TransitionContext'
 import { useIsDesktop } from '../design/useIsDesktop'
 import { MHero, MPage } from '../components/mobile/kit'
@@ -65,9 +66,17 @@ export default function Prestations() {
             type="button"
             onClick={() => nav(s.href)}
             aria-label={s.label}
-            className="absolute"
+            className="group absolute flex items-center opacity-50 transition-opacity duration-300 hover:opacity-100"
             style={{ left: u(s.x), top: u(s.y), width: u(s.w), height: u(s.h) }}
           >
+            {/* The hovered studio alone gets the mark, sliding in beside its name. */}
+            <span
+              className="absolute flex flex-shrink-0 scale-75 items-center justify-center rounded-full bg-white opacity-0 transition-all duration-300 group-hover:scale-100 group-hover:opacity-100"
+              style={{ left: u(-56), width: u(45), height: u(45) }}
+              aria-hidden
+            >
+              <LogoMark style={{ width: u(20.1), height: u(20.1), color: '#000' }} />
+            </span>
             <img
               src={`/Assets/logo/svg/prestations-${s.key}.svg`}
               alt={s.label}

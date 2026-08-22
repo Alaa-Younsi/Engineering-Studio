@@ -1,10 +1,12 @@
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
+import { useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useMenu } from '../context/MenuContext'
 import { useTransition } from '../context/TransitionContext'
 import { Box, Txt, u, DESIGN_W } from '../design/canvas'
 import { LogoLockup, ArrowRightIcon } from '../brand/vectors'
 import { CircleButton, PillButton } from './site/atoms'
+import { MMarkButton } from './mobile/kit'
 
 /**
  * Menu — Figma frame 1920 x 1080, drawn over the page as a full-screen overlay.
@@ -28,6 +30,10 @@ const LINKS = [
 export function MenuOverlay() {
   const { isMenuOpen, closeMenu } = useMenu()
   const { startTransition } = useTransition()
+  const { pathname } = useLocation()
+  // Which link reads at full opacity: whatever is hovered, or — with nothing
+  // hovered — the current page. Every other link sits at 50%.
+  const [hovered, setHovered] = useState<string | null>(null)
 
   const go = useCallback(
     (path: string) => {
@@ -85,27 +91,33 @@ export function MenuOverlay() {
              */}
             <CircleButton x={679} y={586} label="Contact" onClick={() => go('/contact')} />
 
-            {LINKS.map((l, i) => (
-              <motion.div
-                key={l.href}
-                initial={{ opacity: 0, x: 30 }}
-                animate={{ opacity: 1, x: 0, transition: { duration: 0.3, delay: 0.1 + i * 0.05 } }}
-                exit={{ opacity: 0, x: 20, transition: { duration: 0.2 } }}
-              >
-                <Txt
-                  t="h3"
-                  x={1131}
-                  y={294 + i * 84}
-                  role="link"
-                  tabIndex={0}
-                  onClick={() => go(l.href)}
-                  onKeyDown={(e) => e.key === 'Enter' && go(l.href)}
-                  className="cursor-pointer transition-opacity hover:opacity-60"
+            {LINKS.map((l, i) => {
+              const active = hovered ? hovered === l.href : pathname === l.href
+              return (
+                <motion.div
+                  key={l.href}
+                  initial={{ opacity: 0, x: 30 }}
+                  animate={{ opacity: 1, x: 0, transition: { duration: 0.3, delay: 0.1 + i * 0.05 } }}
+                  exit={{ opacity: 0, x: 20, transition: { duration: 0.2 } }}
                 >
-                  {l.label}
-                </Txt>
-              </motion.div>
-            ))}
+                  <Txt
+                    t="h3"
+                    x={1131}
+                    y={294 + i * 84}
+                    role="link"
+                    tabIndex={0}
+                    onClick={() => go(l.href)}
+                    onKeyDown={(e) => e.key === 'Enter' && go(l.href)}
+                    onMouseEnter={() => setHovered(l.href)}
+                    onMouseLeave={() => setHovered(null)}
+                    opacity={active ? 1 : 0.5}
+                    className="cursor-pointer transition-opacity duration-200"
+                  >
+                    {l.label}
+                  </Txt>
+                </motion.div>
+              )
+            })}
 
             <Box x={0} y={1001} w={DESIGN_W}>
               <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer">
@@ -135,7 +147,8 @@ export function MenuOverlay() {
                   key={l.href}
                   type="button"
                   onClick={() => go(l.href)}
-                  className="text-left font-display text-3xl font-medium text-white"
+                  className="text-left font-display text-3xl font-medium text-white transition-opacity"
+                  style={{ opacity: pathname === l.href ? 1 : 0.5 }}
                 >
                   {l.label}
                 </button>
@@ -143,9 +156,10 @@ export function MenuOverlay() {
             </nav>
 
             <div className="flex flex-col gap-4">
-              <div className="flex items-center gap-3">
+              <div className="flex flex-wrap items-center gap-3">
                 <button onClick={() => go('/devis')} className="rounded-full border border-white px-5 py-2 text-xs">Devis</button>
                 <button onClick={() => go('/reunion')} className="rounded-full border border-white px-5 py-2 text-xs">Demander un échange</button>
+                <MMarkButton onClick={() => go('/contact')}>Contact</MMarkButton>
               </div>
               <div className="flex gap-6 text-xs text-white/80">
                 <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer">Facebook</a>

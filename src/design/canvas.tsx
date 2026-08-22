@@ -12,6 +12,7 @@
  * with the window, so `u()` below turns design px into a unit that is
  * pixel-exact at 1920 and proportionally exact everywhere else.
  */
+import { forwardRef } from 'react'
 import type { CSSProperties, ReactNode } from 'react'
 
 /** Design width the whole system is keyed to. */
@@ -145,10 +146,17 @@ interface FrameProps {
 /**
  * A page canvas: 1920 design px wide, `h` tall, centred, clipping anything
  * that bleeds past its edges (the oversized logo watermarks do exactly that).
+ *
+ * Forwards its ref to the canvas div itself (not the `fit` wrapper) so a
+ * scroll-linked effect (`framer-motion`'s `useScroll`) can target the full
+ * design-px-tall element and get a clean 0–1 progress across it.
  */
-export function Frame({ h, fit, children, className = '', style }: FrameProps) {
+export const Frame = forwardRef<HTMLDivElement, FrameProps>(function Frame(
+  { h, fit, children, className = '', style }, ref,
+) {
   const canvas = (
     <div
+      ref={ref}
       className={`relative mx-auto overflow-hidden ${fit ? 'flex-shrink-0' : ''} ${className}`}
       style={{ width: u(DESIGN_W), height: u(h), ...style }}
     >
@@ -160,7 +168,7 @@ export function Frame({ h, fit, children, className = '', style }: FrameProps) {
   return (
     <div className="flex h-[100dvh] items-center justify-center overflow-hidden">{canvas}</div>
   )
-}
+})
 
 export interface BoxProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'style'> {
   x?: number
@@ -183,12 +191,13 @@ export interface BoxProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'st
 }
 
 /** An absolutely positioned box in design coordinates. */
-export function Box({
+export const Box = forwardRef<HTMLDivElement, BoxProps>(function Box({
   x = 0, y = 0, w, h, right, bottom, opacity, radius, bg, border, borderWidth = 1,
   z, clip, style, children, className = '', ...rest
-}: BoxProps) {
+}, ref) {
   return (
     <div
+      ref={ref}
       className={className}
       style={{
         position: 'absolute',
@@ -211,7 +220,7 @@ export function Box({
       {children}
     </div>
   )
-}
+})
 
 export interface TxtProps extends Omit<React.HTMLAttributes<HTMLElement>, 'style'> {
   x?: number

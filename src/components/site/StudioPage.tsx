@@ -1,8 +1,11 @@
-import { Box, Frame, Txt } from '../../design/canvas'
+import { useRef } from 'react'
+import { motion, useScroll, useTransform } from 'framer-motion'
+import { Box, Frame, Txt, u } from '../../design/canvas'
 import { Watermark } from './atoms'
 import { useIsDesktop } from '../../design/useIsDesktop'
 import { MBody, MHero, MPage, MSection } from '../mobile/kit'
 import { Rise } from '../../design/Rise'
+import { motionOff } from '../../design/motionOff'
 
 /**
  * The shared layout behind MEP / VRD / TOPO / BIM Studio.
@@ -85,23 +88,11 @@ export function StudioPage({ logo, rows, imgPrefix }: StudioPageProps) {
         const n = String(k).padStart(2, '0')
         return (
           <Box key={n} x={0} y={top} w={1920} h={ROW}>
-            <Rise>
-              <Box
-                x={k % 2 === 1 ? 1262 : 108}
-                y={265}
-                w={550}
-                h={550}
-                clip
-                style={{ borderRadius: '50%' }}
-              >
-                <img
-                  src={`/Assets/images/${imgPrefix} STUDIO-${n}.png`}
-                  alt={row.title.replace(/\n/g, ' ')}
-                  className="h-full w-full object-cover"
-                  draggable={false}
-                />
-              </Box>
-            </Rise>
+            <StudioRowImage
+              src={`/Assets/images/${imgPrefix} STUDIO-${n}.png`}
+              alt={row.title.replace(/\n/g, ' ')}
+              x={k % 2 === 1 ? 1262 : 108}
+            />
 
             <Rise delay={90}>
               <Txt t="h6" y={449 - l} centerX align="center" dim>{`${n}.`}</Txt>
@@ -111,6 +102,33 @@ export function StudioPage({ logo, rows, imgPrefix }: StudioPageProps) {
         )
       })}
     </Frame>
+  )
+}
+
+/**
+ * A row's photo, parallax-slid in from the opposite side it rests on — the
+ * rows alternate sides already, so "the other side" is simply whichever x
+ * this row isn't using. Rests at its normal, static position once past the
+ * entry window; disabled during visual QA capture and for
+ * `prefers-reduced-motion` (see `motionOff`), same as `Rise`.
+ */
+function StudioRowImage({ src, alt, x }: { src: string; alt: string; x: number }) {
+  const ref = useRef<HTMLDivElement>(null)
+  const off = motionOff()
+  const fromX = x === 1262 ? 108 : 1262
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start 92%', 'start 45%'] })
+  const left = useTransform(scrollYProgress, [0, 1], off ? [x, x] : [fromX, x])
+  const opacity = useTransform(scrollYProgress, [0, 1], off ? [1, 1] : [0.25, 1])
+  const leftRem = useTransform(left, u)
+
+  return (
+    <motion.div
+      ref={ref}
+      className="absolute overflow-hidden rounded-full"
+      style={{ top: u(265), left: leftRem, width: u(550), height: u(550), opacity }}
+    >
+      <img src={src} alt={alt} className="h-full w-full object-cover" draggable={false} />
+    </motion.div>
   )
 }
 

@@ -8,6 +8,7 @@ import { useTransition } from '../context/TransitionContext'
 import { useIsDesktop } from '../design/useIsDesktop'
 import { ClientsMobile } from './mobile/ClientsMobile'
 import { Rise } from '../design/Rise'
+import { useAutoCarousel } from '../design/useAutoCarousel'
 
 /**
  * Clients — Figma frame 1920 x 12960.
@@ -29,6 +30,7 @@ export default function Clients() {
   const { startTransition } = useTransition()
   const nav = useCallback((p: string) => startTransition(p), [startTransition])
   const isDesktop = useIsDesktop()
+  const carousel = useAutoCarousel<HTMLDivElement>()
 
   if (!isDesktop) return <ClientsMobile nav={nav} />
 
@@ -146,20 +148,29 @@ depuis de nombreuses années.`}
         <Txt t="h4Wide" x={0} y={62}>Écoutez ce que nos clients ont à dire</Txt>
         {/*
          * The Figma track is 2496 wide inside a 1920 frame, so the last cards
-         * are cut off. Make it a real horizontal scroller — same resting
-         * layout, but the cards can now be dragged/scrolled into view.
+         * are cut off. Make it a real horizontal carousel — same resting
+         * layout, but it now slides on its own (bouncing between the ends)
+         * and pauses for as long as it's held, by mouse or touch, so a
+         * visitor can read a card; a held mouse can also drag it by hand.
          */}
         <Box
+          ref={carousel.ref}
           x={0}
           y={186}
           w={1701}
           h={342.4}
-          className="snap-x snap-mandatory overflow-x-auto overscroll-x-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          className={`overflow-x-auto overscroll-x-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ${carousel.className}`}
+          onPointerDown={carousel.onPointerDown}
+          onPointerMove={carousel.onPointerMove}
+          onPointerUp={carousel.onPointerUp}
+          onPointerCancel={carousel.onPointerCancel}
+          onPointerLeave={carousel.onPointerLeave}
+          onClickCapture={carousel.onClickCapture}
         >
           <Box x={0} y={0} w={2496} h={342.4}>
           {TESTIMONIALS.map((t, i) => (
             <Rise key={t.x} delay={i * 70}>
-            <Box x={t.x} y={0} w={480} h={342.4} bg="#1a1a1a" radius={30} className="snap-start">
+            <Box x={t.x} y={0} w={480} h={342.4} bg="#1a1a1a" radius={30}>
               <Box x={50} y={40} w={380} h={261.4}>
                 <Box x={0} y={0} w={32} h={32}>
                   <LogoMark style={{ width: '100%', height: '100%', color: '#fff' }} />

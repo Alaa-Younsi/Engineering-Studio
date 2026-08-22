@@ -4,6 +4,7 @@ import {
 } from '../../components/mobile/kit'
 import { Rise } from '../../design/Rise'
 import { LogoMark } from '../../brand/vectors'
+import { useAutoCarousel } from '../../design/useAutoCarousel'
 import { CLIENT_CARDS, ENGAGEMENTS, SECTORS, TESTIMONIALS } from '../../data/clients'
 
 /** Clients, stacked for phones. Card and testimonial data come from the same
@@ -11,6 +12,8 @@ import { CLIENT_CARDS, ENGAGEMENTS, SECTORS, TESTIMONIALS } from '../../data/cli
 const flat = (s: string) => s.split('\n').join(' ')
 
 export function ClientsMobile({ nav }: { nav: (p: string) => void }) {
+  const carousel = useAutoCarousel<HTMLDivElement>()
+
   return (
     <MPage>
       <MHero><MH1>Clients</MH1></MHero>
@@ -119,10 +122,20 @@ Vous pouvez compter sur nous pour vous assister à chaque étape de votre projet
           <MEyebrow>Témoignages</MEyebrow>
           <MH2>Écoutez ce que nos clients ont à dire</MH2>
         </div>
-        {/* Horizontal track, like the desktop carousel. */}
-        <div className="mt-7 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        {/* Horizontal track, like the desktop carousel — slides on its own,
+            pausing for as long as it's held. */}
+        <div
+          ref={carousel.ref}
+          className={`mt-7 flex gap-4 overflow-x-auto px-6 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ${carousel.className}`}
+          onPointerDown={carousel.onPointerDown}
+          onPointerMove={carousel.onPointerMove}
+          onPointerUp={carousel.onPointerUp}
+          onPointerCancel={carousel.onPointerCancel}
+          onPointerLeave={carousel.onPointerLeave}
+          onClickCapture={carousel.onClickCapture}
+        >
           {TESTIMONIALS.map((t) => (
-            <MCard key={t.x} className="w-[82vw] flex-shrink-0 snap-start">
+            <MCard key={t.x} className="w-[82vw] flex-shrink-0">
               <LogoMark style={{ width: 26, height: 26, color: '#fff' }} />
               <p className="mt-4 font-body text-[0.875rem] font-light leading-[1.55] text-white/50">{t.quote}</p>
               <p className="mt-5 font-display text-[1rem] font-bold leading-tight text-white">{flat(t.name)}</p>

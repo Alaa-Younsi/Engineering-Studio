@@ -1,10 +1,14 @@
-import { useCallback } from 'react'
-import { Box, Frame, Txt } from '../design/canvas'
+import { useCallback, useEffect, useRef } from 'react'
+import { motion, useMotionValue, useMotionValueEvent, useScroll, useTransform } from 'framer-motion'
+import { Box, DESIGN_W, Frame, Txt, u } from '../design/canvas'
 import { CircleButton, CircleImage, PillButton, Watermark } from '../components/site/atoms'
 import { SiteFooter } from '../components/site/SiteFooter'
+import { LogoMark } from '../brand/vectors'
 import { useTransition } from '../context/TransitionContext'
 import { useIsDesktop } from '../design/useIsDesktop'
 import { Rise } from '../design/Rise'
+import { holdRamp } from '../design/holdRamp'
+import { motionOff } from '../design/motionOff'
 import { MobileFooter } from '../components/mobile/MobileFooter'
 import { MBody, MCircleImage, MH1, MH2, MHero, MMarkButton, MPage, MPill, MSection } from '../components/mobile/kit'
 
@@ -14,6 +18,19 @@ import { MBody, MCircleImage, MH1, MH2, MHero, MMarkButton, MPage, MPill, MSecti
  * (public/Converted/Accueil (1920x1080)/index.html).
  */
 const CANVAS_H = 6480
+
+/**
+ * The hero mark and the four service photos, hero first — the anchor points
+ * a single travelling image slides between (see the "Parallax hand-off"
+ * block in `Home`). `cy` is each stop's own centre, used only to time the
+ * hold/ramp windows symmetrically; `x`/`y` are the corner the image rests at,
+ * identical to the static layout below.
+ */
+const STOPS_CY = [540.3, 1620.5, 2700.5, 3780.5, 4860.5]
+const STOPS_X = [1067.4, 215, 1072, 219, 1072]
+const STOPS_Y = [168, 1304, 2384, 3464, 4544]
+const STOPS_SIZE = [744.6, 633, 633, 633, 633]
+const HOLD_FRAC = 0.3
 
 interface Service {
   /** Heading, with the design's own line break. */
@@ -86,13 +103,77 @@ export default function Home() {
   const { startTransition } = useTransition()
   const nav = useCallback((p: string) => startTransition(p), [startTransition])
   const isDesktop = useIsDesktop()
+  const off = motionOff()
+  const frameRef = useRef<HTMLDivElement>(null)
+
+  /*
+   * ── Parallax hand-off ──────────────────────────────────────────────────
+   * `centerY` is the design-space y currently at the viewport's vertical
+   * centre, kept in sync with real scroll. Every other motion value below
+   * is a `holdRamp` of it: flat at a stop's own position for most of its
+   * section, then a short linear slide into the next stop's position/size,
+   * with each image's opacity crossfading over that same window. Disabled
+   * during visual QA capture and for `prefers-reduced-motion` (see
+   * `motionOff`), where the static images render instead — same discipline
+   * as `Rise`.
+   */
+  const { scrollY } = useScroll()
+  const centerY = useMotionValue(0)
+  const recompute = useCallback(() => {
+    const el = frameRef.current
+    if (off || !el) return
+    const rect = el.getBoundingClientRect()
+    const scale = rect.width / DESIGN_W
+    centerY.set((window.innerHeight / 2 - rect.top) / scale)
+  }, [off, centerY])
+  useMotionValueEvent(scrollY, 'change', recompute)
+  useEffect(() => {
+    recompute()
+    window.addEventListener('resize', recompute)
+    return () => window.removeEventListener('resize', recompute)
+  }, [recompute])
+
+  const xRamp = holdRamp(STOPS_CY, STOPS_X, HOLD_FRAC)
+  const yRamp = holdRamp(STOPS_CY, STOPS_Y, HOLD_FRAC)
+  const sizeRamp = holdRamp(STOPS_CY, STOPS_SIZE, HOLD_FRAC)
+  const leftRem = useTransform(useTransform(centerY, xRamp.xs, xRamp.os), u)
+  const topRem = useTransform(useTransform(centerY, yRamp.xs, yRamp.os), u)
+  const sizeRem = useTransform(useTransform(centerY, sizeRamp.xs, sizeRamp.os), u)
+
+  const gaps = STOPS_CY.slice(1).map((y, i) => y - STOPS_CY[i])
+  const opMark = useTransform(
+    centerY,
+    [STOPS_CY[0], STOPS_CY[0] + gaps[0] * HOLD_FRAC, STOPS_CY[1] - gaps[0] * HOLD_FRAC],
+    [0.1, 0.1, 0],
+  )
+  const opMep = useTransform(
+    centerY,
+    [STOPS_CY[0] + gaps[0] * HOLD_FRAC, STOPS_CY[1] - gaps[0] * HOLD_FRAC, STOPS_CY[1] + gaps[1] * HOLD_FRAC, STOPS_CY[2] - gaps[1] * HOLD_FRAC],
+    [0, 1, 1, 0],
+  )
+  const opVrd = useTransform(
+    centerY,
+    [STOPS_CY[1] + gaps[1] * HOLD_FRAC, STOPS_CY[2] - gaps[1] * HOLD_FRAC, STOPS_CY[2] + gaps[2] * HOLD_FRAC, STOPS_CY[3] - gaps[2] * HOLD_FRAC],
+    [0, 1, 1, 0],
+  )
+  const opTopo = useTransform(
+    centerY,
+    [STOPS_CY[2] + gaps[2] * HOLD_FRAC, STOPS_CY[3] - gaps[2] * HOLD_FRAC, STOPS_CY[3] + gaps[3] * HOLD_FRAC, STOPS_CY[4] - gaps[3] * HOLD_FRAC],
+    [0, 1, 1, 0],
+  )
+  const opBim = useTransform(
+    centerY,
+    [STOPS_CY[3] + gaps[3] * HOLD_FRAC, STOPS_CY[4] - gaps[3] * HOLD_FRAC],
+    [0, 1],
+  )
+  const serviceOpacities = [opMep, opVrd, opTopo, opBim]
 
   if (!isDesktop) return <HomeMobile nav={nav} />
 
   return (
-    <Frame h={CANVAS_H}>
+    <Frame ref={frameRef} h={CANVAS_H}>
       {/* ── Hero ──────────────────────────────────────────────────────────── */}
-      <Watermark x={1067.4} y={168} size={744.6} />
+      {off && <Watermark x={1067.4} y={168} size={744.6} />}
 
       <Txt t="display" x={215} y={326}>
         {"L'excellence dans\nl'ingénierie d'étude\ntechnique en BTP"}
@@ -110,8 +191,30 @@ export default function Home() {
 
       {/* ── Four service sections ─────────────────────────────────────────── */}
       {SERVICES.map((s) => (
-        <ServiceSection key={s.href} {...s} onOpen={() => nav(s.href)} />
+        <ServiceSection key={s.href} {...s} onOpen={() => nav(s.href)} showImage={off} />
       ))}
+
+      {!off && (
+        <motion.div
+          aria-hidden
+          className="pointer-events-none absolute z-20 overflow-hidden rounded-full"
+          style={{ left: leftRem, top: topRem, width: sizeRem, height: sizeRem }}
+        >
+          <motion.div className="absolute inset-0" style={{ opacity: opMark }}>
+            <LogoMark style={{ width: '100%', height: '100%', color: '#fff' }} />
+          </motion.div>
+          {SERVICES.map((s, i) => (
+            <motion.img
+              key={s.href}
+              src={s.img}
+              alt=""
+              draggable={false}
+              className="absolute inset-0 h-full w-full object-cover"
+              style={{ opacity: serviceOpacities[i] }}
+            />
+          ))}
+        </motion.div>
+      )}
 
       {/* ── Footer ────────────────────────────────────────────────────────── */}
       <SiteFooter y={5618} eyebrow linksX={13} linksY={269} watermarkY={-218} />
@@ -120,13 +223,15 @@ export default function Home() {
 }
 
 function ServiceSection({
-  title, body, tx, ty, tw, by, ix, iy, img, onOpen,
-}: Service & { onOpen: () => void }) {
+  title, body, tx, ty, tw, by, ix, iy, img, onOpen, showImage,
+}: Service & { onOpen: () => void; showImage: boolean }) {
   return (
     <>
-      <Rise>
-        <CircleImage x={ix} y={iy} size={633} src={img} alt={title.replace('\n', ' ')} onClick={onOpen} />
-      </Rise>
+      {showImage && (
+        <Rise>
+          <CircleImage x={ix} y={iy} size={633} src={img} alt={title.replace('\n', ' ')} onClick={onOpen} />
+        </Rise>
+      )}
       <Rise delay={90}>
         <Box x={tx} y={ty} w={tw}>
           <Txt t="h2" x={0} y={0}>{title}</Txt>

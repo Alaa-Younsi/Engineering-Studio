@@ -31,6 +31,7 @@ export default function Reunion() {
   const nav = useCallback((path: string) => startTransition(path), [startTransition])
 
   const [step, setStep] = useState(0)
+  const [nudge, setNudge] = useState(0)
   const [form, setForm] = useState<FormData>({
     nom: '',
     prenom: '',
@@ -162,10 +163,14 @@ export default function Reunion() {
   }
 
   return (
-    <div className="fixed inset-0 overflow-auto">
+    <div
+      className="fixed inset-0 overflow-auto"
+      // Any button press in the flow gives the background a small nudge.
+      onClickCapture={(e) => { if ((e.target as HTMLElement).closest('button')) setNudge((n) => n + 1) }}
+    >
 
       {/* Spaced logo-coin background */}
-      <LogoField />
+      <LogoField nudge={nudge} />
       <HoneypotField value={guard.honeypot} onChange={guard.setHoneypot} />
 
       {/* The global SiteHeader draws this page's logo and back arrow. */}

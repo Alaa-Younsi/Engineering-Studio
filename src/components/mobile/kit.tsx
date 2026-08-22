@@ -23,7 +23,10 @@ export function MSection({
   children, className = '', pad = true,
 }: { children: ReactNode; className?: string; pad?: boolean }) {
   return (
-    <section className={`${pad ? 'px-6' : ''} py-16 ${className}`}>{children}</section>
+    // `mb-10` is fixed rather than folded into the `py-16` default so pages that
+    // override the vertical padding (most of them) still get the extra air
+    // between sections, not just the ones left at the default rhythm.
+    <section className={`${pad ? 'px-6' : ''} py-16 mb-10 ${className}`}>{children}</section>
   )
 }
 
