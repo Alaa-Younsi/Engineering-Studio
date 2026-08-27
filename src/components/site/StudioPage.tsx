@@ -1,11 +1,12 @@
 import { useRef } from 'react'
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { motion, useScroll, useSpring, useTransform } from 'framer-motion'
 import { Box, Frame, Txt, u } from '../../design/canvas'
 import { Watermark } from './atoms'
 import { useIsDesktop } from '../../design/useIsDesktop'
 import { MBody, MHero, MPage, MSection } from '../mobile/kit'
 import { Rise } from '../../design/Rise'
 import { motionOff } from '../../design/motionOff'
+import { EASE_OUT, EASE_STOPS, SCROLL_SPRING } from '../../design/holdRamp'
 
 /**
  * The shared layout behind MEP / VRD / TOPO / BIM Studio.
@@ -111,21 +112,28 @@ export function StudioPage({ logo, rows, imgPrefix }: StudioPageProps) {
  * this row isn't using. Rests at its normal, static position once past the
  * entry window; disabled during visual QA capture and for
  * `prefers-reduced-motion` (see `motionOff`), same as `Rise`.
+ *
+ * The travel is eased and then run through a spring, so the photo glides in
+ * and settles rather than tracking the wheel one notch at a time. It stays
+ * fully opaque the whole way across — the entry fade it used to carry meant
+ * the photo was half-transparent for most of its slide.
  */
 function StudioRowImage({ src, alt, x }: { src: string; alt: string; x: number }) {
   const ref = useRef<HTMLDivElement>(null)
   const off = motionOff()
   const fromX = x === 1262 ? 108 : 1262
-  const { scrollYProgress } = useScroll({ target: ref, offset: ['start 92%', 'start 45%'] })
-  const left = useTransform(scrollYProgress, [0, 1], off ? [x, x] : [fromX, x])
-  const opacity = useTransform(scrollYProgress, [0, 1], off ? [1, 1] : [0.25, 1])
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start 95%', 'start 40%'] })
+  const smooth = useSpring(scrollYProgress, SCROLL_SPRING)
+  // Sampled ease-out: fast off the mark, long settle into the resting x.
+  const eased = useTransform(smooth, EASE_STOPS, EASE_OUT)
+  const left = useTransform(eased, [0, 1], off ? [x, x] : [fromX, x])
   const leftRem = useTransform(left, u)
 
   return (
     <motion.div
       ref={ref}
       className="absolute overflow-hidden rounded-full"
-      style={{ top: u(265), left: leftRem, width: u(550), height: u(550), opacity }}
+      style={{ top: u(265), left: leftRem, width: u(550), height: u(550) }}
     >
       <img src={src} alt={alt} className="h-full w-full object-cover" draggable={false} />
     </motion.div>

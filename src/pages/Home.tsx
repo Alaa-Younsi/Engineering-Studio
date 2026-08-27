@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef } from 'react'
-import { motion, useMotionValue, useMotionValueEvent, useScroll, useTransform } from 'framer-motion'
+import { motion, useMotionValue, useMotionValueEvent, useScroll, useSpring, useTransform } from 'framer-motion'
 import { Box, DESIGN_W, Frame, Txt, u } from '../design/canvas'
 import { CircleButton, CircleImage, PillButton, Watermark } from '../components/site/atoms'
 import { SiteFooter } from '../components/site/SiteFooter'
@@ -7,7 +7,7 @@ import { LogoMark } from '../brand/vectors'
 import { useTransition } from '../context/TransitionContext'
 import { useIsDesktop } from '../design/useIsDesktop'
 import { Rise } from '../design/Rise'
-import { holdRamp } from '../design/holdRamp'
+import { easedFade, holdRamp, SCROLL_SPRING } from '../design/holdRamp'
 import { motionOff } from '../design/motionOff'
 import { MobileFooter } from '../components/mobile/MobileFooter'
 import { MBody, MCircleImage, MH1, MH2, MHero, MMarkButton, MPage, MPill, MSection } from '../components/mobile/kit'
@@ -119,13 +119,28 @@ export default function Home() {
    */
   const { scrollY } = useScroll()
   const centerY = useMotionValue(0)
+  // `centerY` tracks scroll exactly; the spring is what the visuals read, so
+  // a flicked wheel arrives as one continuous glide instead of a stack of
+  // discrete scroll deltas. Critically damped enough that it never overshoots
+  // a stop, and fast enough that it stays glued to the page as you scroll.
+  const smoothY = useSpring(centerY, SCROLL_SPRING)
+  const settled = useRef(false)
+
   const recompute = useCallback(() => {
     const el = frameRef.current
     if (off || !el) return
     const rect = el.getBoundingClientRect()
     const scale = rect.width / DESIGN_W
-    centerY.set((window.innerHeight / 2 - rect.top) / scale)
-  }, [off, centerY])
+    const y = (window.innerHeight / 2 - rect.top) / scale
+    centerY.set(y)
+    // First measurement is the page's true starting position, not something to
+    // spring towards — otherwise the disc slides in from the canvas origin.
+    if (!settled.current) {
+      settled.current = true
+      smoothY.jump(y)
+    }
+  }, [off, centerY, smoothY])
+
   useMotionValueEvent(scrollY, 'change', recompute)
   useEffect(() => {
     recompute()
@@ -136,36 +151,29 @@ export default function Home() {
   const xRamp = holdRamp(STOPS_CY, STOPS_X, HOLD_FRAC)
   const yRamp = holdRamp(STOPS_CY, STOPS_Y, HOLD_FRAC)
   const sizeRamp = holdRamp(STOPS_CY, STOPS_SIZE, HOLD_FRAC)
-  const leftRem = useTransform(useTransform(centerY, xRamp.xs, xRamp.os), u)
-  const topRem = useTransform(useTransform(centerY, yRamp.xs, yRamp.os), u)
-  const sizeRem = useTransform(useTransform(centerY, sizeRamp.xs, sizeRamp.os), u)
+  const leftRem = useTransform(useTransform(smoothY, xRamp.xs, xRamp.os), u)
+  const topRem = useTransform(useTransform(smoothY, yRamp.xs, yRamp.os), u)
+  const sizeRem = useTransform(useTransform(smoothY, sizeRamp.xs, sizeRamp.os), u)
 
+  /*
+   * The photos are stacked in scroll order and each one fades in *and stays*,
+   * so the newest always paints over the one before it. That keeps a fully
+   * opaque image in the disc at every scroll position — the previous
+   * cross-fade dipped both photos towards transparent at the half-way point,
+   * which is what made the black canvas show through mid-hand-off.
+   */
   const gaps = STOPS_CY.slice(1).map((y, i) => y - STOPS_CY[i])
-  const opMark = useTransform(
-    centerY,
-    [STOPS_CY[0], STOPS_CY[0] + gaps[0] * HOLD_FRAC, STOPS_CY[1] - gaps[0] * HOLD_FRAC],
-    [0.1, 0.1, 0],
-  )
-  const opMep = useTransform(
-    centerY,
-    [STOPS_CY[0] + gaps[0] * HOLD_FRAC, STOPS_CY[1] - gaps[0] * HOLD_FRAC, STOPS_CY[1] + gaps[1] * HOLD_FRAC, STOPS_CY[2] - gaps[1] * HOLD_FRAC],
-    [0, 1, 1, 0],
-  )
-  const opVrd = useTransform(
-    centerY,
-    [STOPS_CY[1] + gaps[1] * HOLD_FRAC, STOPS_CY[2] - gaps[1] * HOLD_FRAC, STOPS_CY[2] + gaps[2] * HOLD_FRAC, STOPS_CY[3] - gaps[2] * HOLD_FRAC],
-    [0, 1, 1, 0],
-  )
-  const opTopo = useTransform(
-    centerY,
-    [STOPS_CY[2] + gaps[2] * HOLD_FRAC, STOPS_CY[3] - gaps[2] * HOLD_FRAC, STOPS_CY[3] + gaps[3] * HOLD_FRAC, STOPS_CY[4] - gaps[3] * HOLD_FRAC],
-    [0, 1, 1, 0],
-  )
-  const opBim = useTransform(
-    centerY,
-    [STOPS_CY[3] + gaps[3] * HOLD_FRAC, STOPS_CY[4] - gaps[3] * HOLD_FRAC],
-    [0, 1],
-  )
+  const fadeWindow = (i: number) =>
+    easedFade(STOPS_CY[i] + gaps[i] * HOLD_FRAC, STOPS_CY[i + 1] - gaps[i] * HOLD_FRAC)
+
+  const wMep = fadeWindow(0)
+  const wVrd = fadeWindow(1)
+  const wTopo = fadeWindow(2)
+  const wBim = fadeWindow(3)
+  const opMep = useTransform(smoothY, wMep.xs, wMep.os)
+  const opVrd = useTransform(smoothY, wVrd.xs, wVrd.os)
+  const opTopo = useTransform(smoothY, wTopo.xs, wTopo.os)
+  const opBim = useTransform(smoothY, wBim.xs, wBim.os)
   const serviceOpacities = [opMep, opVrd, opTopo, opBim]
 
   if (!isDesktop) return <HomeMobile nav={nav} />
@@ -200,9 +208,10 @@ export default function Home() {
           className="pointer-events-none absolute z-20 overflow-hidden rounded-full"
           style={{ left: leftRem, top: topRem, width: sizeRem, height: sizeRem }}
         >
-          <motion.div className="absolute inset-0" style={{ opacity: opMark }}>
+          {/* Bottom of the stack: covered, not faded, by the first photo. */}
+          <div className="absolute inset-0 opacity-10">
             <LogoMark style={{ width: '100%', height: '100%', color: '#fff' }} />
-          </motion.div>
+          </div>
           {SERVICES.map((s, i) => (
             <motion.img
               key={s.href}

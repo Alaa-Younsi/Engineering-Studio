@@ -1,7 +1,7 @@
 import { Frame, Txt } from '../../design/canvas'
 import { CircleButton, Watermark } from './atoms'
 import { useIsDesktop } from '../../design/useIsDesktop'
-import { MH1, MHero, MPage, MSection } from '../mobile/kit'
+import { MH1, MHero, MMarkButton, MPage, MSection } from '../mobile/kit'
 import { LogoMark } from '../../brand/vectors'
 
 /**
@@ -43,14 +43,7 @@ export function UnderConstruction({ title, onAction, actionLabel }: UnderConstru
             <h2 className="font-display text-[1.875rem] font-medium leading-[1.15] tracking-[-0.0133em] text-white">
               En cours de<br />construction
             </h2>
-            <button
-              type="button"
-              onClick={onAction}
-              aria-label={actionLabel}
-              className="grid h-11 w-11 place-items-center rounded-full bg-white"
-            >
-              <LogoMark style={{ width: 18, height: 18, color: '#000' }} />
-            </button>
+            <MMarkButton onClick={onAction}>{actionLabel}</MMarkButton>
           </div>
         </MSection>
       </MPage>
@@ -66,7 +59,7 @@ export function UnderConstruction({ title, onAction, actionLabel }: UnderConstru
       <Txt t="h2" centerX y={1504} align="center">
         {'En cours de\nconstruction'}
       </Txt>
-      <CircleButton x={938} y={1697} plain label={actionLabel} onClick={onAction} />
+      <CircleButton x={938} y={1697} centerExpand label={actionLabel} onClick={onAction} />
     </Frame>
   )
 }

@@ -127,3 +127,44 @@
     }
   }
 }
+
+@layer components {
+  /*
+   * Native date / time fields on the dark form cards (Réunion step 1).
+   *
+   * `color-scheme` is what makes Chrome paint the field, its spin areas and
+   * the calendar / clock popup dark, and flips the picker indicator to white.
+   * While the field is empty its own text is hidden so the form's placeholder
+   * — a sibling span — reads through in the same grey as every other field.
+   * Firefox has no `::-webkit-datetime-edit`, so there the native placeholder
+   * stands and the overlay is not drawn.
+   */
+  .field-datetime {
+    color-scheme: dark;
+  }
+
+  .field-datetime::-webkit-calendar-picker-indicator {
+    opacity: 0.4;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+  }
+
+  .field-datetime:hover::-webkit-calendar-picker-indicator,
+  .field-datetime:focus::-webkit-calendar-picker-indicator {
+    opacity: 0.85;
+  }
+
+  .field-datetime[data-empty='true']::-webkit-datetime-edit {
+    color: transparent;
+  }
+
+  .field-datetime-placeholder {
+    display: none;
+  }
+
+  @supports selector(::-webkit-datetime-edit) {
+    .field-datetime-placeholder {
+      display: flex;
+    }
+  }
+}

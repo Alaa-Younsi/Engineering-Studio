@@ -1,4 +1,5 @@
-import { motion } from 'framer-motion'
+import { useEffect, useRef } from 'react'
+import { motion, useAnimationControls } from 'framer-motion'
 
 /**
  * Full-screen background of the logo mark rendered as evenly-spaced "coins" —
@@ -7,22 +8,63 @@ import { motion } from 'framer-motion'
  * a plain repeating background (the mark fills its canvas, so tiling it makes
  * neighbours touch). Used behind the Devis / Réunion form flows.
  *
- * `nudge` is a counter the form flow bumps on every button press — each bump
- * drifts the whole field to a new small offset (spread by the golden angle so
- * it never repeats a direction), giving the background a subtle nudge each
- * time the visitor presses on through the flow.
+ * `nudge` is a counter the form flow bumps on every button press, and each bump
+ * fires a flash: the whole field flicks out in a new direction (spread by the
+ * golden angle so it never repeats one), overshoots back the other way and
+ * lands where it started, brightening on the way out and dimming back down.
+ * The whole thing is over in a quarter of a second.
+ *
+ * The brightness is done with opacity, not a `brightness()` filter: the mark
+ * is pure white, so multiplying its channels does nothing at all — the only
+ * thing that changes how it reads against the black is how far it is faded.
  */
+
+/** Resting fade of the field, and the peak it flashes to. */
+const REST = 0.15
+const PEAK = 0.55
+
+/** How far each press throws the field, in px. */
+const THROW = 72
+
+/** Out, back past the start, settle — the shape of one flick. */
+const FLICK = {
+  duration: 0.26,
+  times: [0, 0.34, 0.62, 1],
+  ease: [0.16, 0.9, 0.3, 1],
+} as const
+
 export function LogoField({ nudge = 0 }: { nudge?: number }) {
-  const angle = (nudge * 137.5 * Math.PI) / 180
-  const offset = { x: Math.cos(angle) * 16, y: Math.sin(angle) * 16 }
+  const controls = useAnimationControls()
+  const first = useRef(true)
+
+  useEffect(() => {
+    // The initial render is the resting state, not a press.
+    if (first.current) {
+      first.current = false
+      return
+    }
+
+    const angle = (nudge * 137.5 * Math.PI) / 180
+    const dx = Math.cos(angle) * THROW
+    const dy = Math.sin(angle) * THROW
+
+    controls.stop()
+    controls.set({ x: 0, y: 0, opacity: REST })
+    controls.start({
+      x: [0, dx, dx * -0.34, 0],
+      y: [0, dy, dy * -0.34, 0],
+      opacity: [REST, PEAK, REST * 1.4, REST],
+      transition: FLICK,
+    })
+  }, [nudge, controls])
 
   return (
     <div className="fixed inset-0 bg-black pointer-events-none overflow-hidden" aria-hidden>
       <motion.div
         className="absolute inset-0 grid content-start justify-items-center gap-8 sm:gap-10 lg:gap-12 p-5"
         style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(64px, 1fr))' }}
-        animate={{ x: offset.x, y: offset.y }}
-        transition={{ type: 'spring', stiffness: 110, damping: 14 }}
+        initial={{ x: 0, y: 0, opacity: REST }}
+        animate={controls}
       >
         {Array.from({ length: 600 }).map((_, i) => (
           <div
@@ -33,7 +75,6 @@ export function LogoField({ nudge = 0 }: { nudge?: number }) {
               backgroundSize: 'contain',
               backgroundRepeat: 'no-repeat',
               backgroundPosition: 'center',
-              opacity: 0.15,
             }}
           />
         ))}

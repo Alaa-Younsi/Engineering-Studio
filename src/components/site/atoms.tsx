@@ -12,12 +12,16 @@ import type { ReactNode } from 'react'
 import { Box, Txt, u } from '../../design/canvas'
 import { LogoMark } from '../../brand/vectors'
 
+/** Figma's disc diameter, shared by every mark button on the site. */
+const DISC = 45
+
 /**
  * Figma: 45x45 white disc with the 20.1px mark inset at 12.5.
  * With a `children` label it expands on hover into a pill.
  */
 export function CircleButton({
   x, y, onClick, label = 'En savoir plus', children, invert = false, plain = false,
+  centerExpand = false,
 }: {
   x?: number
   y?: number
@@ -32,6 +36,12 @@ export function CircleButton({
    * lines of copy, where expanding would run the label over the text beside it.
    */
   plain?: boolean
+  /**
+   * Grow out of the disc's centre instead of its left edge. For the two
+   * placements the design centres on the canvas, where growing rightwards
+   * would leave the open pill visibly off-centre.
+   */
+  centerExpand?: boolean
 }) {
   const positioned = x != null || y != null
   const text = plain ? null : children ?? label
@@ -44,10 +54,12 @@ export function CircleButton({
       className="group inline-flex h-fit w-fit flex-shrink-0 items-center overflow-hidden"
       style={{
         position: positioned ? 'absolute' : 'relative',
-        left: x != null ? u(x) : undefined,
+        // Anchor on the disc's centre so the pill opens both ways.
+        left: x != null ? u(centerExpand ? x + DISC / 2 : x) : undefined,
         top: y != null ? u(y) : undefined,
-        height: u(45),
-        borderRadius: u(45),
+        transform: centerExpand ? 'translateX(-50%)' : undefined,
+        height: u(DISC),
+        borderRadius: u(DISC),
         backgroundColor: invert ? '#000' : '#fff',
       }}
     >

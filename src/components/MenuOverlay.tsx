@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useMenu } from '../context/MenuContext'
@@ -27,13 +27,37 @@ const LINKS = [
   { label: 'Contact', href: '/contact' },
 ]
 
+/**
+ * The menu is a full 1920 x 1080 Figma frame, and `--root-fs` scales the canvas
+ * to the window's *width* only — so on any window shorter than 1080 design px
+ * (a maximised 1080p screen, once browser chrome is taken off) the top e-mail
+ * row and the bottom social row fall outside the viewport. Shrink the frame to
+ * what the window can actually show instead of cropping it.
+ */
+function useFitScale(designH: number) {
+  const [scale, setScale] = useState(1)
+
+  useEffect(() => {
+    const fit = () => {
+      const fs = parseFloat(getComputedStyle(document.documentElement).fontSize)
+      setScale(Math.min(1, window.innerHeight / ((designH / 16) * fs)))
+    }
+    fit()
+    window.addEventListener('resize', fit, { passive: true })
+    return () => window.removeEventListener('resize', fit)
+  }, [designH])
+
+  return scale
+}
+
 export function MenuOverlay() {
   const { isMenuOpen, closeMenu } = useMenu()
   const { startTransition } = useTransition()
   const { pathname } = useLocation()
-  // Which link reads at full opacity: whatever is hovered, or — with nothing
-  // hovered — the current page. Every other link sits at 50%.
+  // At rest every link reads at full white; hovering one drops the other
+  // five to 50%.
   const [hovered, setHovered] = useState<string | null>(null)
+  const scale = useFitScale(1080)
 
   const go = useCallback(
     (path: string) => {
@@ -59,7 +83,7 @@ export function MenuOverlay() {
           <div className="hidden h-full items-center justify-center overflow-hidden lg:flex">
           <div
             className="relative flex-shrink-0"
-            style={{ width: u(DESIGN_W), height: u(1080) }}
+            style={{ width: u(DESIGN_W), height: u(1080), transform: `scale(${scale})` }}
           >
             <Txt t="small" x={108} y={56} dim>contact@engineering-studio.net</Txt>
 
@@ -92,7 +116,7 @@ export function MenuOverlay() {
             <CircleButton x={679} y={586} label="Contact" onClick={() => go('/contact')} />
 
             {LINKS.map((l, i) => {
-              const active = hovered ? hovered === l.href : pathname === l.href
+              const active = hovered === null || hovered === l.href
               return (
                 <motion.div
                   key={l.href}

@@ -1,13 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-  <style>
-    path { fill: #000000; }
-    @media (prefers-color-scheme: dark) { path { fill: #ffffff; } }
-  </style>
-  <path fill-rule="evenodd" d="
-    M 50 0 A 50 50 0 0 1 100 50 A 50 50 0 0 1 50 100 A 50 50 0 0 1 0 50 A 50 50 0 0 1 50 0 Z
-    M 50 50 Q 82.5 17.5 50 0 A 50 50 0 0 1 100 50 Q 82.5 17.5 50 50 Z
-    M 50 50 Q 82.5 82.5 100 50 A 50 50 0 0 1 50 100 Q 82.5 82.5 50 50 Z
-    M 50 50 Q 17.5 82.5 50 100 A 50 50 0 0 1 0 50 Q 17.5 82.5 50 50 Z
-    M 50 50 Q 17.5 17.5 0 50 A 50 50 0 0 1 50 0 Q 17.5 17.5 50 50 Z
-  " />
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 744.55 744.6">
+  <style>path{fill:#000}@media(prefers-color-scheme:dark){path{fill:#fff}}</style>
+  <path d="M366.570.02C363.65,201.16,201.16,363.650.02,366.61,2.99,165.47,165.43,2.98,366.570.02" transform="translate(0.07 0.07)"/>
+  <path d="M459.25,87.96c-0.52,204.8-166.45,370.77-371.3,371.30.52-204.8,166.45-370.77,371.3-371.3" transform="translate(285.3 285.34)"/>
+  <path d="M459.12,362.84H87.95V0C289.960.52,454.11,161.97,459.12,362.84" transform="translate(285.3)"/>
+  <path d="M366.72,87.73V459.94C163.67,457.02,0,291.44,0,87.73Z" transform="translate(0 284.57)"/>
 </svg>

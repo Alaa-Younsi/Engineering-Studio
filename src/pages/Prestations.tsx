@@ -1,4 +1,5 @@
 import { useCallback } from 'react'
+import type { CSSProperties } from 'react'
 import { Box, Frame, u } from '../design/canvas'
 import { Watermark } from '../components/site/atoms'
 import { LogoMark } from '../brand/vectors'
@@ -21,6 +22,10 @@ const STUDIOS = [
   { key: 'vrd', label: 'VRD Studio', href: '/prestations/vrd', x: 0, y: 194.3, w: 179.5, h: 81.3 },
   { key: 'bim', label: 'BIM Studio', href: '/prestations/bim', x: 574.5, y: 194.3, w: 178.7, h: 81.3 },
 ] as const
+
+/** Hover mark: square, the height of a studio lockup, then a gap before the name. */
+const MARK = 81.3
+const MARK_GAP = 20.6
 
 export default function Prestations() {
   const { startTransition } = useTransition()
@@ -59,28 +64,34 @@ export default function Prestations() {
     <Frame h={1080} fit>
       <Watermark x={132} y={-288} size={1655.4} />
 
-      <Box x={583} y={402} w={753.1} h={275.6}>
+      {/* All four read at full white; hovering one dims the other three. */}
+      <Box
+        x={583}
+        y={402}
+        w={753.1}
+        h={275.6}
+        className="[&:has(button:hover)>button]:opacity-50"
+      >
         {STUDIOS.map((s) => (
           <button
             key={s.key}
             type="button"
             onClick={() => nav(s.href)}
             aria-label={s.label}
-            className="group absolute flex items-center opacity-50 transition-opacity duration-300 hover:opacity-100"
+            className="group absolute flex items-center transition-opacity duration-300 hover:!opacity-100"
             style={{ left: u(s.x), top: u(s.y), width: u(s.w), height: u(s.h) }}
           >
-            {/* The hovered studio alone gets the mark, sliding in beside its name. */}
-            <span
-              className="absolute flex flex-shrink-0 scale-75 items-center justify-center rounded-full bg-white opacity-0 transition-all duration-300 group-hover:scale-100 group-hover:opacity-100"
-              style={{ left: u(-56), width: u(45), height: u(45) }}
+            {/* The mark drops in at the lockup's left edge and slides the name across. */}
+            <LogoMark
               aria-hidden
-            >
-              <LogoMark style={{ width: u(20.1), height: u(20.1), color: '#000' }} />
-            </span>
+              className="absolute left-0 top-0 origin-left scale-75 opacity-0 transition-all duration-300 group-hover:scale-100 group-hover:opacity-100"
+              style={{ width: u(MARK), height: u(MARK), color: '#fff' }}
+            />
             <img
               src={`/Assets/logo/svg/prestations-${s.key}.svg`}
               alt={s.label}
-              className="h-full w-full"
+              className="h-full w-full transition-transform duration-300 group-hover:translate-x-[var(--shift)]"
+              style={{ '--shift': u(MARK + MARK_GAP) } as CSSProperties}
               draggable={false}
             />
           </button>

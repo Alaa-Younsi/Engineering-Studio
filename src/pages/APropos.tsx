@@ -1,4 +1,4 @@
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 import { Box, Frame, Txt } from '../design/canvas'
 import { CircleButton, CircleImage, PillButton, Watermark } from '../components/site/atoms'
 import { SiteFooter } from '../components/site/SiteFooter'
@@ -32,6 +32,9 @@ export default function APropos() {
   const { startTransition } = useTransition()
   const nav = useCallback((p: string) => startTransition(p), [startTransition])
   const isDesktop = useIsDesktop()
+  // Whether the centred call-to-action disc is open; the captions either
+  // side clear out of its way while it is.
+  const [ctaOpen, setCtaOpen] = useState(false)
 
   if (!isDesktop) return <AProposMobile nav={nav} />
 
@@ -154,10 +157,40 @@ aux besoins de nos clients.`}
 fiable ou que vous souhaitiez franchir une nouvelle étape dans votre projet,
 nous voulons vous entendre !`}
       </Txt>
-      <Txt t="lead" x={591.1} y={8222.8} align="right">Donnons vie à votre projet</Txt>
-      {/* Flanked by copy on both sides, so this one must not expand. */}
-      <CircleButton x={938} y={8215.8} plain label="Nous contacter" onClick={() => nav('/contact')} />
-      <Txt t="lead" x={1012} y={8222.8}>Appelez pour un rendez-vous</Txt>
+      {/*
+       * The disc is flanked by copy on both sides, so it opens *through* them:
+       * hovering it fades the two captions out and grows the pill from the
+       * canvas centre, which is exactly where the disc already sits. At rest
+       * the row is pixel-identical to the design.
+       */}
+      <Txt
+        t="lead"
+        x={591.1}
+        y={8222.8}
+        align="right"
+        className="transition-opacity duration-300"
+        style={{ opacity: ctaOpen ? 0 : 1 }}
+      >
+        Donnons vie à votre projet
+      </Txt>
+      <div onMouseEnter={() => setCtaOpen(true)} onMouseLeave={() => setCtaOpen(false)}>
+        <CircleButton
+          x={938}
+          y={8215.8}
+          centerExpand
+          label="Prendre une réunion"
+          onClick={() => nav('/reunion')}
+        />
+      </div>
+      <Txt
+        t="lead"
+        x={1012}
+        y={8222.8}
+        className="transition-opacity duration-300"
+        style={{ opacity: ctaOpen ? 0 : 1 }}
+      >
+        Appelez pour un rendez-vous
+      </Txt>
 
       {/* ── Nos points forts ──────────────────────────────────────────────── */}
       <Txt t="h2" centerX y={8883} align="center">Nos points forts</Txt>

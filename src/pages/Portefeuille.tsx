@@ -17,8 +17,8 @@ export default function Portefeuille() {
     return (
       <UnderConstruction
         title="Portefeuille"
-        actionLabel="Nous contacter"
-        onAction={() => nav('/contact')}
+        actionLabel="Retour à l'accueil"
+        onAction={() => nav('/')}
       />
     )
   }
