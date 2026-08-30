@@ -220,7 +220,7 @@ export default function Devis() {
           {/* ── 0: Intro ── */}
           {step === 0 && (
             <motion.div key="s0" {...slide}
-              className="bg-[#1a1a1a] rounded-2xl px-14 py-16 w-full max-w-xl text-center"
+              className="bg-[#1a1a1a] rounded-2xl px-6 sm:px-14 py-16 w-full max-w-xl text-center"
             >
               <h1 className="font-display font-bold text-5xl lg:text-[3.5rem] text-white leading-none lg:leading-none mb-4">
                 Obtenez<br />un devis
@@ -238,7 +238,7 @@ export default function Devis() {
           {/* ── 1: Type de société ── */}
           {step === 1 && (
             <motion.div key="s1" {...slide}
-              className="bg-[#1a1a1a] rounded-2xl px-12 py-10 w-full max-w-xl text-center"
+              className="bg-[#1a1a1a] rounded-2xl px-6 sm:px-12 py-10 w-full max-w-xl text-center"
             >
               <CardLogo />
               <h2 className="font-display font-bold text-3xl lg:text-[2.1rem] text-white leading-snug lg:leading-snug mb-8">
@@ -256,13 +256,13 @@ export default function Devis() {
           {/* ── 2: Détails société ── */}
           {step === 2 && (
             <motion.div key="s2" {...slide}
-              className="bg-[#1a1a1a] rounded-2xl px-12 py-10 w-full max-w-xl text-center"
+              className="bg-[#1a1a1a] rounded-2xl px-6 sm:px-12 py-10 w-full max-w-xl text-center"
             >
               <CardLogo />
               <h2 className="font-display font-bold text-3xl lg:text-[2.1rem] text-white leading-snug lg:leading-snug mb-8">
                 Veuillez nous indiquer plus<br />détails de votre société
               </h2>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <input className={inputCls} placeholder="Raison sociale" value={form.raisonSociale} onChange={e => update('raisonSociale', e.target.value)} />
                 <input className={inputCls} placeholder="Wilaya" value={form.wilaya} onChange={e => update('wilaya', e.target.value)} />
               </div>
@@ -273,13 +273,13 @@ export default function Devis() {
           {/* ── 3: Représentant ── */}
           {step === 3 && (
             <motion.div key="s3" {...slide}
-              className="bg-[#1a1a1a] rounded-2xl px-12 py-10 w-full max-w-xl text-center"
+              className="bg-[#1a1a1a] rounded-2xl px-6 sm:px-12 py-10 w-full max-w-xl text-center"
             >
               <CardLogo />
               <h2 className="font-display font-bold text-3xl lg:text-[2.1rem] text-white leading-snug lg:leading-snug mb-8">
                 Représentant de<br />la société
               </h2>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <input className={inputCls} placeholder="Nom" value={form.nom} onChange={e => update('nom', e.target.value)} />
                 <input className={inputCls} placeholder="Prénom" value={form.prenom} onChange={e => update('prenom', e.target.value)} />
               </div>
@@ -290,13 +290,13 @@ export default function Devis() {
           {/* ── 4: Coordonnées ── */}
           {step === 4 && (
             <motion.div key="s4" {...slide}
-              className="bg-[#1a1a1a] rounded-2xl px-12 py-10 w-full max-w-xl text-center"
+              className="bg-[#1a1a1a] rounded-2xl px-6 sm:px-12 py-10 w-full max-w-xl text-center"
             >
               <CardLogo />
               <h2 className="font-display font-bold text-3xl lg:text-[2.1rem] text-white leading-snug lg:leading-snug mb-8">
                 Saisissez vos<br />coordonnées
               </h2>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <input className={inputCls} placeholder="Email" type="email" inputMode="email" autoComplete="email" spellCheck={false} value={form.email} onChange={e => update('email', e.target.value)} />
                 <input className={inputCls} placeholder="Mobile" type="tel" inputMode="tel" autoComplete="tel" value={form.mobile} onChange={e => update('mobile', e.target.value)} />
               </div>
@@ -307,13 +307,13 @@ export default function Devis() {
           {/* ── 5: Projet ── */}
           {step === 5 && (
             <motion.div key="s5" {...slide}
-              className="bg-[#1a1a1a] rounded-2xl px-12 py-10 w-full max-w-xl text-center"
+              className="bg-[#1a1a1a] rounded-2xl px-6 sm:px-12 py-10 w-full max-w-xl text-center"
             >
               <CardLogo />
               <h2 className="font-display font-bold text-3xl lg:text-[2.1rem] text-white leading-snug lg:leading-snug mb-8">
                 Parlez-nous de<br />votre projet
               </h2>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <input className={inputCls} placeholder="Titre de projet" value={form.titreProjet} onChange={e => update('titreProjet', e.target.value)} />
                 <input className={inputCls} placeholder="Lieu de projet" value={form.lieuProjet} onChange={e => update('lieuProjet', e.target.value)} />
               </div>
@@ -324,7 +324,7 @@ export default function Devis() {
           {/* ── 6: Type d'études ── */}
           {step === 6 && (
             <motion.div key="s6" {...slide}
-              className="bg-[#1a1a1a] rounded-2xl px-12 py-10 w-full max-w-xl text-center"
+              className="bg-[#1a1a1a] rounded-2xl px-6 sm:px-12 py-10 w-full max-w-xl text-center"
             >
               <CardLogo />
               <h2 className="font-display font-bold text-3xl lg:text-[2.1rem] text-white leading-snug lg:leading-snug mb-8">
@@ -342,7 +342,7 @@ export default function Devis() {
           {/* ── 7: Contexte ── */}
           {step === 7 && (
             <motion.div key="s7" {...slide}
-              className="bg-[#1a1a1a] rounded-2xl px-12 py-10 w-full max-w-xl text-center"
+              className="bg-[#1a1a1a] rounded-2xl px-6 sm:px-12 py-10 w-full max-w-xl text-center"
             >
               <CardLogo />
               <h2 className="font-display font-bold text-3xl lg:text-[2.1rem] text-white leading-snug lg:leading-snug mb-8">
@@ -361,7 +361,7 @@ export default function Devis() {
           {/* ── 8: Fichiers ── */}
           {step === 8 && (
             <motion.div key="s8" {...slide}
-              className="bg-[#1a1a1a] rounded-2xl px-12 py-10 w-full max-w-xl text-center"
+              className="bg-[#1a1a1a] rounded-2xl px-6 sm:px-12 py-10 w-full max-w-xl text-center"
             >
               <CardLogo />
               <h2 className="font-display font-bold text-3xl lg:text-[2.1rem] text-white leading-snug lg:leading-snug mb-8">
@@ -406,7 +406,7 @@ export default function Devis() {
           {/* ── 9: Success ── */}
           {step === 9 && (
             <motion.div key="s9" {...slide}
-              className="bg-[#1a1a1a] rounded-2xl px-12 py-12 w-full max-w-xl text-center"
+              className="bg-[#1a1a1a] rounded-2xl px-6 sm:px-12 py-12 w-full max-w-xl text-center"
             >
               <h2 className="font-display font-bold text-3xl lg:text-[2.2rem] text-white leading-snug lg:leading-snug mb-8">
                 Votre demande de devis<br />est bien envoyée !

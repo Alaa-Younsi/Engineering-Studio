@@ -247,7 +247,7 @@ export default function Reunion() {
           {/* ── 0: Intro ── */}
           {step === 0 && (
             <motion.div key="r0" {...slide}
-              className="bg-[#1a1a1a] rounded-2xl px-14 py-16 w-full max-w-xl text-center"
+              className="bg-[#1a1a1a] rounded-2xl px-6 sm:px-14 py-16 w-full max-w-xl text-center"
             >
               <h1 className="font-display font-bold text-4xl lg:text-5xl text-white leading-tight mb-10">
                 Construisons<br />un projet<br />ensemble
@@ -264,13 +264,13 @@ export default function Reunion() {
           {/* ── 1: Coordonnées ── */}
           {step === 1 && (
             <motion.div key="r1" {...slide}
-              className="bg-[#1a1a1a] rounded-2xl px-12 py-10 w-full max-w-xl text-center"
+              className="bg-[#1a1a1a] rounded-2xl px-6 sm:px-12 py-10 w-full max-w-xl text-center"
             >
               <CardLogo />
               <h2 className="font-display font-bold text-2xl lg:text-[1.9rem] text-white leading-snug lg:leading-snug mb-8">
                 Renseignez vos coordonnées
               </h2>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <input className={inputCls} placeholder="Votre nom" value={form.nom} onChange={e => update('nom', e.target.value)} />
                 <input className={inputCls} placeholder="Votre prénom" value={form.prenom} onChange={e => update('prenom', e.target.value)} />
                 <input className={inputCls} placeholder="Email" type="email" inputMode="email" autoComplete="email" spellCheck={false} value={form.email} onChange={e => update('email', e.target.value)} />
@@ -299,7 +299,7 @@ export default function Reunion() {
           {/* ── 2: Type de réunion ── */}
           {step === 2 && (
             <motion.div key="r2" {...slide}
-              className="bg-[#1a1a1a] rounded-2xl px-12 py-10 w-full max-w-xl text-center"
+              className="bg-[#1a1a1a] rounded-2xl px-6 sm:px-12 py-10 w-full max-w-xl text-center"
             >
               <CardLogo />
               <h2 className="font-display font-bold text-2xl lg:text-[1.9rem] text-white leading-snug lg:leading-snug mb-8">
@@ -336,7 +336,7 @@ export default function Reunion() {
           {/* ── 3: Confirmation ── */}
           {step === 3 && (
             <motion.div key="r3" {...slide}
-              className="bg-[#1a1a1a] rounded-2xl px-12 py-16 w-full max-w-xl text-center"
+              className="bg-[#1a1a1a] rounded-2xl px-6 sm:px-12 py-16 w-full max-w-xl text-center"
             >
               <div className="relative py-8 mb-4">
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
