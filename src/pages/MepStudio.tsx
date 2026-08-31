@@ -1,7 +1,13 @@
 import { StudioPage, studioLogo } from '../components/site/StudioPage'
+import { useSeo } from '../lib/useSeo'
 
 /** MEP Studio — Figma frame 1920 x 14040 (hero + 12 rows). */
 export default function MepStudio() {
+  useSeo({
+    title: 'MEP Studio — CVC, plomberie, électricité, incendie | Engineering Studio',
+    description:
+      'Études fluides du bâtiment : chauffage, ventilation, climatisation, désenfumage, plomberie, électricité CFO/CFA, lutte incendie, thermique et photovoltaïque.',
+  })
   return (
     <StudioPage
       logo={studioLogo('mep-studio', 'MEP Studio', 725, 470.4)}

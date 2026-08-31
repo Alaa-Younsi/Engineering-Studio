@@ -8,6 +8,7 @@ import { useIsDesktop } from '../design/useIsDesktop'
 import { BIM_KEYWORDS, DISCIPLINES, GUARANTEES, SOFTWARE, STEPS, STRENGTHS } from '../data/apropos'
 import { AProposMobile } from './mobile/AProposMobile'
 import { Rise } from '../design/Rise'
+import { useSeo } from '../lib/useSeo'
 
 /**
  * À propos — Figma frame 1920 x 16200.
@@ -29,6 +30,11 @@ import { Rise } from '../design/Rise'
 const CANVAS_H = 16200
 
 export default function APropos() {
+  useSeo({
+    title: 'À propos — Bureau d’études en ingénierie | Engineering Studio',
+    description:
+      'Notre approche des études clé en main : disciplines couvertes, processus, points forts et garanties d’un bureau d’études pluridisciplinaire basé à Sétif.',
+  })
   const { startTransition } = useTransition()
   const nav = useCallback((p: string) => startTransition(p), [startTransition])
   const isDesktop = useIsDesktop()

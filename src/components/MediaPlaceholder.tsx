@@ -1,3 +1,5 @@
+import { SmartImage } from './SmartImage'
+
 interface MediaFrameProps {
   src?: string
   alt?: string
@@ -5,6 +7,13 @@ interface MediaFrameProps {
   video?: boolean
   className?: string
   iconClassName?: string
+  /**
+   * The rendered slot, for the responsive `srcSet` (see SmartImage). Defaults to
+   * "100vw"; pass something tighter at each call site (e.g. "64px" for a thumb).
+   */
+  sizes?: string
+  /** Poster frame for a video tile — a still shows instantly, bytes move on play. */
+  poster?: string
 }
 
 /**
@@ -12,14 +21,16 @@ interface MediaFrameProps {
  * grey placeholder from the mockups so the layout holds its shape before the
  * client uploads anything.
  */
-export function MediaFrame({ src, alt = '', video = false, className = '', iconClassName = 'w-10 h-10' }: MediaFrameProps) {
+export function MediaFrame({
+  src, alt = '', video = false, className = '', iconClassName = 'w-10 h-10', sizes, poster,
+}: MediaFrameProps) {
   if (src) {
     return (
       <div className={`overflow-hidden bg-[#e2e2e2] ${className}`}>
         {video ? (
-          <video src={src} controls className="w-full h-full object-cover" />
+          <video src={src} controls preload="none" playsInline poster={poster} className="w-full h-full object-cover" />
         ) : (
-          <img src={src} alt={alt} className="w-full h-full object-cover" draggable={false} />
+          <SmartImage src={src} alt={alt} sizes={sizes} className="w-full h-full object-cover" draggable={false} />
         )}
       </div>
     )

@@ -11,6 +11,7 @@ import { easedFade, holdRamp, SCROLL_SPRING } from '../design/holdRamp'
 import { motionOff } from '../design/motionOff'
 import { MobileFooter } from '../components/mobile/MobileFooter'
 import { MBody, MCircleImage, MH1, MH2, MHero, MMarkButton, MPage, MPill, MSection } from '../components/mobile/kit'
+import { useSeo } from '../lib/useSeo'
 
 /**
  * Accueil — Figma frame 1920 x 6480.
@@ -100,6 +101,12 @@ des éléments techniques qui le composent (fluides, réseaux électriques,
 ]
 
 export default function Home() {
+  useSeo({
+    title: 'Solutions Globales en Ingénierie | Engineering Studio',
+    description:
+      'Bureau d’études à Sétif : MEP/CET, VRD, topographie et BIM, en régie ou clé en main, pour bureaux d’études et entreprises partout en Algérie.',
+    path: '/',
+  })
   const { startTransition } = useTransition()
   const nav = useCallback((p: string) => startTransition(p), [startTransition])
   const isDesktop = useIsDesktop()

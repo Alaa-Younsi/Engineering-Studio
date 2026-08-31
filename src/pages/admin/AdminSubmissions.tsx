@@ -4,6 +4,7 @@ import type { Submission, SubmissionAttachment, SubmissionKind } from '../../lib
 import { SUBMISSION_LABELS, formatSubmissionDate } from '../../lib/content/types'
 import { AdminButton, Card, Spinner } from '../../components/admin/ui'
 import { describeError } from '../../lib/supabase'
+import { downloadSubmissionsCsv } from '../../lib/exportSubmissions'
 
 type Filter = 'all' | SubmissionKind
 
@@ -69,6 +70,7 @@ export default function AdminSubmissions() {
   const [openId, setOpenId] = useState<string | null>(null)
   const [pendingDelete, setPendingDelete] = useState<string | null>(null)
   const [loadError, setLoadError] = useState<string | null>(null)
+  const [exportError, setExportError] = useState<string | null>(null)
 
   const load = () => {
     setLoading(true)
@@ -86,6 +88,15 @@ export default function AdminSubmissions() {
   )
 
   const unreadCount = submissions.filter(s => !s.read).length
+
+  const exportCsv = () => {
+    setExportError(null)
+    try {
+      downloadSubmissionsCsv(visible)
+    } catch (e: unknown) {
+      setExportError(describeError(e))
+    }
+  }
 
   const toggle = async (s: Submission) => {
     const next = openId === s.id ? null : s.id ?? null
@@ -117,12 +128,26 @@ export default function AdminSubmissions() {
             Toutes les demandes reçues via les formulaires Devis, Réunion et Contact.
           </p>
         </div>
-        {unreadCount > 0 && (
-          <span className="flex-shrink-0 rounded-full bg-white text-black font-body text-xs px-3 py-1.5">
-            {unreadCount} non lue{unreadCount > 1 ? 's' : ''}
-          </span>
-        )}
+        <div className="flex flex-shrink-0 items-center gap-3">
+          {unreadCount > 0 && (
+            <span className="rounded-full bg-white text-black font-body text-xs px-3 py-1.5">
+              {unreadCount} non lue{unreadCount > 1 ? 's' : ''}
+            </span>
+          )}
+          <AdminButton
+            variant="ghost"
+            className="!py-1.5 !px-4 text-xs"
+            onClick={exportCsv}
+            disabled={visible.length === 0}
+          >
+            Exporter (CSV)
+          </AdminButton>
+        </div>
       </div>
+
+      {exportError && (
+        <p className="font-body text-xs text-red-300 mb-4 break-words">{exportError}</p>
+      )}
 
       {/* Filters */}
       <div className="flex flex-wrap gap-2 mb-6">

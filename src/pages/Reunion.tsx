@@ -5,6 +5,7 @@ import { createSubmission } from '../lib/content/store'
 import { isEmail, isPhone } from '../lib/content/validation'
 import { HoneypotField, submissionErrorMessage, useFormGuard } from '../components/FormGuard'
 import { LogoField } from '../components/LogoField'
+import { useSeo } from '../lib/useSeo'
 
 interface FormData {
   nom: string
@@ -151,6 +152,7 @@ const slide = {
 }
 
 export default function Reunion() {
+  useSeo({ title: 'Demander un échange | Engineering Studio', noindex: true })
   const { startTransition } = useTransition()
   const nav = useCallback((path: string) => startTransition(path), [startTransition])
 

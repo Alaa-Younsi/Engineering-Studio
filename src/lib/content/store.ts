@@ -303,12 +303,18 @@ export async function attachmentUrl(path: string, expiresInSeconds = 300): Promi
 
 /* ── Media upload ─────────────────────────────────────────────────────────── */
 
-/** Uploads a file and returns a URL usable in <img>/<video>. */
+/**
+ * Uploads a file and returns a URL usable in <img>/<video>.
+ *
+ * The caller is expected to have run `compressImage()` already. The path
+ * carries a random token so the object is immutable — hence the one-year
+ * `cacheControl` (Supabase defaults to one hour).
+ */
 export async function uploadMedia(file: File): Promise<string> {
   const ext = file.name.split('.').pop() ?? 'bin'
   const path = `${Date.now()}-${Math.random().toString(16).slice(2)}.${ext}`
   const { error } = await supabase.storage.from(MEDIA_BUCKET).upload(path, file, {
-    cacheControl: '3600',
+    cacheControl: '31536000',
     upsert: false,
   })
   if (error) throw error

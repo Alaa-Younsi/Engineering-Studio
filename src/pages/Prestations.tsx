@@ -7,6 +7,7 @@ import { useTransition } from '../context/TransitionContext'
 import { useIsDesktop } from '../design/useIsDesktop'
 import { MHero, MPage } from '../components/mobile/kit'
 import { Rise } from '../design/Rise'
+import { useSeo } from '../lib/useSeo'
 
 /**
  * Prestations — Figma frame 1920 x 1080.
@@ -28,6 +29,11 @@ const MARK = 81.3
 const MARK_GAP = 20.6
 
 export default function Prestations() {
+  useSeo({
+    title: 'Prestations — MEP/CET, VRD, Topographie, BIM | Engineering Studio',
+    description:
+      'Quatre pôles d’expertise : MEP Studio (fluides), VRD Studio (voirie et réseaux), TOPO Studio (topographie) et BIM Studio — en régie ou clé en main.',
+  })
   const { startTransition } = useTransition()
   const nav = useCallback((p: string) => startTransition(p), [startTransition])
   const isDesktop = useIsDesktop()

@@ -1,5 +1,6 @@
 import { useRef, useState, type ReactNode } from 'react'
 import { uploadMedia } from '../../lib/content/store'
+import { compressImage, responsiveSrcSet } from '../../lib/image'
 
 /* ── Buttons ──────────────────────────────────────────────────────────────── */
 
@@ -126,11 +127,18 @@ export function MediaUploader({
   video = false,
   onChange,
   className = 'aspect-[16/10]',
+  allowUrl = false,
 }: {
   value?: string
   video?: boolean
   onChange: (url: string | undefined) => void
   className?: string
+  /**
+   * Show a "paste a URL" field alongside the uploader. Used for video so the
+   * client can move hosting off Supabase (Cloudinary/Bunny) with no code change
+   * when egress becomes the constraint.
+   */
+  allowUrl?: boolean
 }) {
   const inputRef = useRef<HTMLInputElement>(null)
   const [busy, setBusy] = useState(false)
@@ -141,7 +149,9 @@ export function MediaUploader({
     setBusy(true)
     setError(null)
     try {
-      const url = await uploadMedia(file)
+      // Re-encode images to a web-sized WebP before upload; video passes through.
+      const optimised = await compressImage(file)
+      const url = await uploadMedia(optimised)
       onChange(url)
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Échec du téléversement')
@@ -155,9 +165,17 @@ export function MediaUploader({
       <div className={`relative overflow-hidden rounded-xl bg-[#e2e2e2] ${className}`}>
         {value ? (
           video ? (
-            <video src={value} className="w-full h-full object-cover" />
+            <video src={value} preload="none" playsInline className="w-full h-full object-cover" />
           ) : (
-            <img src={value} alt="" className="w-full h-full object-cover" />
+            <img
+              src={value}
+              srcSet={responsiveSrcSet(value)}
+              sizes="(max-width: 640px) 90vw, 420px"
+              alt=""
+              loading="lazy"
+              decoding="async"
+              className="w-full h-full object-cover"
+            />
           )
         ) : (
           <div className="w-full h-full flex items-center justify-center text-black/30 font-body text-xs">
@@ -182,6 +200,14 @@ export function MediaUploader({
           onChange={e => void pick(e.target.files?.[0])}
         />
       </div>
+      {allowUrl && (
+        <TextInput
+          value={value ?? ''}
+          onChange={e => onChange(e.target.value || undefined)}
+          placeholder="…ou coller une URL (Cloudinary, Bunny, YouTube…)"
+          className="mt-2"
+        />
+      )}
       {error && <p className="font-body text-xs text-red-300 mt-2">{error}</p>}
     </div>
   )

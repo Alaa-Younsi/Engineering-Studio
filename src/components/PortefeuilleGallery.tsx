@@ -7,6 +7,7 @@ import type { Project } from '../lib/content/types'
 function ProjectCard({ project }: { project: Project }) {
   const [active, setActive] = useState(0)
   const current = project.media[active] ?? project.media[0]
+  const posterSrc = project.media.find(m => m.type === 'image')?.src
 
   return (
     <div className="bg-[#131313] rounded-2xl sm:rounded-3xl p-5 sm:p-7 lg:p-8 flex flex-col lg:flex-row gap-6 lg:gap-8">
@@ -33,6 +34,8 @@ function ProjectCard({ project }: { project: Project }) {
         src={current?.src}
         video={current?.type === 'video'}
         alt={project.title}
+        poster={posterSrc}
+        sizes="(max-width: 1024px) 90vw, 55vw"
         className="flex-1 aspect-[16/10] rounded-xl sm:rounded-2xl"
         iconClassName="w-12 h-12"
       />
@@ -52,6 +55,7 @@ function ProjectCard({ project }: { project: Project }) {
             <MediaFrame
               src={media.src}
               video={media.type === 'video'}
+              sizes="64px"
               className="w-16 h-12 lg:w-14 lg:h-11 rounded-lg"
               iconClassName="w-5 h-5"
             />

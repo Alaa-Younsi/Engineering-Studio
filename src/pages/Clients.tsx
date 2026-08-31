@@ -9,6 +9,7 @@ import { useIsDesktop } from '../design/useIsDesktop'
 import { ClientsMobile } from './mobile/ClientsMobile'
 import { Rise } from '../design/Rise'
 import { useAutoCarousel } from '../design/useAutoCarousel'
+import { useSeo } from '../lib/useSeo'
 
 /**
  * Clients — Figma frame 1920 x 12960.
@@ -31,6 +32,11 @@ const TRACK_W = 2496
 const RAIL = 219
 
 export default function Clients() {
+  useSeo({
+    title: 'Clients — Ils nous font confiance | Engineering Studio',
+    description:
+      'Missions variées pour bureaux d’études, entreprises et maîtres d’ouvrage : secteurs d’activité, engagements et témoignages de nos clients.',
+  })
   const { startTransition } = useTransition()
   const nav = useCallback((p: string) => startTransition(p), [startTransition])
   const isDesktop = useIsDesktop()

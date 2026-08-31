@@ -10,6 +10,8 @@ import { RevealText } from '../components/Reveal'
 import { FEATURES } from '../config/features'
 import { useArticle } from '../lib/content/hooks'
 import { formatArticleDate } from '../lib/content/types'
+import { useSeo } from '../lib/useSeo'
+import { SITE_URL } from '../config/site'
 
 export default function NouvelleArticle() {
   const { slug } = useParams<{ slug: string }>()
@@ -21,6 +23,25 @@ export default function NouvelleArticle() {
   const heroLogoY = useTransform(scrollYProgress, [0, 1], ['0px', '-80px'])
 
   const { data: article, loading } = useArticle(slug)
+
+  const excerpt = article?.blocks[0]?.paragraphs[0]?.slice(0, 200)
+  useSeo({
+    title: article ? `${article.title} | Engineering Studio` : 'Nouvelles | Engineering Studio',
+    description: excerpt ?? 'Actualité d’Engineering Studio, bureau d’études en ingénierie.',
+    path: slug ? `/nouvelles/${slug}` : undefined,
+    image: article?.cover,
+    jsonLd: article
+      ? {
+          '@context': 'https://schema.org',
+          '@type': 'BlogPosting',
+          headline: article.title,
+          datePublished: article.date,
+          image: article.cover ? [article.cover] : undefined,
+          url: `${SITE_URL}/nouvelles/${article.slug}`,
+          publisher: { '@type': 'Organization', name: 'Engineering Studio' },
+        }
+      : undefined,
+  })
 
   // While the section is still behind the flag, an article URL is not a real page.
   if (!FEATURES.nouvelles) return <Navigate to="/nouvelles" replace />
@@ -60,6 +81,7 @@ export default function NouvelleArticle() {
               <MediaFrame
                 src={article.cover}
                 alt={article.title}
+                sizes="(max-width: 1024px) 90vw, 1024px"
                 className="w-full aspect-[16/10] rounded-2xl sm:rounded-3xl mt-12 sm:mt-16"
                 iconClassName="w-12 h-12"
               />

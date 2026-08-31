@@ -6,7 +6,7 @@ import { useTransition } from '../context/TransitionContext'
 import { Box, Txt, u, DESIGN_W } from '../design/canvas'
 import { LogoLockup, ArrowRightIcon } from '../brand/vectors'
 import { CircleButton, PillButton } from './site/atoms'
-import { MMarkButton } from './mobile/kit'
+import { downloadPlaquette } from '../lib/plaquette'
 
 /**
  * Menu — Figma frame 1920 x 1080, drawn over the page as a full-screen overlay.
@@ -113,7 +113,8 @@ export function MenuOverlay() {
              * left in its containing block, which would pin this at 45px and
              * stop the hover from opening.
              */}
-            <CircleButton x={679} y={586} label="Contact" onClick={() => go('/contact')} />
+            {/* Brochure download — inert until the PDF ships (see src/lib/plaquette.ts). */}
+            <CircleButton x={679} y={586} label="Plaquette" onClick={downloadPlaquette} />
 
             {LINKS.map((l, i) => {
               const active = hovered === null || hovered === l.href
@@ -181,9 +182,9 @@ export function MenuOverlay() {
 
             <div className="flex flex-col gap-4">
               <div className="flex flex-wrap items-center gap-3">
-                <button onClick={() => go('/devis')} className="rounded-full border border-white px-5 py-2 text-xs">Devis</button>
-                <button onClick={() => go('/reunion')} className="rounded-full border border-white px-5 py-2 text-xs">Demander un échange</button>
-                <MMarkButton onClick={() => go('/contact')}>Contact</MMarkButton>
+                <button type="button" onClick={() => go('/devis')} className="rounded-full border border-white px-5 py-2 text-xs">Devis</button>
+                <button type="button" onClick={() => go('/reunion')} className="rounded-full border border-white px-5 py-2 text-xs">Demander un échange</button>
+                <button type="button" onClick={downloadPlaquette} className="rounded-full border border-white px-5 py-2 text-xs">Plaquette</button>
               </div>
               <div className="flex gap-6 text-xs text-white/80">
                 <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer">Facebook</a>

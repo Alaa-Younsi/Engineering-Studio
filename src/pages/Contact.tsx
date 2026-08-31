@@ -8,6 +8,7 @@ import { LIMITS } from '../lib/content/validation'
 import { useIsDesktop } from '../design/useIsDesktop'
 import { MBody, MCard, MH1, MH2, MH3, MHero, MPage, MSection } from '../components/mobile/kit'
 import { Rise } from '../design/Rise'
+import { useSeo } from '../lib/useSeo'
 
 /**
  * Contact — Figma frame 1920 x 5400.
@@ -49,6 +50,11 @@ BIM et synthèses techniques — livrés aux formats natifs et PDF,
 ]
 
 export default function Contact() {
+  useSeo({
+    title: 'Contact — Parlons de votre projet | Engineering Studio',
+    description:
+      'Contactez Engineering Studio : demande de devis, prise de rendez-vous et dépôt de plans. Bureau d’études basé à Sétif, +213 (0) 773 87 62 14.',
+  })
   const isDesktop = useIsDesktop()
   if (!isDesktop) return <ContactMobile />
 

@@ -55,5 +55,16 @@ export function HoneypotField({ value, onChange }: HoneypotFieldProps) {
 /** Maps a thrown error to something a visitor can act on. */
 export function submissionErrorMessage(err: unknown): string {
   if (err instanceof ValidationError) return err.message
+  // The server-side rate limit (supabase/schema.sql) raises ERR_RATE_LIMIT.
+  // Supabase surfaces a plain { message, code, ... } object, not an Error.
+  const message =
+    err instanceof Error
+      ? err.message
+      : typeof err === 'object' && err !== null && 'message' in err
+        ? String((err as { message: unknown }).message)
+        : String(err)
+  if (message.includes('ERR_RATE_LIMIT')) {
+    return 'Vous avez envoyé plusieurs demandes récemment. Merci de patienter quelques minutes avant de réessayer.'
+  }
   return "Votre demande n'a pas pu être envoyée. Vérifiez votre connexion et réessayez, ou appelez-nous au +213 (0) 773 87 62 14."
 }

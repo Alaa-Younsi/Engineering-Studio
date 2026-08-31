@@ -131,7 +131,7 @@ export default function AdminProjectEditor() {
                     <button type="button" onClick={() => setMedia(media.filter((_, mi) => mi !== i))} className="font-body text-xs text-red-300/80 hover:text-red-300">Retirer</button>
                   )}
                 </div>
-                <MediaUploader value={m.src} video={m.type === 'video'} onChange={url => setMediaAt(i, { src: url })} className="aspect-[16/10]" />
+                <MediaUploader value={m.src} video={m.type === 'video'} allowUrl={m.type === 'video'} onChange={url => setMediaAt(i, { src: url })} className="aspect-[16/10]" />
               </Card>
             ))}
           </div>

@@ -120,6 +120,59 @@ alter table public.submissions add constraint submissions_email_shape check (
 create index if not exists articles_date_idx on public.articles (date desc);
 create index if not exists projects_created_idx on public.projects (created_at asc);
 create index if not exists submissions_created_idx on public.submissions (created_at desc);
+create index if not exists submissions_email_created_idx on public.submissions (email, created_at desc);
+
+/*
+ * Server-side rate limit. The browser throttle in src/lib/content/validation.ts
+ * only slows a real form; anyone can POST straight at the REST endpoint with the
+ * public anon key and skip it entirely. This is the guard that actually holds:
+ *   - per email:  3 / 10 min, 20 / 24 h
+ *   - global:    12 / minute  (bounds a burst even with rotating/blank emails)
+ * Raises ERR_RATE_LIMIT, which the frontend maps to a "merci de patienter"
+ * message (src/components/FormGuard.tsx).
+ */
+create or replace function public.submissions_rate_limit()
+returns trigger
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  recent_global int;
+  recent_email  int;
+  daily_email   int;
+begin
+  select count(*) into recent_global
+  from public.submissions
+  where created_at > now() - interval '1 minute';
+  if recent_global >= 12 then
+    raise exception 'ERR_RATE_LIMIT: trop de demandes, réessayez dans un instant';
+  end if;
+
+  if coalesce(new.email, '') <> '' then
+    select count(*) into recent_email
+    from public.submissions
+    where email = new.email and created_at > now() - interval '10 minutes';
+    if recent_email >= 3 then
+      raise exception 'ERR_RATE_LIMIT: trop de demandes pour cette adresse';
+    end if;
+
+    select count(*) into daily_email
+    from public.submissions
+    where email = new.email and created_at > now() - interval '24 hours';
+    if daily_email >= 20 then
+      raise exception 'ERR_RATE_LIMIT: limite quotidienne atteinte pour cette adresse';
+    end if;
+  end if;
+
+  return new;
+end;
+$$;
+
+drop trigger if exists submissions_rate_limit_trg on public.submissions;
+create trigger submissions_rate_limit_trg
+  before insert on public.submissions
+  for each row execute function public.submissions_rate_limit();
 
 -- ── Row Level Security ──────────────────────────────────────────────────────
 alter table public.articles enable row level security;

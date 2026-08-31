@@ -168,3 +168,29 @@
     }
   }
 }
+
+/*
+ * Admin dashboard scrollbars. Scoped to `html[data-admin]` (set by AdminApp) so
+ * the public site keeps the OS default. The sidebar's nav list and the content
+ * pane are independent scroll regions (see AdminLayout.tsx) — this gives both a
+ * slim, low-contrast bar that reads as part of the dark UI rather than a bright
+ * OS chrome element sitting on top of it.
+ */
+html[data-admin] .admin-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.18) transparent;
+}
+html[data-admin] .admin-scroll::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+html[data-admin] .admin-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+html[data-admin] .admin-scroll::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.16);
+  border-radius: 9999px;
+}
+html[data-admin] .admin-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}

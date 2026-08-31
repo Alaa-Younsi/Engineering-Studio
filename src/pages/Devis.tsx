@@ -5,6 +5,7 @@ import { createSubmission, uploadAttachments } from '../lib/content/store'
 import { ATTACHMENTS, isEmail, isPhone, validateAttachments } from '../lib/content/validation'
 import { HoneypotField, submissionErrorMessage, useFormGuard } from '../components/FormGuard'
 import { LogoField } from '../components/LogoField'
+import { useSeo } from '../lib/useSeo'
 
 interface FormData {
   societyType: string
@@ -95,6 +96,7 @@ const slide = {
 }
 
 export default function Devis() {
+  useSeo({ title: 'Obtenez un devis | Engineering Studio', noindex: true })
   const { startTransition } = useTransition()
   const nav = useCallback((path: string) => startTransition(path), [startTransition])
 

@@ -26,6 +26,7 @@ export function NouvellesArchive() {
               <MediaFrame
                 src={article.cover}
                 alt={article.title}
+                sizes="(max-width: 640px) 90vw, (max-width: 1024px) 45vw, 30vw"
                 className="w-full aspect-[4/5] rounded-2xl group-hover:opacity-85 transition-opacity"
                 iconClassName="w-12 h-12"
               />

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { deleteProject, listProjects } from '../../lib/content/store'
 import type { Project } from '../../lib/content/types'
 import { AdminButton, Card, Spinner } from '../../components/admin/ui'
+import { SmartImage } from '../../components/SmartImage'
 
 export default function AdminProjects() {
   const [projects, setProjects] = useState<Project[]>([])
@@ -44,7 +45,7 @@ export default function AdminProjects() {
             return (
               <div key={project.id} className="flex items-center gap-4 px-5 py-4">
                 <div className="h-14 w-20 flex-shrink-0 rounded-lg overflow-hidden bg-[#e2e2e2]">
-                  {cover && <img src={cover} alt="" className="h-full w-full object-cover" />}
+                  {cover && <SmartImage src={cover} alt="" sizes="80px" className="h-full w-full object-cover" />}
                 </div>
                 <div className="min-w-0 flex-1">
                   <p className="font-body text-sm text-white truncate">{project.title}</p>
