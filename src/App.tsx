@@ -71,7 +71,9 @@ function AdminApp() {
   // Opt the dashboard out of the site's fluid root font-size (see index.css).
   useEffect(() => {
     document.documentElement.dataset.admin = 'true'
-    return () => { delete document.documentElement.dataset.admin }
+    return () => {
+      delete document.documentElement.dataset.admin
+    }
   }, [])
 
   return (
@@ -80,7 +82,13 @@ function AdminApp() {
       <Suspense fallback={null}>
         <Routes>
           <Route path="login" element={<AdminLogin />} />
-          <Route element={<RequireAuth><AdminLayout /></RequireAuth>}>
+          <Route
+            element={
+              <RequireAuth>
+                <AdminLayout />
+              </RequireAuth>
+            }
+          >
             <Route index element={<AdminDashboard />} />
             <Route path="nouvelles" element={<AdminArticles />} />
             <Route path="nouvelles/new" element={<AdminArticleEditor />} />

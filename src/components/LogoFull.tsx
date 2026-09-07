@@ -10,8 +10,8 @@ interface LogoFullProps {
  * lockup measures 134×26 @1920, and the intro frame uses the larger step.
  */
 const sizeMap = {
-  sm: 'w-[8.375rem]',  // 134px @1920 — navbar
-  lg: 'w-[12.25rem]',  // 196px @1920 — intro frame
+  sm: 'w-[8.375rem]', // 134px @1920 — navbar
+  lg: 'w-[12.25rem]', // 196px @1920 — intro frame
 }
 
 export function LogoFull({ size = 'sm', className = '' }: LogoFullProps) {

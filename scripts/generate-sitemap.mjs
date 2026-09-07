@@ -43,10 +43,9 @@ async function fetchArticleSlugs() {
   const key = readEnv('VITE_SUPABASE_ANON_KEY')
   if (!url || !key) return []
   try {
-    const res = await fetch(
-      `${url}/rest/v1/articles?select=slug&published=eq.true`,
-      { headers: { apikey: key, Authorization: `Bearer ${key}` } },
-    )
+    const res = await fetch(`${url}/rest/v1/articles?select=slug&published=eq.true`, {
+      headers: { apikey: key, Authorization: `Bearer ${key}` },
+    })
     if (!res.ok) return []
     const rows = await res.json()
     return rows.map((r) => r.slug).filter(Boolean)
@@ -65,9 +64,7 @@ const urls = [
 const xml =
   `<?xml version="1.0" encoding="UTF-8"?>\n` +
   `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
-  urls
-    .map((u) => `  <url><loc>${u.loc}</loc><priority>${u.priority}</priority></url>`)
-    .join('\n') +
+  urls.map((u) => `  <url><loc>${u.loc}</loc><priority>${u.priority}</priority></url>`).join('\n') +
   `\n</urlset>\n`
 
 writeFileSync(resolve(ROOT, 'public/sitemap.xml'), xml)

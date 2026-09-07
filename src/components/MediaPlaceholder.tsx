@@ -22,15 +22,34 @@ interface MediaFrameProps {
  * client uploads anything.
  */
 export function MediaFrame({
-  src, alt = '', video = false, className = '', iconClassName = 'w-10 h-10', sizes, poster,
+  src,
+  alt = '',
+  video = false,
+  className = '',
+  iconClassName = 'w-10 h-10',
+  sizes,
+  poster,
 }: MediaFrameProps) {
   if (src) {
     return (
       <div className={`overflow-hidden bg-[#e2e2e2] ${className}`}>
         {video ? (
-          <video src={src} controls preload="none" playsInline poster={poster} className="w-full h-full object-cover" />
+          <video
+            src={src}
+            controls
+            preload="none"
+            playsInline
+            poster={poster}
+            className="w-full h-full object-cover"
+          />
         ) : (
-          <SmartImage src={src} alt={alt} sizes={sizes} className="w-full h-full object-cover" draggable={false} />
+          <SmartImage
+            src={src}
+            alt={alt}
+            sizes={sizes}
+            className="w-full h-full object-cover"
+            draggable={false}
+          />
         )}
       </div>
     )
@@ -38,7 +57,15 @@ export function MediaFrame({
 
   return (
     <div className={`bg-[#e2e2e2] flex items-center justify-center ${className}`} aria-hidden>
-      <svg className={`${iconClassName} text-black/20`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <svg
+        className={`${iconClassName} text-black/20`}
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
         {video ? (
           <>
             <circle cx="12" cy="12" r="9" />

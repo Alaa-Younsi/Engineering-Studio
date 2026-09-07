@@ -55,14 +55,33 @@ export default function AdminDashboard() {
     )
   }
 
-  const publishedArticles = articles.filter(a => a.published).length
-  const publishedProjects = projects.filter(p => p.published).length
-  const unreadSubmissions = submissions.filter(s => !s.read).length
+  const publishedArticles = articles.filter((a) => a.published).length
+  const publishedProjects = projects.filter((p) => p.published).length
+  const unreadSubmissions = submissions.filter((s) => !s.read).length
 
   const recent: RecentItem[] = [
-    ...submissions.map<RecentItem>(s => ({ key: `s-${s.id}`, label: s.name || s.email || 'Sans nom', kind: 'Demande', sub: SUBMISSION_LABELS[s.kind], when: s.createdAt, to: '/admin/demandes' })),
-    ...articles.map<RecentItem>(a => ({ key: `a-${a.id}`, label: a.title, kind: 'Nouvelle', when: a.updatedAt, to: `/admin/nouvelles/${a.id}` })),
-    ...projects.map<RecentItem>(p => ({ key: `p-${p.id}`, label: p.title, kind: 'Projet', when: p.updatedAt, to: `/admin/portefeuille/${p.id}` })),
+    ...submissions.map<RecentItem>((s) => ({
+      key: `s-${s.id}`,
+      label: s.name || s.email || 'Sans nom',
+      kind: 'Demande',
+      sub: SUBMISSION_LABELS[s.kind],
+      when: s.createdAt,
+      to: '/admin/demandes',
+    })),
+    ...articles.map<RecentItem>((a) => ({
+      key: `a-${a.id}`,
+      label: a.title,
+      kind: 'Nouvelle',
+      when: a.updatedAt,
+      to: `/admin/nouvelles/${a.id}`,
+    })),
+    ...projects.map<RecentItem>((p) => ({
+      key: `p-${p.id}`,
+      label: p.title,
+      kind: 'Projet',
+      when: p.updatedAt,
+      to: `/admin/portefeuille/${p.id}`,
+    })),
   ]
     .sort((x, y) => (y.when ?? '').localeCompare(x.when ?? ''))
     .slice(0, 8)
@@ -76,7 +95,9 @@ export default function AdminDashboard() {
   return (
     <div>
       <h1 className="font-display font-bold text-white text-3xl">Tableau de bord</h1>
-      <p className="font-body text-sm text-secondary mt-2">Suivez les demandes reçues et gérez le contenu affiché sur le site.</p>
+      <p className="font-body text-sm text-secondary mt-2">
+        Suivez les demandes reçues et gérez le contenu affiché sur le site.
+      </p>
 
       {/* Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8">
@@ -84,33 +105,53 @@ export default function AdminDashboard() {
           <div className="flex items-center justify-between">
             <p className="font-body text-xs text-secondary uppercase tracking-wide">Demandes</p>
             {unreadSubmissions > 0 && (
-              <span className="rounded-full bg-white text-black font-body text-[0.7rem] px-2 py-0.5">{unreadSubmissions} nouvelle{unreadSubmissions > 1 ? 's' : ''}</span>
+              <span className="rounded-full bg-white text-black font-body text-[0.7rem] px-2 py-0.5">
+                {unreadSubmissions} nouvelle{unreadSubmissions > 1 ? 's' : ''}
+              </span>
             )}
           </div>
           <p className="font-display font-bold text-white text-4xl mt-3">{submissions.length}</p>
           <p className="font-body text-xs text-secondary mt-2">Devis · Réunion · Contact</p>
           <div className="mt-5 flex gap-2">
-            <Link to="/admin/demandes"><AdminButton className="!py-2 !px-4 text-xs">Voir les demandes</AdminButton></Link>
+            <Link to="/admin/demandes">
+              <AdminButton className="!py-2 !px-4 text-xs">Voir les demandes</AdminButton>
+            </Link>
           </div>
         </Card>
 
         <Card className="p-6">
           <p className="font-body text-xs text-secondary uppercase tracking-wide">Nouvelles</p>
           <p className="font-display font-bold text-white text-4xl mt-3">{articles.length}</p>
-          <p className="font-body text-xs text-secondary mt-2">{publishedArticles} publiée{publishedArticles > 1 ? 's' : ''}</p>
+          <p className="font-body text-xs text-secondary mt-2">
+            {publishedArticles} publiée{publishedArticles > 1 ? 's' : ''}
+          </p>
           <div className="mt-5 flex gap-2">
-            <Link to="/admin/nouvelles"><AdminButton variant="ghost" className="!py-2 !px-4 text-xs">Gérer</AdminButton></Link>
-            <Link to="/admin/nouvelles/new"><AdminButton className="!py-2 !px-4 text-xs">Nouvel article</AdminButton></Link>
+            <Link to="/admin/nouvelles">
+              <AdminButton variant="ghost" className="!py-2 !px-4 text-xs">
+                Gérer
+              </AdminButton>
+            </Link>
+            <Link to="/admin/nouvelles/new">
+              <AdminButton className="!py-2 !px-4 text-xs">Nouvel article</AdminButton>
+            </Link>
           </div>
         </Card>
 
         <Card className="p-6">
           <p className="font-body text-xs text-secondary uppercase tracking-wide">Portefeuille</p>
           <p className="font-display font-bold text-white text-4xl mt-3">{projects.length}</p>
-          <p className="font-body text-xs text-secondary mt-2">{publishedProjects} publié{publishedProjects > 1 ? 's' : ''}</p>
+          <p className="font-body text-xs text-secondary mt-2">
+            {publishedProjects} publié{publishedProjects > 1 ? 's' : ''}
+          </p>
           <div className="mt-5 flex gap-2">
-            <Link to="/admin/portefeuille"><AdminButton variant="ghost" className="!py-2 !px-4 text-xs">Gérer</AdminButton></Link>
-            <Link to="/admin/portefeuille/new"><AdminButton className="!py-2 !px-4 text-xs">Nouveau projet</AdminButton></Link>
+            <Link to="/admin/portefeuille">
+              <AdminButton variant="ghost" className="!py-2 !px-4 text-xs">
+                Gérer
+              </AdminButton>
+            </Link>
+            <Link to="/admin/portefeuille/new">
+              <AdminButton className="!py-2 !px-4 text-xs">Nouveau projet</AdminButton>
+            </Link>
           </div>
         </Card>
       </div>
@@ -118,14 +159,24 @@ export default function AdminDashboard() {
       {/* Recent activity */}
       <h2 className="font-display font-bold text-white text-xl mt-12 mb-4">Activité récente</h2>
       <Card className="divide-y divide-white/5">
-        {recent.length === 0 && <p className="font-body text-sm text-secondary p-6">Aucun contenu pour le moment.</p>}
-        {recent.map(item => (
-          <Link key={item.key} to={item.to} className="flex items-center justify-between gap-4 px-6 py-4 hover:bg-white/5 transition-colors">
+        {recent.length === 0 && (
+          <p className="font-body text-sm text-secondary p-6">Aucun contenu pour le moment.</p>
+        )}
+        {recent.map((item) => (
+          <Link
+            key={item.key}
+            to={item.to}
+            className="flex items-center justify-between gap-4 px-6 py-4 hover:bg-white/5 transition-colors"
+          >
             <div className="min-w-0">
               <p className="font-body text-sm text-white truncate">{item.label}</p>
-              <p className="font-body text-xs text-secondary mt-0.5">{item.sub ? `${item.kind} · ${item.sub}` : item.kind}</p>
+              <p className="font-body text-xs text-secondary mt-0.5">
+                {item.sub ? `${item.kind} · ${item.sub}` : item.kind}
+              </p>
             </div>
-            <span className="font-body text-xs text-secondary whitespace-nowrap">{formatWhen(item.when)}</span>
+            <span className="font-body text-xs text-secondary whitespace-nowrap">
+              {formatWhen(item.when)}
+            </span>
           </Link>
         ))}
       </Card>

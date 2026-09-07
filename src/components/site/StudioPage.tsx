@@ -97,7 +97,9 @@ export function StudioPage({ logo, rows, imgPrefix }: StudioPageProps) {
 
             <Rise delay={90}>
               <Txt t="h6" y={449 - l} centerX align="center" dim>{`${n}.`}</Txt>
-              <Txt t="h2" y={537 - l} centerX align="center">{row.title}</Txt>
+              <Txt t="h2" y={537 - l} centerX align="center">
+                {row.title}
+              </Txt>
             </Rise>
           </Box>
         )

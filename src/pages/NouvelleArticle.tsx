@@ -48,7 +48,6 @@ export default function NouvelleArticle() {
 
   return (
     <main className="min-h-screen bg-bg">
-
       {/* ── Hero ────────────────────────────────────────────────────────────── */}
       <section ref={heroRef} className="relative h-screen flex items-center overflow-hidden">
         <div className="px-6 sm:px-10 lg:px-gutter relative z-10">
@@ -63,15 +62,18 @@ export default function NouvelleArticle() {
         <section className="px-6 sm:px-10 lg:px-gutter py-32" />
       ) : !article ? (
         <section className="px-6 sm:px-10 lg:px-gutter py-32 flex flex-col items-center gap-8 text-center">
-          <p className="font-display font-bold text-2xl sm:text-3xl text-white">Cet article n'existe pas.</p>
+          <p className="font-display font-bold text-2xl sm:text-3xl text-white">
+            Cet article n'existe pas.
+          </p>
           <LogoButton onClick={() => nav('/nouvelles')}>Toutes les nouvelles</LogoButton>
         </section>
       ) : (
         <article className="px-6 sm:px-10 lg:px-gutter pb-32">
           <div className="max-w-5xl mx-auto">
-
             <RevealText>
-              <p className="font-body text-secondary text-xs sm:text-sm">{formatArticleDate(article.date)}</p>
+              <p className="font-body text-secondary text-xs sm:text-sm">
+                {formatArticleDate(article.date)}
+              </p>
               <h2 className="font-display font-bold text-white text-3xl sm:text-4xl lg:text-5xl leading-tight mt-3 max-w-[24ch]">
                 {article.title}
               </h2>
@@ -91,10 +93,15 @@ export default function NouvelleArticle() {
               {article.blocks.map((block, bi) => (
                 <RevealText key={bi} delay={0.06}>
                   {block.heading && (
-                    <h3 className="font-display font-bold text-white text-xl sm:text-2xl mb-8">{block.heading}</h3>
+                    <h3 className="font-display font-bold text-white text-xl sm:text-2xl mb-8">
+                      {block.heading}
+                    </h3>
                   )}
                   {block.paragraphs.map((paragraph, pi) => (
-                    <p key={pi} className="font-body text-secondary text-sm leading-relaxed mb-10 last:mb-0">
+                    <p
+                      key={pi}
+                      className="font-body text-secondary text-sm leading-relaxed mb-10 last:mb-0"
+                    >
                       {paragraph}
                     </p>
                   ))}
@@ -105,7 +112,7 @@ export default function NouvelleArticle() {
             {article.tags.length > 0 && (
               <RevealText delay={0.06}>
                 <div className="flex flex-wrap gap-2.5 mt-14">
-                  {article.tags.map(tag => (
+                  {article.tags.map((tag) => (
                     <Tag key={tag}>{tag}</Tag>
                   ))}
                 </div>

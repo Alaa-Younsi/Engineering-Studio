@@ -47,11 +47,17 @@ export default function APropos() {
   return (
     <Frame h={CANVAS_H}>
       <Watermark x={1067.4} y={168} size={744.6} />
-      <Txt t="displayTight" x={215} y={496}>À propos</Txt>
+      <Txt t="displayTight" x={215} y={496}>
+        À propos
+      </Txt>
 
       {/* ── Intro ─────────────────────────────────────────────────────────── */}
-      <Txt t="leadLight" x={219} y={1427}>Solutions globale en ingénierie</Txt>
-      <Txt t="h2" x={219} y={1462}>{'Etudes techniques\npluridisciplinaire'}</Txt>
+      <Txt t="leadLight" x={219} y={1427}>
+        Solutions globale en ingénierie
+      </Txt>
+      <Txt t="h2" x={219} y={1462}>
+        {'Etudes techniques\npluridisciplinaire'}
+      </Txt>
       <Txt t="bodyLight" x={973} y={1426} dim>
         {`ENGINEERING STUDIO propose des études techniques pluridisciplinaire
 présent dans les domaines d’ingénieries du CVC/MEP/CET et VRD,
@@ -77,7 +83,9 @@ le triax Coût – Délai – Qualité.`}
 
       {/* ── Etudes clé en main ────────────────────────────────────────────── */}
       <Box x={219} y={2580} w={1519} h={239}>
-        <Txt t="h2" x={0} y={7}>{'Etudes\nclé en main'}</Txt>
+        <Txt t="h2" x={0} y={7}>
+          {'Etudes\nclé en main'}
+        </Txt>
         <Txt t="bodyLight" x={754} y={0} dim>
           {`Notre objectif est de maintenir le plus haut niveau de professionnalisme,
 d'intégrité, de satisfaction client.
@@ -90,7 +98,9 @@ un contrat de résultat.`}
       </Box>
 
       {/* ── Présentation ──────────────────────────────────────────────────── */}
-      <Txt t="leadLight" x={219} y={3514.8}>Présentation</Txt>
+      <Txt t="leadLight" x={219} y={3514.8}>
+        Présentation
+      </Txt>
       <Txt t="h2" x={219} y={3549.8}>
         {`Nous fournissons à nos clients un large
 éventail de compétences pour assurer la
@@ -104,14 +114,20 @@ en évitant les doublons d’efforts et en tirant parti des complémentarités.`
         <div key={d.n}>
           <Watermark x={d.ring} y={3903.8} size={141.4} />
           <Box x={d.box} y={3926} w={d.w} h={108}>
-            <Txt t="stat" x={d.nx} y={0} align="center">{d.n}</Txt>
-            <Txt t="leadMedium" x={d.lx} y={76} align="center" dim>{d.label}</Txt>
+            <Txt t="stat" x={d.nx} y={0} align="center">
+              {d.n}
+            </Txt>
+            <Txt t="leadMedium" x={d.lx} y={76} align="center" dim>
+              {d.label}
+            </Txt>
           </Box>
         </div>
       ))}
 
       {/* ── Boostez vos projets ───────────────────────────────────────────── */}
-      <Txt t="leadLight" centerX y={4720} align="center">Pour mieux construire</Txt>
+      <Txt t="leadLight" centerX y={4720} align="center">
+        Pour mieux construire
+      </Txt>
       <Txt t="h2" centerX y={4754.9} align="center">
         {/* Trailing space is in the design; it shifts this centred line 9px left. */}
         {'Boostez vos projets avec \nle BIM & BTP numérique'}
@@ -121,7 +137,9 @@ en évitant les doublons d’efforts et en tirant parti des complémentarités.`
       </PillButton>
 
       {/* ── Modélisation BIM ──────────────────────────────────────────────── */}
-      <Txt t="leadLight" x={219} y={5741}>La modélisation BIM au cœur de nos projets</Txt>
+      <Txt t="leadLight" x={219} y={5741}>
+        La modélisation BIM au cœur de nos projets
+      </Txt>
       <Txt t="h2" x={219} y={5776}>
         {'Modélisation BIM : réalisez vos ouvrages\nen 3D grâce à notre expertise'}
       </Txt>
@@ -132,7 +150,9 @@ d’études, la modélisation du bâtiment via est une discipline que nous maît
 aux besoins de nos clients.`}
       </Txt>
       {BIM_KEYWORDS.map((k) => (
-        <Txt key={k.label} t="leadMedium" cx={k.cx} y={6114} align="center">{k.label}</Txt>
+        <Txt key={k.label} t="leadMedium" cx={k.cx} y={6114} align="center">
+          {k.label}
+        </Txt>
       ))}
 
       {/* ── Processus ─────────────────────────────────────────────────────── */}
@@ -146,15 +166,21 @@ aux besoins de nos clients.`}
         <div key={s.n}>
           <Watermark x={s.ring} y={7075.9} size={141.4} />
           <Box x={s.box} y={7098.1} w={s.w} h={125}>
-            <Txt t="stat" x={s.nx} y={0} align="center">{s.n}</Txt>
-            <Txt t="leadMediumTight" x={0} y={73} align="center" dim>{s.label}</Txt>
+            <Txt t="stat" x={s.nx} y={0} align="center">
+              {s.n}
+            </Txt>
+            <Txt t="leadMediumTight" x={0} y={73} align="center" dim>
+              {s.label}
+            </Txt>
           </Box>
         </div>
       ))}
 
       {/* ── Prêts à travailler ensemble ───────────────────────────────────── */}
       <Watermark x={471.9} y={7612.3} size={975.4} />
-      <Txt t="lead" x={800} y={7937.8} align="center">Prêts à travailler ensemble</Txt>
+      <Txt t="lead" x={800} y={7937.8} align="center">
+        Prêts à travailler ensemble
+      </Txt>
       <Box x={553} y={7994.8} w={815} h={79.4}>
         <LogoWordmark style={{ width: '100%', height: '100%', color: '#fff' }} />
       </Box>
@@ -179,7 +205,13 @@ nous voulons vous entendre !`}
       >
         Donnons vie à votre projet
       </Txt>
-      <div onMouseEnter={() => setCtaOpen(true)} onMouseLeave={() => setCtaOpen(false)}>
+      {/* biome-ignore lint/a11y/noStaticElementInteractions: pointer-only affordance that fades the flanking labels; the real control is the nested CircleButton. */}
+      <div
+        onMouseEnter={() => setCtaOpen(true)}
+        onMouseLeave={() => setCtaOpen(false)}
+        onFocusCapture={() => setCtaOpen(true)}
+        onBlurCapture={() => setCtaOpen(false)}
+      >
         <CircleButton
           x={938}
           y={8215.8}
@@ -199,7 +231,9 @@ nous voulons vous entendre !`}
       </Txt>
 
       {/* ── Nos points forts ──────────────────────────────────────────────── */}
-      <Txt t="h2" centerX y={8883} align="center">Nos points forts</Txt>
+      <Txt t="h2" centerX y={8883} align="center">
+        Nos points forts
+      </Txt>
       <Txt t="bodyLight" centerX y={9001} align="center" dim>
         {`Notre connaissance des contraintes des chargés d’affaires, maîtres d’œuvre et bureaux d’études nous permet d’être réactifs
 et efficaces pour satisfaire au mieux à vos attentes. Quelles que soient vos exigences, vous pouvez faire
@@ -209,13 +243,21 @@ Le tout en répondant aux différents enjeux liés au délai, au coût et à la 
       {STRENGTHS.map((s, i) => (
         <Rise key={s.label} delay={i * 80}>
           <Box x={s.ring} y={9143} w={340} h={340} radius={170} border="#fff" opacity={0.2} />
-          <Txt t="cardTitle" x={s.lx} y={9303} align="center">{s.label}</Txt>
+          <Txt t="cardTitle" x={s.lx} y={9303} align="center">
+            {s.label}
+          </Txt>
         </Rise>
       ))}
 
       {/* ── Logiciels ─────────────────────────────────────────────────────── */}
       <Rise>
-        <CircleImage x={217} y={9944} size={633} src="/Assets/images/A Propos-logiciels.png" alt="Logiciels d'ingénierie" />
+        <CircleImage
+          x={217}
+          y={9944}
+          size={633}
+          src="/Assets/images/A Propos-logiciels.png"
+          alt="Logiciels d'ingénierie"
+        />
       </Rise>
       <Txt t="h2" x={903} y={10078}>
         {`Utilisés les logiciels
@@ -233,11 +275,20 @@ la gestion de projets`}
 
       {/* ── Nos garanties ─────────────────────────────────────────────────── */}
       <Box x={451.9} y={14262} w={984.9} h={644.9}>
-        <img src="/Assets/images/svg/garanties-arrows.svg" alt="" className="h-full w-full" draggable={false} />
+        <img
+          src="/Assets/images/svg/garanties-arrows.svg"
+          alt=""
+          className="h-full w-full"
+          draggable={false}
+        />
       </Box>
-      <Txt t="h2" cx={962} y={14556}>Nos garanties</Txt>
+      <Txt t="h2" cx={962} y={14556}>
+        Nos garanties
+      </Txt>
       {GUARANTEES.map((g) => (
-        <Txt key={g.label} t="garantie" cx={g.cx} y={g.y} align="center">{g.label}</Txt>
+        <Txt key={g.label} t="garantie" cx={g.cx} y={g.y} align="center">
+          {g.label}
+        </Txt>
       ))}
 
       <SiteFooter y={15252} />
@@ -248,8 +299,12 @@ la gestion de projets`}
 function Stat({ x, label, value }: { x: number; label: string; value: string }) {
   return (
     <>
-      <Txt t="xsLight" x={x} y={1703} dim>{label}</Txt>
-      <Txt t="stat" x={x} y={1755}>{value}</Txt>
+      <Txt t="xsLight" x={x} y={1703} dim>
+        {label}
+      </Txt>
+      <Txt t="stat" x={x} y={1755}>
+        {value}
+      </Txt>
     </>
   )
 }
@@ -258,8 +313,12 @@ function Stat({ x, label, value }: { x: number; label: string; value: string }) 
 function SoftwareCard({ x, y, name, use }: { x: number; y: number; name: string; use: string }) {
   return (
     <Box x={x} y={y} w={291} h={238} bg="#1a1a1a" radius={30}>
-      <Txt t="cardTitle" x={29} y={80}>{name}</Txt>
-      <Txt t="cardMeta" x={29} y={190} opacity={0.5}>{use}</Txt>
+      <Txt t="cardTitle" x={29} y={80}>
+        {name}
+      </Txt>
+      <Txt t="cardMeta" x={29} y={190} opacity={0.5}>
+        {use}
+      </Txt>
     </Box>
   )
 }

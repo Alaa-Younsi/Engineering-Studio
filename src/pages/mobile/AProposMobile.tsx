@@ -1,9 +1,26 @@
 import { MobileFooter } from '../../components/mobile/MobileFooter'
 import {
-  MBody, MCard, MCircleImage, MEyebrow, MH1, MH2, MHero, MMarkButton, MPage, MPill, MSection,
+  MBody,
+  MCard,
+  MCircleImage,
+  MEyebrow,
+  MH1,
+  MH2,
+  MHero,
+  MMarkButton,
+  MPage,
+  MPill,
+  MSection,
 } from '../../components/mobile/kit'
 import { Rise } from '../../design/Rise'
-import { BIM_KEYWORDS, DISCIPLINES, GUARANTEES, SOFTWARE, STEPS, STRENGTHS } from '../../data/apropos'
+import {
+  BIM_KEYWORDS,
+  DISCIPLINES,
+  GUARANTEES,
+  SOFTWARE,
+  STEPS,
+  STRENGTHS,
+} from '../../data/apropos'
 
 /**
  * À propos, stacked for phones. Same content and order as the 1920 canvas —
@@ -32,7 +49,9 @@ const flat = (s: string) => s.split('\n').join(' ')
 export function AProposMobile({ nav }: { nav: (p: string) => void }) {
   return (
     <MPage>
-      <MHero><MH1>À propos</MH1></MHero>
+      <MHero>
+        <MH1>À propos</MH1>
+      </MHero>
 
       <MSection className="py-8">
         <MEyebrow>Solutions globale en ingénierie</MEyebrow>
@@ -41,7 +60,9 @@ export function AProposMobile({ nav }: { nav: (p: string) => void }) {
         <div className="mt-10 grid grid-cols-3 gap-4">
           {STATS.map((s) => (
             <div key={s.value}>
-              <p className="font-body text-[0.75rem] font-light leading-tight text-white/80">{s.label}</p>
+              <p className="font-body text-[0.75rem] font-light leading-tight text-white/80">
+                {s.label}
+              </p>
               <p className="mt-1 font-display text-[1.75rem] font-bold text-white">{s.value}</p>
             </div>
           ))}
@@ -63,9 +84,9 @@ export function AProposMobile({ nav }: { nav: (p: string) => void }) {
           d'ingénierie la plus exhaustive
         </MH2>
         <MBody className="mt-5">
-          La synergie entre les différentes expertises permet de maximiser les résultats en combinant
-          les forces de nos équipes d’ingénieurs, en évitant les doublons d’efforts et en tirant parti
-          des complémentarités.
+          La synergie entre les différentes expertises permet de maximiser les résultats en
+          combinant les forces de nos équipes d’ingénieurs, en évitant les doublons d’efforts et en
+          tirant parti des complémentarités.
         </MBody>
         <div className="mt-8 grid grid-cols-2 gap-6">
           {DISCIPLINES.map((d) => (
@@ -80,7 +101,9 @@ export function AProposMobile({ nav }: { nav: (p: string) => void }) {
       <MSection className="py-12 text-center">
         <MEyebrow>Pour mieux construire</MEyebrow>
         <MH2>Boostez vos projets avec le BIM &amp; BTP numérique</MH2>
-        <div className="mt-7"><MPill onClick={() => nav('/prestations/bim')}>Découvrir le BIM</MPill></div>
+        <div className="mt-7">
+          <MPill onClick={() => nav('/prestations/bim')}>Découvrir le BIM</MPill>
+        </div>
       </MSection>
 
       <MSection className="py-8">
@@ -88,14 +111,16 @@ export function AProposMobile({ nav }: { nav: (p: string) => void }) {
         <MH2>Modélisation BIM : réalisez vos ouvrages en 3D grâce à notre expertise</MH2>
         <MBody className="mt-5">
           Les projets en modélisation BIM sont devenus une habitude au cœur de notre société. Cette
-          transformation numérique qui concerne un acteur sur deux dans l’univers du bâtiment est une
-          compétence acquise. Tout comme nous développons la E-réputation de notre société d’études,
-          la modélisation du bâtiment via est une discipline que nous maîtrisons. A vrai dire, elle
-          est devenue indispensable pour répondre aux besoins de nos clients.
+          transformation numérique qui concerne un acteur sur deux dans l’univers du bâtiment est
+          une compétence acquise. Tout comme nous développons la E-réputation de notre société
+          d’études, la modélisation du bâtiment via est une discipline que nous maîtrisons. A vrai
+          dire, elle est devenue indispensable pour répondre aux besoins de nos clients.
         </MBody>
         <ul className="mt-7 flex flex-wrap gap-x-6 gap-y-2">
           {BIM_KEYWORDS.map((k) => (
-            <li key={k.label} className="font-display text-[1rem] font-medium text-white">{k.label}</li>
+            <li key={k.label} className="font-display text-[1rem] font-medium text-white">
+              {k.label}
+            </li>
           ))}
         </ul>
       </MSection>
@@ -122,7 +147,8 @@ export function AProposMobile({ nav }: { nav: (p: string) => void }) {
         <MH2 className="mt-3">Engineering Studio</MH2>
         <MBody className="mt-5">
           Que vous ayez un projet et que vous recherchiez un partenaire d'étude technique fiable ou
-          que vous souhaitiez franchir une nouvelle étape dans votre projet, nous voulons vous entendre !
+          que vous souhaitiez franchir une nouvelle étape dans votre projet, nous voulons vous
+          entendre !
         </MBody>
         <div className="mt-7 flex justify-center">
           <MMarkButton onClick={() => nav('/contact')}>Nous contacter</MMarkButton>
@@ -151,7 +177,9 @@ export function AProposMobile({ nav }: { nav: (p: string) => void }) {
       </MSection>
 
       <MSection className="py-8">
-        <Rise><MCircleImage src="/Assets/images/A Propos-logiciels.png" alt="Logiciels d'ingénierie" /></Rise>
+        <Rise>
+          <MCircleImage src="/Assets/images/A Propos-logiciels.png" alt="Logiciels d'ingénierie" />
+        </Rise>
         <MH2 className="mt-10">
           Utilisés les logiciels d'ingénierie couvrent la conception, calculs, simulation et la
           gestion de projets
@@ -160,8 +188,12 @@ export function AProposMobile({ nav }: { nav: (p: string) => void }) {
           {SOFTWARE.map((s, i) => (
             <Rise key={`${s.x}-${s.y}`} delay={(i % 2) * 70}>
               <MCard className="flex min-h-[7.5rem] flex-col justify-between">
-                <p className="font-display text-[1rem] font-bold leading-tight text-white">{flat(s.name)}</p>
-                <p className="mt-3 font-body text-[0.75rem] font-light leading-tight text-white/50">{s.use}</p>
+                <p className="font-display text-[1rem] font-bold leading-tight text-white">
+                  {flat(s.name)}
+                </p>
+                <p className="mt-3 font-body text-[0.75rem] font-light leading-tight text-white/50">
+                  {s.use}
+                </p>
               </MCard>
             </Rise>
           ))}

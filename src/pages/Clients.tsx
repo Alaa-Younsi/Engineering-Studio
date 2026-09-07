@@ -47,10 +47,14 @@ export default function Clients() {
   return (
     <Frame h={CANVAS_H}>
       <Watermark x={1067.4} y={168} size={744.6} />
-      <Txt t="displayTight" x={215} y={496}>Clients</Txt>
+      <Txt t="displayTight" x={215} y={496}>
+        Clients
+      </Txt>
 
       {/* ── Intro ─────────────────────────────────────────────────────────── */}
-      <Txt t="leadLight" x={219} y={1411}>Nos clients</Txt>
+      <Txt t="leadLight" x={219} y={1411}>
+        Nos clients
+      </Txt>
       <Txt t="h2" x={219} y={1446}>
         {'Découvrez nos\nclients et comment\nnous collaborons\navec eux'}
       </Txt>
@@ -81,7 +85,9 @@ d'études techniques (réseaux extérieurs et réseaux intérieurs).`}
       </Txt>
 
       {/* ── Engagement ────────────────────────────────────────────────────── */}
-      <Txt t="h2" centerX y={3577.6} align="center">Notre engagement envers nos clients</Txt>
+      <Txt t="h2" centerX y={3577.6} align="center">
+        Notre engagement envers nos clients
+      </Txt>
       <Txt t="bodyLight" centerX y={3695.6} align="center" dim>
         {`Notre engagement envers nos clients de partout en est un par lequel nous prenons réellement conscience que ce sont eux qui
 nous fournissent du travail et des avantages. Ces clients ont la possibilité de s’approvisionner à de nombreuses autres sources
@@ -91,13 +97,19 @@ et que la qualité offre la performance prévue.`}
       {ENGAGEMENTS.map((e) => (
         <div key={e.ring}>
           <Watermark x={e.ring} y={3837.6} size={141.4} />
-          <Txt t="leadMediumTight" x={e.lx} y={3882.4} align="center" dim>{e.label}</Txt>
+          <Txt t="leadMediumTight" x={e.lx} y={3882.4} align="center" dim>
+            {e.label}
+          </Txt>
         </div>
       ))}
 
       {/* ── Secteurs d'activité ───────────────────────────────────────────── */}
-      <Txt t="leadLight" x={219} y={4707}>Qui sont nos clients ?</Txt>
-      <Txt t="h2" x={219} y={4741}>Secteurs d’activité</Txt>
+      <Txt t="leadLight" x={219} y={4707}>
+        Qui sont nos clients ?
+      </Txt>
+      <Txt t="h2" x={219} y={4741}>
+        Secteurs d’activité
+      </Txt>
       <Txt t="bodyLight" x={219} y={4859} dim>
         {`ENGINEERING STUDIO intervient en Algérie et est spécialisé dans les études
 techniques d'ingénierie (réseaux extérieurs et réseaux intérieurs), également
@@ -107,35 +119,49 @@ Cette diversité est une richesse qui nécessite une capacité d’adaptabilité
 nous permet sans cesse de repousser nos limites.`}
       </Txt>
       {SECTORS.map((s, i) => (
-        <Txt key={s} t="lead" x={1224} y={4715 + i * 34}>{s}</Txt>
+        <Txt key={s} t="lead" x={1224} y={4715 + i * 34}>
+          {s}
+        </Txt>
       ))}
 
       {/* ── Exemples de clients ───────────────────────────────────────────── */}
       <Txt t="h2" x={217} y={5758}>
-        {'Voici quelques\nexemples de clients\navec lesquels nous\navons eu le plaisir\nde collaborer'}
+        {
+          'Voici quelques\nexemples de clients\navec lesquels nous\navons eu le plaisir\nde collaborer'
+        }
       </Txt>
       <Rise>
-        <CircleImage x={1070} y={5624} size={633} src="/Assets/images/Clients-Clients.png" alt="Nos clients" />
+        <CircleImage
+          x={1070}
+          y={5624}
+          size={633}
+          src="/Assets/images/Clients-Clients.png"
+          alt="Nos clients"
+        />
       </Rise>
 
       {/* ── Client grid ───────────────────────────────────────────────────── */}
       {CLIENT_CARDS.map((c, i) => (
         // Stagger across each row of five so a row arrives as a sweep.
         <Rise key={`${c.x}-${c.y}`} delay={(i % 5) * 70}>
-        <Box x={c.x} y={c.y} w={c.w} h={c.h} bg="#1a1a1a" radius={30} clip>
-          {c.lines.map((l) => (
-            <Txt key={l.t} t={{ weight: 700, size: l.fs, ls: -0.0405 }} x={l.x} y={l.y}>{l.t}</Txt>
-          ))}
-          <Txt t="cardMeta" x={c.sx} y={c.sy} opacity={0.5}>{c.sector}</Txt>
-          <Txt
-            t={{ weight: 700, size: 90, lh: 109, ls: -0.0405 }}
-            x={c.nx}
-            y={c.ny}
-            opacity={0.05}
-          >
-            {c.num}
-          </Txt>
-        </Box>
+          <Box x={c.x} y={c.y} w={c.w} h={c.h} bg="#1a1a1a" radius={30} clip>
+            {c.lines.map((l) => (
+              <Txt key={l.t} t={{ weight: 700, size: l.fs, ls: -0.0405 }} x={l.x} y={l.y}>
+                {l.t}
+              </Txt>
+            ))}
+            <Txt t="cardMeta" x={c.sx} y={c.sy} opacity={0.5}>
+              {c.sector}
+            </Txt>
+            <Txt
+              t={{ weight: 700, size: 90, lh: 109, ls: -0.0405 }}
+              x={c.nx}
+              y={c.ny}
+              opacity={0.05}
+            >
+              {c.num}
+            </Txt>
+          </Box>
         </Rise>
       ))}
 
@@ -154,8 +180,12 @@ depuis de nombreuses années.`}
 
       {/* ── Témoignages ───────────────────────────────────────────────────── */}
       <Box x={219} y={11061.8} w={1701} h={186}>
-        <Txt t="leadLightTall" x={0} y={0}>Témoignages</Txt>
-        <Txt t="h4Wide" x={0} y={62}>Écoutez ce que nos clients ont à dire</Txt>
+        <Txt t="leadLightTall" x={0} y={0}>
+          Témoignages
+        </Txt>
+        <Txt t="h4Wide" x={0} y={62}>
+          Écoutez ce que nos clients ont à dire
+        </Txt>
       </Box>
       {/*
        * The Figma track is 2496 wide inside a 1920 frame, so the last cards
@@ -187,17 +217,25 @@ depuis de nombreuses années.`}
         <Box x={0} y={0} w={RAIL * 2 + TRACK_W} h={342.4}>
           {TESTIMONIALS.map((t, i) => (
             <Rise key={t.x} delay={i * 70}>
-            <Box x={RAIL + t.x} y={0} w={480} h={342.4} bg="#1a1a1a" radius={30}>
-              <Box x={50} y={40} w={380} h={261.4}>
-                <Box x={0} y={0} w={32} h={32}>
-                  <LogoMark style={{ width: '100%', height: '100%', color: '#fff' }} />
+              <Box x={RAIL + t.x} y={0} w={480} h={342.4} bg="#1a1a1a" radius={30}>
+                <Box x={50} y={40} w={380} h={261.4}>
+                  <Box x={0} y={0} w={32} h={32}>
+                    <LogoMark style={{ width: '100%', height: '100%', color: '#fff' }} />
+                  </Box>
+                  <Txt t="quote" x={0} y={54.1} w={380} opacity={0.5}>
+                    {t.quote}
+                  </Txt>
+                  <Txt t={{ weight: 700, size: 20, ls: -0.0405 }} x={0} y={200.4}>
+                    {t.name.split('\n')[0]}
+                  </Txt>
+                  <Txt t={{ weight: 700, size: 21, ls: -0.0405 }} x={0} y={220.4}>
+                    {t.name.split('\n')[1]}
+                  </Txt>
+                  <Txt t="quoteRole" x={0} y={247.4} opacity={0.5}>
+                    {t.role}
+                  </Txt>
                 </Box>
-                <Txt t="quote" x={0} y={54.1} w={380} opacity={0.5}>{t.quote}</Txt>
-                <Txt t={{ weight: 700, size: 20, ls: -0.0405 }} x={0} y={200.4}>{t.name.split('\n')[0]}</Txt>
-                <Txt t={{ weight: 700, size: 21, ls: -0.0405 }} x={0} y={220.4}>{t.name.split('\n')[1]}</Txt>
-                <Txt t="quoteRole" x={0} y={247.4} opacity={0.5}>{t.role}</Txt>
               </Box>
-            </Box>
             </Rise>
           ))}
         </Box>

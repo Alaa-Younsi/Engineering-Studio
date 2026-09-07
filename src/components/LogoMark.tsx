@@ -34,11 +34,7 @@ export function LogoMark({ size = 48, className = '' }: LogoMarkProps) {
       xmlns="http://www.w3.org/2000/svg"
       className={className}
     >
-      <path
-        d={[circle, ...petals].join(' ')}
-        fill="currentColor"
-        fillRule="evenodd"
-      />
+      <path d={[circle, ...petals].join(' ')} fill="currentColor" fillRule="evenodd" />
     </svg>
   )
 }

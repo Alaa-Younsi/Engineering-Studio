@@ -56,14 +56,16 @@ export default function AdminLayout() {
          */}
         <div className="px-3 lg:min-h-0 lg:flex-1 lg:overflow-y-auto admin-scroll">
           <nav className="flex flex-row flex-wrap gap-1 lg:flex-col lg:flex-nowrap">
-            {NAV.map(item => (
+            {NAV.map((item) => (
               <NavLink
                 key={item.to}
                 to={item.to}
                 end={item.end}
                 className={({ isActive }) =>
                   `rounded-xl px-4 py-2.5 font-body text-sm whitespace-nowrap transition-colors ${
-                    isActive ? 'bg-white text-black' : 'text-secondary hover:text-white hover:bg-white/5'
+                    isActive
+                      ? 'bg-white text-black'
+                      : 'text-secondary hover:text-white hover:bg-white/5'
                   }`
                 }
               >
@@ -74,9 +76,20 @@ export default function AdminLayout() {
         </div>
 
         <div className="mt-auto px-6 py-6 hidden lg:block lg:flex-shrink-0 lg:border-t lg:border-white/10">
-          <a href="/" className="font-body text-xs text-secondary hover:text-white transition-colors">← Voir le site</a>
-          <p className="font-body text-xs text-secondary mt-4 truncate" title={email ?? ''}>{email}</p>
-          <button onClick={handleSignOut} className="font-body text-xs text-white/80 hover:text-white mt-2 underline underline-offset-2">
+          <a
+            href="/"
+            className="font-body text-xs text-secondary hover:text-white transition-colors"
+          >
+            ← Voir le site
+          </a>
+          <p className="font-body text-xs text-secondary mt-4 truncate" title={email ?? ''}>
+            {email}
+          </p>
+          <button
+            type="button"
+            onClick={handleSignOut}
+            className="font-body text-xs text-white/80 hover:text-white mt-2 underline underline-offset-2"
+          >
             Se déconnecter
           </button>
         </div>
@@ -86,7 +99,9 @@ export default function AdminLayout() {
       <main ref={mainRef} className="flex-1 min-w-0 lg:h-full lg:overflow-y-auto admin-scroll">
         <div className="lg:hidden flex items-center justify-between px-6 py-3 border-b border-white/10">
           <span className="font-body text-xs text-secondary truncate">{email}</span>
-          <AdminButton variant="ghost" onClick={handleSignOut} className="!py-1.5 !px-4 text-xs">Déconnexion</AdminButton>
+          <AdminButton variant="ghost" onClick={handleSignOut} className="!py-1.5 !px-4 text-xs">
+            Déconnexion
+          </AdminButton>
         </div>
 
         <div className="px-6 lg:px-10 py-8 lg:py-12 max-w-5xl">

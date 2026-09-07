@@ -152,7 +152,8 @@ interface FrameProps {
  * design-px-tall element and get a clean 0–1 progress across it.
  */
 export const Frame = forwardRef<HTMLDivElement, FrameProps>(function Frame(
-  { h, fit, children, className = '', style }, ref,
+  { h, fit, children, className = '', style },
+  ref,
 ) {
   const canvas = (
     <div
@@ -165,9 +166,7 @@ export const Frame = forwardRef<HTMLDivElement, FrameProps>(function Frame(
   )
 
   if (!fit) return canvas
-  return (
-    <div className="flex h-[100dvh] items-center justify-center overflow-hidden">{canvas}</div>
-  )
+  return <div className="flex h-[100dvh] items-center justify-center overflow-hidden">{canvas}</div>
 })
 
 export interface BoxProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'style'> {
@@ -191,10 +190,28 @@ export interface BoxProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'st
 }
 
 /** An absolutely positioned box in design coordinates. */
-export const Box = forwardRef<HTMLDivElement, BoxProps>(function Box({
-  x = 0, y = 0, w, h, right, bottom, opacity, radius, bg, border, borderWidth = 1,
-  z, clip, style, children, className = '', ...rest
-}, ref) {
+export const Box = forwardRef<HTMLDivElement, BoxProps>(function Box(
+  {
+    x = 0,
+    y = 0,
+    w,
+    h,
+    right,
+    bottom,
+    opacity,
+    radius,
+    bg,
+    border,
+    borderWidth = 1,
+    z,
+    clip,
+    style,
+    children,
+    className = '',
+    ...rest
+  },
+  ref,
+) {
   return (
     <div
       ref={ref}
@@ -208,7 +225,9 @@ export const Box = forwardRef<HTMLDivElement, BoxProps>(function Box({
         ...(right != null ? { right: u(DESIGN_W - right) } : {}),
         ...(bottom != null ? { bottom: u(bottom) } : {}),
         ...(opacity != null ? { opacity } : {}),
-        ...(radius != null ? { borderRadius: typeof radius === 'number' ? u(radius) : radius } : {}),
+        ...(radius != null
+          ? { borderRadius: typeof radius === 'number' ? u(radius) : radius }
+          : {}),
         ...(bg ? { backgroundColor: bg } : {}),
         ...(border ? { border: `${u(borderWidth)} solid ${border}` } : {}),
         ...(z != null ? { zIndex: z } : {}),
@@ -254,8 +273,21 @@ export interface TxtProps extends Omit<React.HTMLAttributes<HTMLElement>, 'style
  * browser, so the copy wraps identically regardless of font loading.
  */
 export function Txt({
-  x = 0, y = 0, w, t, color = '#fff', dim, opacity, align = 'left',
-  centerX, cx, flow, style, children, className = '', ...rest
+  x = 0,
+  y = 0,
+  w,
+  t,
+  color = '#fff',
+  dim,
+  opacity,
+  align = 'left',
+  centerX,
+  cx,
+  flow,
+  style,
+  children,
+  className = '',
+  ...rest
 }: TxtProps) {
   return (
     <span

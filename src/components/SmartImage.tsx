@@ -27,6 +27,7 @@ export function SmartImage({ src, sizes, fade = true, className = '', style, ...
   const srcSet = useSrcSet ? responsiveSrcSet(src) : undefined
 
   return (
+    // biome-ignore lint/a11y/useAltText: `alt` is supplied by the caller through {...rest}.
     <img
       {...rest}
       src={src}
@@ -47,11 +48,7 @@ export function SmartImage({ src, sizes, fade = true, className = '', style, ...
         rest.onError?.(e)
       }}
       className={className}
-      style={
-        fade
-          ? { ...style, opacity: loaded ? 1 : 0, transition: 'opacity 0.4s ease' }
-          : style
-      }
+      style={fade ? { ...style, opacity: loaded ? 1 : 0, transition: 'opacity 0.4s ease' } : style}
     />
   )
 }

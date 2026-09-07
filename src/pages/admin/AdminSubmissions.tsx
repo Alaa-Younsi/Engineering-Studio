@@ -1,5 +1,10 @@
 import { useEffect, useMemo, useState } from 'react'
-import { attachmentUrl, deleteSubmission, listSubmissions, markSubmissionRead } from '../../lib/content/store'
+import {
+  attachmentUrl,
+  deleteSubmission,
+  listSubmissions,
+  markSubmissionRead,
+} from '../../lib/content/store'
 import type { Submission, SubmissionAttachment, SubmissionKind } from '../../lib/content/types'
 import { SUBMISSION_LABELS, formatSubmissionDate } from '../../lib/content/types'
 import { AdminButton, Card, Spinner } from '../../components/admin/ui'
@@ -22,7 +27,9 @@ const KIND_BADGE: Record<SubmissionKind, string> = {
 }
 
 const formatSize = (bytes: number) =>
-  bytes >= 1024 * 1024 ? `${(bytes / (1024 * 1024)).toFixed(1)} Mo` : `${Math.max(1, Math.round(bytes / 1024))} Ko`
+  bytes >= 1024 * 1024
+    ? `${(bytes / (1024 * 1024)).toFixed(1)} Mo`
+    : `${Math.max(1, Math.round(bytes / 1024))} Ko`
 
 /**
  * Devis plans live in a private bucket, so a link is minted on click and is
@@ -38,7 +45,10 @@ function Attachment({ attachment }: { attachment: SubmissionAttachment }) {
     setFailed(false)
     const url = await attachmentUrl(attachment.path)
     setBusy(false)
-    if (!url) { setFailed(true); return }
+    if (!url) {
+      setFailed(true)
+      return
+    }
     window.open(url, '_blank', 'noopener,noreferrer')
   }
 
@@ -52,6 +62,7 @@ function Attachment({ attachment }: { attachment: SubmissionAttachment }) {
 
   return (
     <button
+      type="button"
       onClick={() => void open()}
       className="rounded-lg border border-white/15 px-3 py-2 font-body text-xs text-white hover:bg-white/5 transition-colors text-left"
     >
@@ -83,11 +94,11 @@ export default function AdminSubmissions() {
   useEffect(load, [])
 
   const visible = useMemo(
-    () => (filter === 'all' ? submissions : submissions.filter(s => s.kind === filter)),
+    () => (filter === 'all' ? submissions : submissions.filter((s) => s.kind === filter)),
     [submissions, filter],
   )
 
-  const unreadCount = submissions.filter(s => !s.read).length
+  const unreadCount = submissions.filter((s) => !s.read).length
 
   const exportCsv = () => {
     setExportError(null)
@@ -99,24 +110,24 @@ export default function AdminSubmissions() {
   }
 
   const toggle = async (s: Submission) => {
-    const next = openId === s.id ? null : s.id ?? null
+    const next = openId === s.id ? null : (s.id ?? null)
     setOpenId(next)
     if (next && !s.read && s.id) {
       await markSubmissionRead(s.id, true)
-      setSubmissions(prev => prev.map(x => (x.id === s.id ? { ...x, read: true } : x)))
+      setSubmissions((prev) => prev.map((x) => (x.id === s.id ? { ...x, read: true } : x)))
     }
   }
 
   const toggleRead = async (s: Submission) => {
     if (!s.id) return
     await markSubmissionRead(s.id, !s.read)
-    setSubmissions(prev => prev.map(x => (x.id === s.id ? { ...x, read: !s.read } : x)))
+    setSubmissions((prev) => prev.map((x) => (x.id === s.id ? { ...x, read: !s.read } : x)))
   }
 
   const remove = async (id: string) => {
     await deleteSubmission(id)
     setPendingDelete(null)
-    setSubmissions(prev => prev.filter(s => s.id !== id))
+    setSubmissions((prev) => prev.filter((s) => s.id !== id))
   }
 
   return (
@@ -151,14 +162,20 @@ export default function AdminSubmissions() {
 
       {/* Filters */}
       <div className="flex flex-wrap gap-2 mb-6">
-        {FILTERS.map(f => {
-          const count = f.key === 'all' ? submissions.length : submissions.filter(s => s.kind === f.key).length
+        {FILTERS.map((f) => {
+          const count =
+            f.key === 'all'
+              ? submissions.length
+              : submissions.filter((s) => s.kind === f.key).length
           return (
             <button
+              type="button"
               key={f.key}
               onClick={() => setFilter(f.key)}
               className={`rounded-full px-4 py-2 font-body text-sm transition-colors ${
-                filter === f.key ? 'bg-white text-black' : 'border border-white/20 text-secondary hover:text-white hover:bg-white/5'
+                filter === f.key
+                  ? 'bg-white text-black'
+                  : 'border border-white/20 text-secondary hover:text-white hover:bg-white/5'
               }`}
             >
               {f.label} <span className="opacity-60">({count})</span>
@@ -176,7 +193,9 @@ export default function AdminSubmissions() {
           </p>
           <p className="font-body text-xs text-red-200/70 mt-2 break-words">{loadError}</p>
           <div className="mt-4">
-            <AdminButton variant="ghost" className="!py-1.5 !px-4 text-xs" onClick={load}>Réessayer</AdminButton>
+            <AdminButton variant="ghost" className="!py-1.5 !px-4 text-xs" onClick={load}>
+              Réessayer
+            </AdminButton>
           </div>
         </Card>
       ) : visible.length === 0 ? (
@@ -185,21 +204,32 @@ export default function AdminSubmissions() {
         </Card>
       ) : (
         <Card className="divide-y divide-white/5">
-          {visible.map(s => {
+          {visible.map((s) => {
             const open = openId === s.id
             return (
               <div key={s.id}>
                 <button
+                  type="button"
                   onClick={() => void toggle(s)}
                   className="w-full flex items-center gap-4 px-5 py-4 text-left hover:bg-white/5 transition-colors"
                 >
-                  {!s.read && <span className="h-2 w-2 flex-shrink-0 rounded-full bg-sky-400" aria-label="Non lue" />}
+                  {!s.read && (
+                    <span
+                      role="img"
+                      className="h-2 w-2 flex-shrink-0 rounded-full bg-sky-400"
+                      aria-label="Non lue"
+                    />
+                  )}
                   {s.read && <span className="h-2 w-2 flex-shrink-0" />}
-                  <span className={`flex-shrink-0 rounded-full px-2.5 py-1 font-body text-[0.7rem] ${KIND_BADGE[s.kind]}`}>
+                  <span
+                    className={`flex-shrink-0 rounded-full px-2.5 py-1 font-body text-[0.7rem] ${KIND_BADGE[s.kind]}`}
+                  >
                     {SUBMISSION_LABELS[s.kind]}
                   </span>
                   <div className="min-w-0 flex-1">
-                    <p className={`font-body text-sm truncate ${s.read ? 'text-white/80' : 'text-white font-medium'}`}>
+                    <p
+                      className={`font-body text-sm truncate ${s.read ? 'text-white/80' : 'text-white font-medium'}`}
+                    >
                       {s.name || s.email || 'Sans nom'}
                     </p>
                     <p className="font-body text-xs text-secondary mt-0.5 truncate">{s.email}</p>
@@ -207,7 +237,10 @@ export default function AdminSubmissions() {
                   <span className="font-body text-xs text-secondary whitespace-nowrap hidden sm:block">
                     {formatSubmissionDate(s.createdAt)}
                   </span>
-                  <span className={`text-secondary transition-transform ${open ? 'rotate-180' : ''}`} aria-hidden>
+                  <span
+                    className={`text-secondary transition-transform ${open ? 'rotate-180' : ''}`}
+                    aria-hidden
+                  >
                     ⌄
                   </span>
                 </button>
@@ -217,8 +250,12 @@ export default function AdminSubmissions() {
                     <dl className="rounded-xl bg-black/30 border border-white/5 divide-y divide-white/5">
                       {s.fields.map((f, i) => (
                         <div key={i} className="flex flex-col sm:flex-row sm:gap-6 px-4 py-3">
-                          <dt className="font-body text-xs text-secondary sm:w-40 sm:flex-shrink-0">{f.label}</dt>
-                          <dd className="font-body text-sm text-white whitespace-pre-wrap break-words">{f.value}</dd>
+                          <dt className="font-body text-xs text-secondary sm:w-40 sm:flex-shrink-0">
+                            {f.label}
+                          </dt>
+                          <dd className="font-body text-sm text-white whitespace-pre-wrap break-words">
+                            {f.value}
+                          </dd>
                         </div>
                       ))}
                     </dl>
@@ -234,24 +271,50 @@ export default function AdminSubmissions() {
                         </div>
                       </div>
                     )}
-                    <p className="font-body text-xs text-secondary mt-3 sm:hidden">{formatSubmissionDate(s.createdAt)}</p>
+                    <p className="font-body text-xs text-secondary mt-3 sm:hidden">
+                      {formatSubmissionDate(s.createdAt)}
+                    </p>
                     <div className="flex flex-wrap items-center gap-2 mt-4">
                       {s.email && (
                         <a href={`mailto:${s.email}`}>
-                          <AdminButton variant="ghost" className="!py-1.5 !px-4 text-xs">Répondre par email</AdminButton>
+                          <AdminButton variant="ghost" className="!py-1.5 !px-4 text-xs">
+                            Répondre par email
+                          </AdminButton>
                         </a>
                       )}
-                      <AdminButton variant="ghost" className="!py-1.5 !px-4 text-xs" onClick={() => void toggleRead(s)}>
+                      <AdminButton
+                        variant="ghost"
+                        className="!py-1.5 !px-4 text-xs"
+                        onClick={() => void toggleRead(s)}
+                      >
                         {s.read ? 'Marquer non lue' : 'Marquer lue'}
                       </AdminButton>
                       {pendingDelete === s.id ? (
                         <span className="flex items-center gap-2">
                           <span className="font-body text-xs text-secondary">Supprimer ?</span>
-                          <AdminButton variant="danger" className="!py-1.5 !px-3 text-xs" onClick={() => s.id && remove(s.id)}>Oui</AdminButton>
-                          <AdminButton variant="ghost" className="!py-1.5 !px-3 text-xs" onClick={() => setPendingDelete(null)}>Non</AdminButton>
+                          <AdminButton
+                            variant="danger"
+                            className="!py-1.5 !px-3 text-xs"
+                            onClick={() => s.id && remove(s.id)}
+                          >
+                            Oui
+                          </AdminButton>
+                          <AdminButton
+                            variant="ghost"
+                            className="!py-1.5 !px-3 text-xs"
+                            onClick={() => setPendingDelete(null)}
+                          >
+                            Non
+                          </AdminButton>
                         </span>
                       ) : (
-                        <AdminButton variant="danger" className="!py-1.5 !px-3 text-xs" onClick={() => setPendingDelete(s.id ?? null)}>Suppr.</AdminButton>
+                        <AdminButton
+                          variant="danger"
+                          className="!py-1.5 !px-3 text-xs"
+                          onClick={() => setPendingDelete(s.id ?? null)}
+                        >
+                          Suppr.
+                        </AdminButton>
                       )}
                     </div>
                   </div>

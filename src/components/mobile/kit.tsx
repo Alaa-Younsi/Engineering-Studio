@@ -20,8 +20,14 @@ export function MPage({ children, className = '' }: { children: ReactNode; class
 
 /** A vertical block with the standard gutter and rhythm. */
 export function MSection({
-  children, className = '', pad = true,
-}: { children: ReactNode; className?: string; pad?: boolean }) {
+  children,
+  className = '',
+  pad = true,
+}: {
+  children: ReactNode
+  className?: string
+  pad?: boolean
+}) {
   return (
     // `mb-10` is fixed rather than folded into the `py-16` default so pages that
     // override the vertical padding (most of them) still get the extra air
@@ -48,7 +54,9 @@ export function MH1({ children }: { children: ReactNode }) {
 
 export function MH2({ children, className = '' }: { children: ReactNode; className?: string }) {
   return (
-    <h2 className={`font-display text-[1.875rem] font-medium leading-[1.1] tracking-[-0.0133em] text-white ${className}`}>
+    <h2
+      className={`font-display text-[1.875rem] font-medium leading-[1.1] tracking-[-0.0133em] text-white ${className}`}
+    >
       {children}
     </h2>
   )
@@ -56,7 +64,9 @@ export function MH2({ children, className = '' }: { children: ReactNode; classNa
 
 export function MH3({ children, className = '' }: { children: ReactNode; className?: string }) {
   return (
-    <h3 className={`font-display text-[1.25rem] font-medium leading-[1.15] tracking-[-0.0133em] text-white ${className}`}>
+    <h3
+      className={`font-display text-[1.25rem] font-medium leading-[1.15] tracking-[-0.0133em] text-white ${className}`}
+    >
       {children}
     </h3>
   )
@@ -77,8 +87,14 @@ export function MBody({ children, className = '' }: { children: ReactNode; class
 
 /** Outlined pill — the design's shape, sized for a thumb. */
 export function MPill({
-  children, onClick, type = 'button',
-}: { children: ReactNode; onClick?: () => void; type?: 'button' | 'submit' }) {
+  children,
+  onClick,
+  type = 'button',
+}: {
+  children: ReactNode
+  onClick?: () => void
+  type?: 'button' | 'submit'
+}) {
   return (
     <button
       type={type}
@@ -94,9 +110,7 @@ export function MPill({
  * The mark button. On touch there is no hover, so the label sits beside the
  * disc permanently — the same end state the desktop hover animates to.
  */
-export function MMarkButton({
-  children, onClick,
-}: { children: ReactNode; onClick?: () => void }) {
+export function MMarkButton({ children, onClick }: { children: ReactNode; onClick?: () => void }) {
   return (
     <button
       type="button"
@@ -137,8 +151,14 @@ export function MWatermark({ className = '' }: { className?: string }) {
  * centred behind the lockup instead of pushed right.
  */
 export function MHero({
-  children, center = false, className = '',
-}: { children: ReactNode; center?: boolean; className?: string }) {
+  children,
+  center = false,
+  className = '',
+}: {
+  children: ReactNode
+  center?: boolean
+  className?: string
+}) {
   return (
     <section
       // A full viewport tall, so opening a page shows the hero and nothing
@@ -147,9 +167,11 @@ export function MHero({
       className={`relative flex h-[100dvh] flex-col justify-center overflow-hidden px-6 pb-20 pt-24 ${className}`}
     >
       <MWatermark
-        className={center
-          ? 'left-1/2 top-1/2 w-[125vw] -translate-x-1/2 -translate-y-1/2'
-          : '-right-[30vw] top-1/2 w-[105vw] -translate-y-1/2'}
+        className={
+          center
+            ? 'left-1/2 top-1/2 w-[125vw] -translate-x-1/2 -translate-y-1/2'
+            : '-right-[30vw] top-1/2 w-[105vw] -translate-y-1/2'
+        }
       />
       <div className={`relative ${center ? 'flex flex-col items-center text-center' : ''}`}>
         {children}
@@ -160,15 +182,21 @@ export function MHero({
 
 /** Dark rounded card — the #1a1a1a tiles used across the design. */
 export function MCard({ children, className = '' }: { children: ReactNode; className?: string }) {
-  return (
-    <div className={`rounded-[1.25rem] bg-surface p-5 ${className}`}>{children}</div>
-  )
+  return <div className={`rounded-[1.25rem] bg-surface p-5 ${className}`}>{children}</div>
 }
 
 /** A centred heading block: eyebrow, heading, body. */
 export function MIntro({
-  eyebrow, title, body, className = '',
-}: { eyebrow?: string; title: ReactNode; body?: string; className?: string }) {
+  eyebrow,
+  title,
+  body,
+  className = '',
+}: {
+  eyebrow?: string
+  title: ReactNode
+  body?: string
+  className?: string
+}) {
   return (
     <div className={`text-center ${className}`}>
       {eyebrow && <MEyebrow>{eyebrow}</MEyebrow>}

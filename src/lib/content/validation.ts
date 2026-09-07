@@ -30,9 +30,9 @@ export class ValidationError extends Error {
 /** Strip control characters (except newline/tab), collapse whitespace runs, clamp length. */
 export function clean(value: string, max: number, { multiline = false } = {}): string {
   const stripped = Array.from(value)
-    .filter(ch => {
+    .filter((ch) => {
       const c = ch.codePointAt(0) ?? 0
-      if (c === 9 || c === 10) return true          // keep tab + newline
+      if (c === 9 || c === 10) return true // keep tab + newline
       return c >= 32 && c !== 127 && !(c >= 128 && c <= 159)
     })
     .join('')
@@ -67,29 +67,35 @@ export function validateSubmission(input: SubmissionInput): SubmissionInput {
 
   if (!email) throw new ValidationError('Veuillez saisir votre email.')
   if (!isEmail(email)) throw new ValidationError('Cet email ne semble pas valide.')
-  if (phone && !isPhone(phone)) throw new ValidationError('Ce numéro de téléphone ne semble pas valide.')
+  if (phone && !isPhone(phone))
+    throw new ValidationError('Ce numéro de téléphone ne semble pas valide.')
 
   const source: SubmissionField[] = Array.isArray(input.fields) ? input.fields : []
   if (source.length > LIMITS.fieldCount) throw new ValidationError('Formulaire invalide.')
 
   const fields: SubmissionField[] = source
-    .map((f): SubmissionField => ({
-      label: clean(String(f?.label ?? ''), LIMITS.short),
-      value: clean(String(f?.value ?? ''), LIMITS.long, { multiline: true }),
-    }))
+    .map(
+      (f): SubmissionField => ({
+        label: clean(String(f?.label ?? ''), LIMITS.short),
+        value: clean(String(f?.value ?? ''), LIMITS.long, { multiline: true }),
+      }),
+    )
     .filter((f: SubmissionField) => Boolean(f.label && f.value))
 
-  const total = fields.reduce((n: number, f: SubmissionField) => n + f.label.length + f.value.length, 0)
+  const total = fields.reduce(
+    (n: number, f: SubmissionField) => n + f.label.length + f.value.length,
+    0,
+  )
   if (total > LIMITS.payload) throw new ValidationError('Votre message est trop long.')
 
   const source2: SubmissionAttachment[] = Array.isArray(input.attachments) ? input.attachments : []
-  const attachments: SubmissionAttachment[] = source2
-    .slice(0, ATTACHMENTS.maxFiles)
-    .map((a): SubmissionAttachment => ({
+  const attachments: SubmissionAttachment[] = source2.slice(0, ATTACHMENTS.maxFiles).map(
+    (a): SubmissionAttachment => ({
       name: clean(String(a?.name ?? ''), LIMITS.short),
       path: clean(String(a?.path ?? ''), LIMITS.short),
       size: Number.isFinite(a?.size) ? Math.max(0, Math.trunc(a.size)) : 0,
-    }))
+    }),
+  )
 
   return { kind: input.kind, name, email, phone: phone || undefined, fields, attachments }
 }
@@ -102,8 +108,22 @@ export const ATTACHMENTS = {
   maxBytesTotal: 40 * 1024 * 1024,
   /** Plans and drawings the studio actually works from, plus common documents. */
   extensions: [
-    'pdf', 'dwg', 'dxf', 'rvt', 'ifc', 'skp', 'zip', 'rar',
-    'doc', 'docx', 'xls', 'xlsx', 'png', 'jpg', 'jpeg', 'webp',
+    'pdf',
+    'dwg',
+    'dxf',
+    'rvt',
+    'ifc',
+    'skp',
+    'zip',
+    'rar',
+    'doc',
+    'docx',
+    'xls',
+    'xlsx',
+    'png',
+    'jpg',
+    'jpeg',
+    'webp',
   ],
 } as const
 
@@ -125,7 +145,9 @@ export function validateAttachments(files: File[]): void {
     total += file.size
   }
   if (total > ATTACHMENTS.maxBytesTotal) {
-    throw new ValidationError(`Vos fichiers dépassent ${formatMb(ATTACHMENTS.maxBytesTotal)} au total.`)
+    throw new ValidationError(
+      `Vos fichiers dépassent ${formatMb(ATTACHMENTS.maxBytesTotal)} au total.`,
+    )
   }
 }
 
@@ -141,7 +163,9 @@ export function throttleCheck(): void {
   if (typeof localStorage === 'undefined') return
   const last = Number(localStorage.getItem(RATE_KEY) ?? 0)
   if (Number.isFinite(last) && Date.now() - last < RATE_MS) {
-    throw new ValidationError('Vous venez déjà d’envoyer une demande. Merci de patienter un instant.')
+    throw new ValidationError(
+      'Vous venez déjà d’envoyer une demande. Merci de patienter un instant.',
+    )
   }
 }
 

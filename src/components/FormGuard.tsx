@@ -45,7 +45,7 @@ export function HoneypotField({ value, onChange }: HoneypotFieldProps) {
           tabIndex={-1}
           autoComplete="off"
           value={value}
-          onChange={e => onChange(e.target.value)}
+          onChange={(e) => onChange(e.target.value)}
         />
       </label>
     </div>

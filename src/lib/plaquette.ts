@@ -1,15 +1,14 @@
 /**
  * The company brochure ("Plaquette"), offered as a download from the menu.
  *
- * The PDF is not in the repo yet. Until it is, `PLAQUETTE_URL` is empty and the
- * button is deliberately inert — it renders but does nothing. To turn it on:
- * drop the file in `public/` (e.g. `public/plaquette.pdf`) and set the constant.
+ * The PDF lives in `public/`, so it ships with the build and is served straight
+ * off the origin (the SPA rewrite in `vercel.json` only kicks in when no static
+ * file matches). To replace it, drop a new file in `public/` and update the path.
  */
 
-// TODO(client): set to '/plaquette.pdf' once the file is uploaded to public/.
-export const PLAQUETTE_URL = ''
+export const PLAQUETTE_URL = '/Plaquette_es.pdf'
 
-/** Triggers the brochure download. A no-op while `PLAQUETTE_URL` is unset. */
+/** Triggers the brochure download. */
 export function downloadPlaquette(): void {
   if (!PLAQUETTE_URL) return
   const a = document.createElement('a')

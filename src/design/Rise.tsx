@@ -57,9 +57,7 @@ export function Rise({ children, delay = 0, className = '', style }: RiseProps) 
      * child, whose rect is the content's real position.
      */
     const target =
-      el.getBoundingClientRect().height === 0 && el.firstElementChild
-        ? el.firstElementChild
-        : el
+      el.getBoundingClientRect().height === 0 && el.firstElementChild ? el.firstElementChild : el
 
     const io = getObserver()
     io.observe(target)

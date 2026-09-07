@@ -18,6 +18,7 @@ export function LogoButton({
   if (variant === 'pill') {
     return (
       <button
+        type="button"
         onClick={onClick}
         aria-label={ariaLabel ?? (typeof children === 'string' ? children : undefined)}
         className={`group flex items-center h-10 rounded-full border border-white/60 px-5 hover:bg-white hover:border-white transition-colors duration-200 ${className}`}
@@ -31,6 +32,7 @@ export function LogoButton({
 
   return (
     <button
+      type="button"
       onClick={onClick}
       aria-label={ariaLabel ?? (typeof children === 'string' ? children : undefined)}
       className={`group inline-flex flex-shrink-0 items-center h-10 w-fit rounded-full bg-white overflow-hidden ${className}`}

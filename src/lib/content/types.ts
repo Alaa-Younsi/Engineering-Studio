@@ -93,7 +93,20 @@ export const SUBMISSION_LABELS: Record<SubmissionKind, string> = {
   contact: 'Contact',
 }
 
-const MONTHS_FR = ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc']
+const MONTHS_FR = [
+  'Jan',
+  'Fév',
+  'Mar',
+  'Avr',
+  'Mai',
+  'Juin',
+  'Juil',
+  'Août',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Déc',
+]
 
 /** '2026-02-18' → '18 Fév 2026'. */
 export function formatArticleDate(iso: string): string {

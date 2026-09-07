@@ -19,9 +19,25 @@ import { useSeo } from '../lib/useSeo'
  */
 const STUDIOS = [
   { key: 'mep', label: 'MEP Studio', href: '/prestations/mep', x: 0.8, y: 0, w: 178.7, h: 81.3 },
-  { key: 'topo', label: 'TOPO Studio', href: '/prestations/topo', x: 573.3, y: 0, w: 177.7, h: 81.3 },
+  {
+    key: 'topo',
+    label: 'TOPO Studio',
+    href: '/prestations/topo',
+    x: 573.3,
+    y: 0,
+    w: 177.7,
+    h: 81.3,
+  },
   { key: 'vrd', label: 'VRD Studio', href: '/prestations/vrd', x: 0, y: 194.3, w: 179.5, h: 81.3 },
-  { key: 'bim', label: 'BIM Studio', href: '/prestations/bim', x: 574.5, y: 194.3, w: 178.7, h: 81.3 },
+  {
+    key: 'bim',
+    label: 'BIM Studio',
+    href: '/prestations/bim',
+    x: 574.5,
+    y: 194.3,
+    w: 178.7,
+    h: 81.3,
+  },
 ] as const
 
 /** Hover mark: square, the height of a studio lockup, then a gap before the name. */
@@ -71,13 +87,7 @@ export default function Prestations() {
       <Watermark x={132} y={-288} size={1655.4} />
 
       {/* All four read at full white; hovering one dims the other three. */}
-      <Box
-        x={583}
-        y={402}
-        w={753.1}
-        h={275.6}
-        className="[&:has(button:hover)>button]:opacity-50"
-      >
+      <Box x={583} y={402} w={753.1} h={275.6} className="[&:has(button:hover)>button]:opacity-50">
         {STUDIOS.map((s) => (
           <button
             key={s.key}

@@ -31,7 +31,9 @@ export function UnderConstruction({ title, onAction, actionLabel }: UnderConstru
   if (!isDesktop) {
     return (
       <MPage>
-        <MHero><MH1>{title}</MH1></MHero>
+        <MHero>
+          <MH1>{title}</MH1>
+        </MHero>
         <MSection className="relative overflow-hidden py-24">
           <div
             className="pointer-events-none absolute left-1/2 top-1/2 w-[95vw] -translate-x-1/2 -translate-y-1/2 opacity-10"
@@ -41,7 +43,9 @@ export function UnderConstruction({ title, onAction, actionLabel }: UnderConstru
           </div>
           <div className="relative flex flex-col items-center gap-7 text-center">
             <h2 className="font-display text-[1.875rem] font-medium leading-[1.15] tracking-[-0.0133em] text-white">
-              En cours de<br />construction
+              En cours de
+              <br />
+              construction
             </h2>
             <MMarkButton onClick={onAction}>{actionLabel}</MMarkButton>
           </div>
@@ -53,7 +57,9 @@ export function UnderConstruction({ title, onAction, actionLabel }: UnderConstru
   return (
     <Frame h={CANVAS_H}>
       <Watermark x={1067.4} y={168} size={744.6} />
-      <Txt t="displayTight" x={215} y={496}>{title}</Txt>
+      <Txt t="displayTight" x={215} y={496}>
+        {title}
+      </Txt>
 
       <Watermark x={719} y={1379} size={482.6} />
       <Txt t="h2" centerX y={1504} align="center">

@@ -7,22 +7,25 @@ import type { Project } from '../lib/content/types'
 function ProjectCard({ project }: { project: Project }) {
   const [active, setActive] = useState(0)
   const current = project.media[active] ?? project.media[0]
-  const posterSrc = project.media.find(m => m.type === 'image')?.src
+  const posterSrc = project.media.find((m) => m.type === 'image')?.src
 
   return (
     <div className="bg-[#131313] rounded-2xl sm:rounded-3xl p-5 sm:p-7 lg:p-8 flex flex-col lg:flex-row gap-6 lg:gap-8">
-
       {/* Title / location / tags */}
       <div className="lg:w-[24%] lg:flex-shrink-0 flex flex-col gap-6">
-        <h3 className="font-display font-bold text-white text-xl sm:text-2xl leading-tight">{project.title}</h3>
+        <h3 className="font-display font-bold text-white text-xl sm:text-2xl leading-tight">
+          {project.title}
+        </h3>
         <div className="lg:mt-auto flex flex-col gap-5">
           <p className="font-body text-secondary text-xs leading-relaxed">
-            {project.location.map(line => (
-              <span key={line} className="block">{line}</span>
+            {project.location.map((line) => (
+              <span key={line} className="block">
+                {line}
+              </span>
             ))}
           </p>
           <div className="flex flex-wrap gap-2">
-            {project.tags.map(tag => (
+            {project.tags.map((tag) => (
               <Tag key={tag}>{tag}</Tag>
             ))}
           </div>
@@ -44,6 +47,7 @@ function ProjectCard({ project }: { project: Project }) {
       <div className="flex lg:flex-col gap-3 overflow-x-auto lg:overflow-visible [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {project.media.map((media, i) => (
           <button
+            type="button"
             key={i}
             onClick={() => setActive(i)}
             aria-label={`Voir le média ${i + 1} de ${project.title}`}
@@ -91,10 +95,16 @@ export function PortefeuilleGallery() {
 
       <section className="px-6 sm:px-10 lg:px-gutter pb-32 flex flex-col gap-10 lg:gap-16">
         {!loading && projects.length === 0 && (
-          <p className="font-body text-secondary text-sm text-center">Aucune réalisation pour le moment.</p>
+          <p className="font-body text-secondary text-sm text-center">
+            Aucune réalisation pour le moment.
+          </p>
         )}
         {projects.map((project, i) => (
-          <Reveal key={project.id} direction={i % 2 === 0 ? 'left' : 'right'} className="max-w-content mx-auto w-full">
+          <Reveal
+            key={project.id}
+            direction={i % 2 === 0 ? 'left' : 'right'}
+            className="max-w-content mx-auto w-full"
+          >
             <ProjectCard project={project} />
           </Reveal>
         ))}

@@ -16,8 +16,7 @@
  */
 
 /** Standard ease-in-out cubic, on 0..1. */
-export const easeInOutCubic = (t: number) =>
-  t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2
+export const easeInOutCubic = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2)
 
 /** Points used to draw each eased ramp. Twelve is past the eye's resolution. */
 const SAMPLES = 12
@@ -73,7 +72,7 @@ export function easedFade(from: number, to: number) {
  * settle) before it drives a position.
  */
 export const EASE_STOPS = Array.from({ length: SAMPLES + 1 }, (_, i) => i / SAMPLES)
-export const EASE_OUT = EASE_STOPS.map((t) => 1 - Math.pow(1 - t, 3))
+export const EASE_OUT = EASE_STOPS.map((t) => 1 - (1 - t) ** 3)
 
 /**
  * Spring used everywhere a scroll-linked value is smoothed. Overdamped on

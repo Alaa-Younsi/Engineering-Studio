@@ -1,12 +1,6 @@
 import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
-import {
-  DEFAULT_DESCRIPTION,
-  DEFAULT_TITLE,
-  OG_IMAGE,
-  SITE_NAME,
-  SITE_URL,
-} from '../config/site'
+import { DEFAULT_DESCRIPTION, DEFAULT_TITLE, OG_IMAGE, SITE_NAME, SITE_URL } from '../config/site'
 
 /**
  * Per-route SEO for a client-rendered SPA.

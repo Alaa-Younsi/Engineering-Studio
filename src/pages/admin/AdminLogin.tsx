@@ -34,15 +34,31 @@ export default function AdminLogin() {
         <div className="flex flex-col items-center text-center mb-10">
           <img src="/Assets/logo/Logo-seul.png" alt="" className="h-12 w-12 object-contain mb-5" />
           <h1 className="font-display font-bold text-white text-2xl">Administration</h1>
-          <p className="font-body text-sm text-secondary mt-2">Connectez-vous pour gérer le contenu.</p>
+          <p className="font-body text-sm text-secondary mt-2">
+            Connectez-vous pour gérer le contenu.
+          </p>
         </div>
 
         <form onSubmit={submit} className="flex flex-col gap-5">
           <Field label="Email">
-            <TextInput type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="vous@exemple.com" autoComplete="email" required />
+            <TextInput
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="vous@exemple.com"
+              autoComplete="email"
+              required
+            />
           </Field>
           <Field label="Mot de passe">
-            <TextInput type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="••••••••" autoComplete="current-password" required />
+            <TextInput
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="••••••••"
+              autoComplete="current-password"
+              required
+            />
           </Field>
 
           {error && <p className="font-body text-sm text-red-300">{error}</p>}
@@ -53,7 +69,12 @@ export default function AdminLogin() {
         </form>
 
         <div className="text-center mt-8">
-          <a href="/" className="font-body text-xs text-secondary hover:text-white transition-colors">← Retour au site</a>
+          <a
+            href="/"
+            className="font-body text-xs text-secondary hover:text-white transition-colors"
+          >
+            ← Retour au site
+          </a>
         </div>
       </div>
     </div>

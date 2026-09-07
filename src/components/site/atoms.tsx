@@ -20,7 +20,13 @@ const DISC = 45
  * With a `children` label it expands on hover into a pill.
  */
 export function CircleButton({
-  x, y, onClick, label = 'En savoir plus', children, invert = false, plain = false,
+  x,
+  y,
+  onClick,
+  label = "Jeter un coup d'œil",
+  children,
+  invert = false,
+  plain = false,
   centerExpand = false,
 }: {
   x?: number
@@ -44,7 +50,7 @@ export function CircleButton({
   centerExpand?: boolean
 }) {
   const positioned = x != null || y != null
-  const text = plain ? null : children ?? label
+  const text = plain ? null : (children ?? label)
 
   return (
     <button
@@ -67,9 +73,7 @@ export function CircleButton({
         className="flex flex-shrink-0 items-center justify-center"
         style={{ width: u(45), height: u(45) }}
       >
-        <LogoMark
-          style={{ width: u(20.1), height: u(20.1), color: invert ? '#fff' : '#000' }}
-        />
+        <LogoMark style={{ width: u(20.1), height: u(20.1), color: invert ? '#fff' : '#000' }} />
       </span>
 
       {/* A beat before the label slides out, so the mark reads first; the
@@ -105,7 +109,12 @@ export function CircleButton({
 
 /** Figma: h=45, border-radius 23, 1px white stroke, label 14px inset 23. */
 export function PillButton({
-  x, y, w, children, onClick, type = 'button',
+  x,
+  y,
+  w,
+  children,
+  onClick,
+  type = 'button',
 }: {
   x?: number
   y?: number
@@ -156,7 +165,12 @@ export function Watermark({ x, y, size }: { x: number; y: number; size: number }
 
 /** A photo cropped to a circle. The assets in public/ are already square. */
 export function CircleImage({
-  x, y, size, src, alt, onClick,
+  x,
+  y,
+  size,
+  src,
+  alt,
+  onClick,
 }: {
   x: number
   y: number
@@ -167,6 +181,7 @@ export function CircleImage({
 }) {
   return (
     <Box x={x} y={y} w={size} h={size} clip radius="50%">
+      {/* biome-ignore lint/a11y/useKeyWithClickEvents: optional pointer shortcut into the section; every placement also renders a focusable CircleButton for the same route. */}
       <img
         src={src}
         alt={alt}

@@ -5,5 +5,4 @@
  * Inert in normal use — it only activates when the query param is present.
  */
 export const CAPTURE =
-  typeof window !== 'undefined' &&
-  new URLSearchParams(window.location.search).has('capture')
+  typeof window !== 'undefined' && new URLSearchParams(window.location.search).has('capture')

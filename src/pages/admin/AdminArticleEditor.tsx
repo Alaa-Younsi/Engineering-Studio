@@ -3,7 +3,17 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 import { createArticle, getArticleById, updateArticle } from '../../lib/content/store'
 import type { ArticleBlock } from '../../lib/content/types'
 import { slugify } from '../../lib/content/types'
-import { AdminButton, Card, Field, MediaUploader, Spinner, TagEditor, TextArea, TextInput, Toggle } from '../../components/admin/ui'
+import {
+  AdminButton,
+  Card,
+  Field,
+  MediaUploader,
+  Spinner,
+  TagEditor,
+  TextArea,
+  TextInput,
+  Toggle,
+} from '../../components/admin/ui'
 import { describeError } from '../../lib/supabase'
 
 const emptyBlock = (): ArticleBlock => ({ heading: '', paragraphs: [''] })
@@ -31,7 +41,7 @@ export default function AdminArticleEditor() {
   useEffect(() => {
     if (isNew) return
     getArticleById(id as string)
-      .then(a => {
+      .then((a) => {
         if (!a) {
           setNotFound(true)
           return
@@ -42,7 +52,14 @@ export default function AdminArticleEditor() {
         setCover(a.cover)
         setTags(a.tags)
         setPublished(a.published)
-        setBlocks(a.blocks.length ? a.blocks.map(b => ({ heading: b.heading ?? '', paragraphs: b.paragraphs.length ? b.paragraphs : [''] })) : [emptyBlock()])
+        setBlocks(
+          a.blocks.length
+            ? a.blocks.map((b) => ({
+                heading: b.heading ?? '',
+                paragraphs: b.paragraphs.length ? b.paragraphs : [''],
+              }))
+            : [emptyBlock()],
+        )
       })
       .finally(() => setLoading(false))
   }, [id, isNew])
@@ -70,10 +87,21 @@ export default function AdminArticleEditor() {
     if (!finalSlug) return setError('Le slug est obligatoire.')
 
     const cleanedBlocks: ArticleBlock[] = blocks
-      .map(b => ({ heading: b.heading?.trim() || undefined, paragraphs: b.paragraphs.map(p => p.trim()).filter(Boolean) }))
-      .filter(b => b.heading || b.paragraphs.length)
+      .map((b) => ({
+        heading: b.heading?.trim() || undefined,
+        paragraphs: b.paragraphs.map((p) => p.trim()).filter(Boolean),
+      }))
+      .filter((b) => b.heading || b.paragraphs.length)
 
-    const input = { slug: finalSlug, date, title: title.trim(), cover, tags, published, blocks: cleanedBlocks }
+    const input = {
+      slug: finalSlug,
+      date,
+      title: title.trim(),
+      cover,
+      tags,
+      published,
+      blocks: cleanedBlocks,
+    }
 
     setSaving(true)
     try {
@@ -92,7 +120,12 @@ export default function AdminArticleEditor() {
     return (
       <div>
         <p className="font-body text-sm text-secondary">Cet article est introuvable.</p>
-        <Link to="/admin/nouvelles" className="font-body text-sm text-white underline underline-offset-2 mt-4 inline-block">← Retour</Link>
+        <Link
+          to="/admin/nouvelles"
+          className="font-body text-sm text-white underline underline-offset-2 mt-4 inline-block"
+        >
+          ← Retour
+        </Link>
       </div>
     )
 
@@ -100,23 +133,44 @@ export default function AdminArticleEditor() {
     <form onSubmit={submit}>
       <div className="flex items-center justify-between gap-4 mb-8">
         <div>
-          <Link to="/admin/nouvelles" className="font-body text-xs text-secondary hover:text-white">← Nouvelles</Link>
-          <h1 className="font-display font-bold text-white text-3xl mt-2">{isNew ? 'Nouvel article' : "Modifier l'article"}</h1>
+          <Link to="/admin/nouvelles" className="font-body text-xs text-secondary hover:text-white">
+            ← Nouvelles
+          </Link>
+          <h1 className="font-display font-bold text-white text-3xl mt-2">
+            {isNew ? 'Nouvel article' : "Modifier l'article"}
+          </h1>
         </div>
       </div>
 
       <div className="flex flex-col gap-6">
         <Card className="p-6 flex flex-col gap-6">
           <Field label="Titre">
-            <TextInput value={title} onChange={e => onTitleChange(e.target.value)} placeholder="Titre de l'article" required />
+            <TextInput
+              value={title}
+              onChange={(e) => onTitleChange(e.target.value)}
+              placeholder="Titre de l'article"
+              required
+            />
           </Field>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <Field label="Slug (URL)" hint={`/nouvelles/${slug || 'mon-article'}`}>
-              <TextInput value={slug} onChange={e => { setSlug(e.target.value); setSlugTouched(true) }} placeholder="mon-article" />
+              <TextInput
+                value={slug}
+                onChange={(e) => {
+                  setSlug(e.target.value)
+                  setSlugTouched(true)
+                }}
+                placeholder="mon-article"
+              />
             </Field>
             <Field label="Date">
-              <TextInput type="date" value={date} onChange={e => setDate(e.target.value)} required />
+              <TextInput
+                type="date"
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+                required
+              />
             </Field>
           </div>
 
@@ -128,14 +182,24 @@ export default function AdminArticleEditor() {
             <TagEditor tags={tags} onChange={setTags} />
           </Field>
 
-          <Toggle checked={published} onChange={setPublished} label={published ? 'Publié (visible sur le site)' : 'Brouillon (masqué)'} />
+          <Toggle
+            checked={published}
+            onChange={setPublished}
+            label={published ? 'Publié (visible sur le site)' : 'Brouillon (masqué)'}
+          />
         </Card>
 
         {/* Content blocks */}
         <div>
           <div className="flex items-center justify-between mb-4">
             <h2 className="font-display font-bold text-white text-xl">Contenu</h2>
-            <AdminButton variant="ghost" className="!py-2 !px-4 text-xs" onClick={() => setBlocks([...blocks, emptyBlock()])}>+ Section</AdminButton>
+            <AdminButton
+              variant="ghost"
+              className="!py-2 !px-4 text-xs"
+              onClick={() => setBlocks([...blocks, emptyBlock()])}
+            >
+              + Section
+            </AdminButton>
           </div>
 
           <div className="flex flex-col gap-4">
@@ -144,27 +208,50 @@ export default function AdminArticleEditor() {
                 <div className="flex items-center justify-between gap-4">
                   <span className="font-body text-xs text-secondary">Section {bi + 1}</span>
                   {blocks.length > 1 && (
-                    <button type="button" onClick={() => setBlocks(blocks.filter((_, i) => i !== bi))} className="font-body text-xs text-red-300/80 hover:text-red-300">
+                    <button
+                      type="button"
+                      onClick={() => setBlocks(blocks.filter((_, i) => i !== bi))}
+                      className="font-body text-xs text-red-300/80 hover:text-red-300"
+                    >
                       Retirer la section
                     </button>
                   )}
                 </div>
 
                 <Field label="Sous-titre (optionnel)">
-                  <TextInput value={block.heading ?? ''} onChange={e => setBlock(bi, { heading: e.target.value })} placeholder="Ex. Design durable" />
+                  <TextInput
+                    value={block.heading ?? ''}
+                    onChange={(e) => setBlock(bi, { heading: e.target.value })}
+                    placeholder="Ex. Design durable"
+                  />
                 </Field>
 
                 <div className="flex flex-col gap-3">
                   <span className="font-body text-sm text-white">Paragraphes</span>
                   {block.paragraphs.map((p, pi) => (
                     <div key={pi} className="flex gap-2 items-start">
-                      <TextArea value={p} onChange={e => setParagraph(bi, pi, e.target.value)} placeholder="Texte du paragraphe…" />
+                      <TextArea
+                        value={p}
+                        onChange={(e) => setParagraph(bi, pi, e.target.value)}
+                        placeholder="Texte du paragraphe…"
+                      />
                       {block.paragraphs.length > 1 && (
-                        <button type="button" onClick={() => removeParagraph(bi, pi)} aria-label="Retirer le paragraphe" className="text-secondary hover:text-white px-2 py-3">×</button>
+                        <button
+                          type="button"
+                          onClick={() => removeParagraph(bi, pi)}
+                          aria-label="Retirer le paragraphe"
+                          className="text-secondary hover:text-white px-2 py-3"
+                        >
+                          ×
+                        </button>
                       )}
                     </div>
                   ))}
-                  <button type="button" onClick={() => addParagraph(bi)} className="font-body text-xs text-white/80 hover:text-white self-start underline underline-offset-2">
+                  <button
+                    type="button"
+                    onClick={() => addParagraph(bi)}
+                    className="font-body text-xs text-white/80 hover:text-white self-start underline underline-offset-2"
+                  >
                     + Ajouter un paragraphe
                   </button>
                 </div>
@@ -176,8 +263,12 @@ export default function AdminArticleEditor() {
         {error && <p className="font-body text-sm text-red-300">{error}</p>}
 
         <div className="flex items-center gap-3 sticky bottom-0 bg-bg/90 backdrop-blur py-4 -mx-6 lg:-mx-10 px-6 lg:px-10 border-t border-white/10">
-          <AdminButton type="submit" disabled={saving}>{saving ? 'Enregistrement…' : 'Enregistrer'}</AdminButton>
-          <Link to="/admin/nouvelles"><AdminButton variant="ghost">Annuler</AdminButton></Link>
+          <AdminButton type="submit" disabled={saving}>
+            {saving ? 'Enregistrement…' : 'Enregistrer'}
+          </AdminButton>
+          <Link to="/admin/nouvelles">
+            <AdminButton variant="ghost">Annuler</AdminButton>
+          </Link>
         </div>
       </div>
     </form>

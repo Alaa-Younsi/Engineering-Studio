@@ -1,6 +1,11 @@
 import { supabase, MEDIA_BUCKET, DEVIS_BUCKET } from '../supabase'
 import type {
-  Article, Project, Submission, SubmissionAttachment, SubmissionInput, SubmissionKind,
+  Article,
+  Project,
+  Submission,
+  SubmissionAttachment,
+  SubmissionInput,
+  SubmissionKind,
 } from './types'
 import { validateAttachments, validateSubmission } from './validation'
 
@@ -233,16 +238,14 @@ const toSubmission = (r: SubmissionRow): Submission => ({
 export async function createSubmission(input: SubmissionInput): Promise<void> {
   const clean = validateSubmission(input)
 
-  const { error } = await supabase
-    .from('submissions')
-    .insert({
-      kind: clean.kind,
-      name: clean.name,
-      email: clean.email,
-      phone: clean.phone ?? null,
-      fields: clean.fields,
-      attachments: clean.attachments ?? [],
-    })
+  const { error } = await supabase.from('submissions').insert({
+    kind: clean.kind,
+    name: clean.name,
+    email: clean.email,
+    phone: clean.phone ?? null,
+    fields: clean.fields,
+    attachments: clean.attachments ?? [],
+  })
   if (error) throw error
 }
 
@@ -296,7 +299,9 @@ export async function uploadAttachments(files: File[]): Promise<SubmissionAttach
 /** Short-lived download link for one attachment. Admin-only in practice. */
 export async function attachmentUrl(path: string, expiresInSeconds = 300): Promise<string | null> {
   if (!path) return null
-  const { data, error } = await supabase.storage.from(DEVIS_BUCKET).createSignedUrl(path, expiresInSeconds)
+  const { data, error } = await supabase.storage
+    .from(DEVIS_BUCKET)
+    .createSignedUrl(path, expiresInSeconds)
   if (error) return null
   return data.signedUrl
 }

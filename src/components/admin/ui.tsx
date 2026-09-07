@@ -13,7 +13,14 @@ type ButtonProps = {
   className?: string
 }
 
-export function AdminButton({ children, onClick, type = 'button', variant = 'primary', disabled, className = '' }: ButtonProps) {
+export function AdminButton({
+  children,
+  onClick,
+  type = 'button',
+  variant = 'primary',
+  disabled,
+  className = '',
+}: ButtonProps) {
   const styles: Record<string, string> = {
     primary: 'bg-white text-black hover:bg-white/85',
     ghost: 'border border-white/20 text-white hover:bg-white/10',
@@ -33,8 +40,17 @@ export function AdminButton({ children, onClick, type = 'button', variant = 'pri
 
 /* ── Form fields ──────────────────────────────────────────────────────────── */
 
-export function Field({ label, hint, children }: { label: string; hint?: string; children: ReactNode }) {
+export function Field({
+  label,
+  hint,
+  children,
+}: {
+  label: string
+  hint?: string
+  children: ReactNode
+}) {
   return (
+    // biome-ignore lint/a11y/noLabelWithoutControl: `children` is always the field's control, wrapped by this label.
     <label className="block">
       <span className="block font-body text-sm text-white mb-2">{label}</span>
       {children}
@@ -51,10 +67,23 @@ export function TextInput(props: React.InputHTMLAttributes<HTMLInputElement>) {
 }
 
 export function TextArea(props: React.TextareaHTMLAttributes<HTMLTextAreaElement>) {
-  return <textarea {...props} className={`${inputBase} resize-y min-h-[90px] leading-relaxed ${props.className ?? ''}`} />
+  return (
+    <textarea
+      {...props}
+      className={`${inputBase} resize-y min-h-[90px] leading-relaxed ${props.className ?? ''}`}
+    />
+  )
 }
 
-export function Toggle({ checked, onChange, label }: { checked: boolean; onChange: (v: boolean) => void; label: string }) {
+export function Toggle({
+  checked,
+  onChange,
+  label,
+}: {
+  checked: boolean
+  onChange: (v: boolean) => void
+  label: string
+}) {
   return (
     <button
       type="button"
@@ -63,7 +92,9 @@ export function Toggle({ checked, onChange, label }: { checked: boolean; onChang
       onClick={() => onChange(!checked)}
       className="flex items-center gap-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 rounded-full"
     >
-      <span className={`relative h-6 w-11 rounded-full transition-colors ${checked ? 'bg-white' : 'bg-white/20'}`}>
+      <span
+        className={`relative h-6 w-11 rounded-full transition-colors ${checked ? 'bg-white' : 'bg-white/20'}`}
+      >
         <span
           // `left-0` pins the static position explicitly — buttons default to
           // `text-align: center` in the UA stylesheet, and Chrome resolves an
@@ -92,10 +123,18 @@ export function TagEditor({ tags, onChange }: { tags: string[]; onChange: (t: st
   return (
     <div>
       <div className="flex flex-wrap gap-2 mb-3">
-        {tags.map(tag => (
-          <span key={tag} className="inline-flex items-center gap-2 rounded-full border border-white/25 px-3 py-1.5 font-body text-xs text-white/80">
+        {tags.map((tag) => (
+          <span
+            key={tag}
+            className="inline-flex items-center gap-2 rounded-full border border-white/25 px-3 py-1.5 font-body text-xs text-white/80"
+          >
             {tag}
-            <button type="button" onClick={() => onChange(tags.filter(t => t !== tag))} aria-label={`Retirer ${tag}`} className="text-secondary hover:text-white">
+            <button
+              type="button"
+              onClick={() => onChange(tags.filter((t) => t !== tag))}
+              aria-label={`Retirer ${tag}`}
+              className="text-secondary hover:text-white"
+            >
               ×
             </button>
           </span>
@@ -105,8 +144,8 @@ export function TagEditor({ tags, onChange }: { tags: string[]; onChange: (t: st
       <div className="flex gap-2">
         <TextInput
           value={value}
-          onChange={e => setValue(e.target.value)}
-          onKeyDown={e => {
+          onChange={(e) => setValue(e.target.value)}
+          onKeyDown={(e) => {
             if (e.key === 'Enter') {
               e.preventDefault()
               add()
@@ -114,7 +153,9 @@ export function TagEditor({ tags, onChange }: { tags: string[]; onChange: (t: st
           }}
           placeholder="Ajouter un tag…"
         />
-        <AdminButton variant="ghost" onClick={add}>Ajouter</AdminButton>
+        <AdminButton variant="ghost" onClick={add}>
+          Ajouter
+        </AdminButton>
       </div>
     </div>
   )
@@ -197,13 +238,13 @@ export function MediaUploader({
           type="file"
           accept={video ? 'video/*' : 'image/*'}
           hidden
-          onChange={e => void pick(e.target.files?.[0])}
+          onChange={(e) => void pick(e.target.files?.[0])}
         />
       </div>
       {allowUrl && (
         <TextInput
           value={value ?? ''}
-          onChange={e => onChange(e.target.value || undefined)}
+          onChange={(e) => onChange(e.target.value || undefined)}
           placeholder="…ou coller une URL (Cloudinary, Bunny, YouTube…)"
           className="mt-2"
         />
@@ -225,5 +266,7 @@ export function Spinner({ label = 'Chargement…' }: { label?: string }) {
 }
 
 export function Card({ children, className = '' }: { children: ReactNode; className?: string }) {
-  return <div className={`bg-[#131313] rounded-2xl border border-white/5 ${className}`}>{children}</div>
+  return (
+    <div className={`bg-[#131313] rounded-2xl border border-white/5 ${className}`}>{children}</div>
+  )
 }

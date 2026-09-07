@@ -8,7 +8,10 @@ import { formatArticleDate } from '../lib/content/types'
 /** The card grid that replaces the placeholder once FEATURES.nouvelles is on. */
 export function NouvellesArchive() {
   const { startTransition } = useTransition()
-  const open = useCallback((slug: string) => startTransition(`/nouvelles/${slug}`), [startTransition])
+  const open = useCallback(
+    (slug: string) => startTransition(`/nouvelles/${slug}`),
+    [startTransition],
+  )
   const { data: articles, loading } = useArticles()
 
   return (
@@ -20,6 +23,7 @@ export function NouvellesArchive() {
         {articles.map((article, i) => (
           <RevealText key={article.slug} delay={Math.min(i, 5) * 0.08}>
             <button
+              type="button"
               onClick={() => open(article.slug)}
               className="group block w-full text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 rounded-2xl"
             >
@@ -30,7 +34,9 @@ export function NouvellesArchive() {
                 className="w-full aspect-[4/5] rounded-2xl group-hover:opacity-85 transition-opacity"
                 iconClassName="w-12 h-12"
               />
-              <p className="font-body text-secondary text-xs mt-5">{formatArticleDate(article.date)}</p>
+              <p className="font-body text-secondary text-xs mt-5">
+                {formatArticleDate(article.date)}
+              </p>
               <h2 className="font-display font-bold text-white text-2xl sm:text-[1.7rem] leading-tight mt-3 group-hover:opacity-70 transition-opacity">
                 {article.title}
               </h2>

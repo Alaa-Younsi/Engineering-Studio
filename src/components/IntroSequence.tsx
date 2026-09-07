@@ -116,7 +116,10 @@ export function IntroSequence() {
   }, [overlayControls])
 
   useEffect(() => {
-    if (CAPTURE) { setDone(true); return }
+    if (CAPTURE) {
+      setDone(true)
+      return
+    }
     cancelRef.current = false
 
     const wait = (ms: number) => new Promise<void>((res) => setTimeout(res, ms))

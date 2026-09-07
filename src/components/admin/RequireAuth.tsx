@@ -44,8 +44,8 @@ export function RequireAuth({ children }: { children: ReactNode }) {
   if (!isAdmin) {
     return (
       <AdminNotice title="Accès refusé" onSignOut={() => void signOut()}>
-        Le compte <strong className="text-white">{email}</strong> est authentifié mais ne figure
-        pas dans la liste des administrateurs.
+        Le compte <strong className="text-white">{email}</strong> est authentifié mais ne figure pas
+        dans la liste des administrateurs.
         <br />
         <br />
         Exécutez ceci dans le SQL Editor de Supabase, puis rechargez&nbsp;:
@@ -60,8 +60,14 @@ export function RequireAuth({ children }: { children: ReactNode }) {
 }
 
 function AdminNotice({
-  title, children, onSignOut,
-}: { title: string; children: ReactNode; onSignOut: () => void }) {
+  title,
+  children,
+  onSignOut,
+}: {
+  title: string
+  children: ReactNode
+  onSignOut: () => void
+}) {
   return (
     <div className="min-h-screen bg-bg flex items-center justify-center px-6">
       <div className="w-full max-w-md text-center">
@@ -69,7 +75,9 @@ function AdminNotice({
         <p className="font-body text-sm text-secondary mt-3 leading-relaxed">{children}</p>
         <div className="mt-8 flex justify-center gap-3">
           <AdminButton onClick={() => window.location.reload()}>Réessayer</AdminButton>
-          <AdminButton variant="ghost" onClick={onSignOut}>Se déconnecter</AdminButton>
+          <AdminButton variant="ghost" onClick={onSignOut}>
+            Se déconnecter
+          </AdminButton>
         </div>
       </div>
     </div>

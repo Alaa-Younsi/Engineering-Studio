@@ -33,8 +33,13 @@ export function useAutoCarousel<T extends HTMLElement>({ speed = 45 }: { speed?:
         const max = el.scrollWidth - el.clientWidth
         if (max > 0) {
           let next = el.scrollLeft + dir.current * speed * (dt / 1000)
-          if (next >= max) { next = max; dir.current = -1 }
-          else if (next <= 0) { next = 0; dir.current = 1 }
+          if (next >= max) {
+            next = max
+            dir.current = -1
+          } else if (next <= 0) {
+            next = 0
+            dir.current = 1
+          }
           el.scrollLeft = next
         }
       }
@@ -46,7 +51,12 @@ export function useAutoCarousel<T extends HTMLElement>({ speed = 45 }: { speed?:
 
   const onPointerDown = useCallback((e: React.PointerEvent) => {
     setPaused(true)
-    drag.current = { active: true, startX: e.clientX, startScroll: ref.current?.scrollLeft ?? 0, moved: false }
+    drag.current = {
+      active: true,
+      startX: e.clientX,
+      startScroll: ref.current?.scrollLeft ?? 0,
+      moved: false,
+    }
   }, [])
 
   const onPointerMove = useCallback((e: React.PointerEvent) => {

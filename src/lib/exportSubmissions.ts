@@ -39,7 +39,7 @@ export function submissionsToCsv(rows: Submission[]): string {
       .join(SEP),
   )
   // Leading BOM so Excel reads it as UTF-8 rather than the system code page.
-  return '﻿' + [header.map(csvSafe).join(SEP), ...lines].join('\r\n')
+  return `﻿${[header.map(csvSafe).join(SEP), ...lines].join('\r\n')}`
 }
 
 /** Builds the CSV and prompts a download. */

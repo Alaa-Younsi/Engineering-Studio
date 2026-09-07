@@ -1,6 +1,15 @@
 import { MobileFooter } from '../../components/mobile/MobileFooter'
 import {
-  MBody, MCard, MCircleImage, MEyebrow, MH1, MH2, MHero, MMarkButton, MPage, MSection,
+  MBody,
+  MCard,
+  MCircleImage,
+  MEyebrow,
+  MH1,
+  MH2,
+  MHero,
+  MMarkButton,
+  MPage,
+  MSection,
 } from '../../components/mobile/kit'
 import { Rise } from '../../design/Rise'
 import { LogoMark } from '../../brand/vectors'
@@ -16,7 +25,9 @@ export function ClientsMobile({ nav }: { nav: (p: string) => void }) {
 
   return (
     <MPage>
-      <MHero><MH1>Clients</MH1></MHero>
+      <MHero>
+        <MH1>Clients</MH1>
+      </MHero>
 
       <MSection className="py-8">
         <MEyebrow>Nos clients</MEyebrow>
@@ -44,11 +55,11 @@ Vous pouvez compter sur nous pour vous assister à chaque étape de votre projet
       <MSection className="py-8">
         <MH2 className="text-center">Notre engagement envers nos clients</MH2>
         <MBody className="mt-4 text-center">
-          Notre engagement envers nos clients de partout en est un par lequel nous prenons réellement
-          conscience que ce sont eux qui nous fournissent du travail et des avantages. Ces clients ont
-          la possibilité de s’approvisionner à de nombreuses autres sources et nous sommes honorés
-          qu’ils nous choisissent. Leurs besoins sont simples. Ils veulent que l'étude soit livrée tel
-          que promis et que la qualité offre la performance prévue.
+          Notre engagement envers nos clients de partout en est un par lequel nous prenons
+          réellement conscience que ce sont eux qui nous fournissent du travail et des avantages.
+          Ces clients ont la possibilité de s’approvisionner à de nombreuses autres sources et nous
+          sommes honorés qu’ils nous choisissent. Leurs besoins sont simples. Ils veulent que
+          l'étude soit livrée tel que promis et que la qualité offre la performance prévue.
         </MBody>
         <div className="mt-9 flex flex-col gap-7">
           {ENGAGEMENTS.map((e) => (
@@ -74,13 +85,17 @@ Vous pouvez compter sur nous pour vous assister à chaque étape de votre projet
         </MBody>
         <ul className="mt-7 flex flex-col gap-2">
           {SECTORS.map((s) => (
-            <li key={s} className="font-body text-[1.0625rem] text-white">{s}</li>
+            <li key={s} className="font-body text-[1.0625rem] text-white">
+              {s}
+            </li>
           ))}
         </ul>
       </MSection>
 
       <MSection className="py-8">
-        <Rise><MCircleImage src="/Assets/images/Clients-Clients.png" alt="Nos clients" /></Rise>
+        <Rise>
+          <MCircleImage src="/Assets/images/Clients-Clients.png" alt="Nos clients" />
+        </Rise>
         <MH2 className="mt-10">
           Voici quelques exemples de clients avec lesquels nous avons eu le plaisir de collaborer
         </MH2>
@@ -98,7 +113,9 @@ Vous pouvez compter sur nous pour vous assister à chaque étape de votre projet
                 <p className="relative font-display text-[1rem] font-bold leading-tight text-white">
                   {c.lines.map((l) => l.t).join(' ')}
                 </p>
-                <p className="relative mt-3 font-body text-[0.75rem] font-light text-white/50">{c.sector}</p>
+                <p className="relative mt-3 font-body text-[0.75rem] font-light text-white/50">
+                  {c.sector}
+                </p>
               </MCard>
             </Rise>
           ))}
@@ -109,8 +126,8 @@ Vous pouvez compter sur nous pour vous assister à chaque étape de votre projet
         <MH2>Un grand merci à tous nos clients pour leur fidélité et leur confiance</MH2>
         <MBody className="mt-4">
           Nous tenons à remercier tous nos nouveaux clients qui nous ont confié la réalisation de
-          leurs projets, ainsi que tous les clients qui sont fidèles aux ENGINEERING STUDIO depuis de
-          nombreuses années.
+          leurs projets, ainsi que tous les clients qui sont fidèles aux ENGINEERING STUDIO depuis
+          de nombreuses années.
         </MBody>
         <div className="mt-8 flex justify-center">
           <LogoMark style={{ width: 56, height: 56, color: '#fff' }} />
@@ -137,8 +154,12 @@ Vous pouvez compter sur nous pour vous assister à chaque étape de votre projet
           {TESTIMONIALS.map((t) => (
             <MCard key={t.x} className="w-[82vw] flex-shrink-0">
               <LogoMark style={{ width: 26, height: 26, color: '#fff' }} />
-              <p className="mt-4 font-body text-[0.875rem] font-light leading-[1.55] text-white/50">{t.quote}</p>
-              <p className="mt-5 font-display text-[1rem] font-bold leading-tight text-white">{flat(t.name)}</p>
+              <p className="mt-4 font-body text-[0.875rem] font-light leading-[1.55] text-white/50">
+                {t.quote}
+              </p>
+              <p className="mt-5 font-display text-[1rem] font-bold leading-tight text-white">
+                {flat(t.name)}
+              </p>
               <p className="mt-1 font-body text-[0.75rem] font-light text-white/50">{t.role}</p>
             </MCard>
           ))}

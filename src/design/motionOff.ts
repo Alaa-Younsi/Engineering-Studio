@@ -5,4 +5,5 @@ import { CAPTURE } from '../lib/capture'
  *  screenshot harness from the Figma reference and ignore an accessibility
  *  preference. */
 export const motionOff = () =>
-  CAPTURE || (typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches)
+  CAPTURE ||
+  (typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches)

@@ -35,7 +35,12 @@ contact@engineering-studio.net
 +213 (0) 773 87 62 14`
 
 export function SiteFooter({
-  y, x = 219, eyebrow = false, linksX = 0, linksY = 355, watermarkY = -121.7,
+  y,
+  x = 219,
+  eyebrow = false,
+  linksX = 0,
+  linksY = 355,
+  watermarkY = -121.7,
 }: SiteFooterProps) {
   const { startTransition } = useTransition()
   const nav = useCallback((p: string) => startTransition(p), [startTransition])
@@ -64,21 +69,41 @@ export function SiteFooter({
         </PillButton>
 
         {/* ── Left column: about ─────────────────────────────────────────── */}
-        <Txt t="lead" {...L(0, 0)}>À propos</Txt>
-        <Txt t="bodyLight" {...L(0, 48)} dim>{BLURB}</Txt>
-        <FooterLink {...L(0, 179)} onClick={() => nav('/prestations')}>Prestation</FooterLink>
-        <FooterLink {...L(0, 224)} onClick={() => nav('/portefeuille')}>Portefeuille</FooterLink>
+        <Txt t="lead" {...L(0, 0)}>
+          À propos
+        </Txt>
+        <Txt t="bodyLight" {...L(0, 48)} dim>
+          {BLURB}
+        </Txt>
+        <FooterLink {...L(0, 179)} onClick={() => nav('/prestations')}>
+          Prestation
+        </FooterLink>
+        <FooterLink {...L(0, 224)} onClick={() => nav('/portefeuille')}>
+          Portefeuille
+        </FooterLink>
 
         {/* ── Right column: contact ──────────────────────────────────────── */}
-        <Txt t="lead" {...L(1103, 0)}>Contact</Txt>
-        <Txt t="bodyLight" {...L(1103, 48)} dim>{CONTACT}</Txt>
-        <FooterLink {...L(1103, 179)} onClick={() => nav('/clients')}>Clients</FooterLink>
-        <FooterLink {...L(1103, 224)} onClick={() => nav('/nouvelles')}>Nouvelles</FooterLink>
+        <Txt t="lead" {...L(1103, 0)}>
+          Contact
+        </Txt>
+        <Txt t="bodyLight" {...L(1103, 48)} dim>
+          {CONTACT}
+        </Txt>
+        <FooterLink {...L(1103, 179)} onClick={() => nav('/clients')}>
+          Clients
+        </FooterLink>
+        <FooterLink {...L(1103, 224)} onClick={() => nav('/nouvelles')}>
+          Nouvelles
+        </FooterLink>
         <CircleButton {...L(1103, 273)} label="Nous contacter" onClick={() => nav('/contact')} />
 
         {/* ── Social + copyright ─────────────────────────────────────────── */}
-        <SocialLink {...L(0, 371)} href="https://www.facebook.com/">Facebook</SocialLink>
-        <SocialLink {...L(185, 371)} href="https://www.linkedin.com/">LinkedIn</SocialLink>
+        <SocialLink {...L(0, 371)} href="https://www.facebook.com/">
+          Facebook
+        </SocialLink>
+        <SocialLink {...L(185, 371)} href="https://www.linkedin.com/">
+          LinkedIn
+        </SocialLink>
         <Txt t="small" {...L(400.3, 530)}>
           Copyright © 2026 tous droits réservés. Design par le propriétaire Engineering Studio
         </Txt>
@@ -87,7 +112,17 @@ export function SiteFooter({
   )
 }
 
-function FooterLink({ x, y, onClick, children }: { x: number; y: number; onClick: () => void; children: string }) {
+function FooterLink({
+  x,
+  y,
+  onClick,
+  children,
+}: {
+  x: number
+  y: number
+  onClick: () => void
+  children: string
+}) {
   return (
     <Txt
       t="lead"
@@ -104,11 +139,28 @@ function FooterLink({ x, y, onClick, children }: { x: number; y: number; onClick
   )
 }
 
-function SocialLink({ x, y, href, children }: { x: number; y: number; href: string; children: string }) {
+function SocialLink({
+  x,
+  y,
+  href,
+  children,
+}: {
+  x: number
+  y: number
+  href: string
+  children: string
+}) {
   return (
     <Box x={x} y={y}>
-      <a href={href} target="_blank" rel="noopener noreferrer" className="transition-opacity hover:opacity-60">
-        <Txt t="small" flow dim>{children}</Txt>
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="transition-opacity hover:opacity-60"
+      >
+        <Txt t="small" flow dim>
+          {children}
+        </Txt>
       </a>
     </Box>
   )

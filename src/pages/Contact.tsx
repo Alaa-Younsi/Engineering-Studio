@@ -62,10 +62,14 @@ export default function Contact() {
     <Frame h={CANVAS_H}>
       <Watermark x={1067.4} y={168} size={744.6} />
 
-      <Txt t="displayTight" x={215} y={496}>Contact</Txt>
+      <Txt t="displayTight" x={215} y={496}>
+        Contact
+      </Txt>
 
       {/* ── Left column: copy + phone ─────────────────────────────────────── */}
-      <Txt t="eyebrow" x={219} y={1417}>Contactez-nous</Txt>
+      <Txt t="eyebrow" x={219} y={1417}>
+        Contactez-nous
+      </Txt>
       <Txt t="h4" x={219} y={1443}>
         {`Nous adorons les challenges,
 mettez-nous à contribution !.
@@ -84,8 +88,12 @@ nos services correspond le mieux à vos besoins.`}
             <PhoneIcon style={{ width: '100%', height: '100%', color: '#fff' }} />
           </Box>
           <Box x={70} y={0} w={296} h={68}>
-            <Txt t="smallLight" x={0} y={0} dim>Appelez-nous au :</Txt>
-            <Txt t="phone" x={0} y={13}>+213 (0) 773 87 62 14</Txt>
+            <Txt t="smallLight" x={0} y={0} dim>
+              Appelez-nous au :
+            </Txt>
+            <Txt t="phone" x={0} y={13}>
+              +213 (0) 773 87 62 14
+            </Txt>
           </Box>
         </a>
       </Box>
@@ -94,7 +102,9 @@ nos services correspond le mieux à vos besoins.`}
 
       {/* ── FAQ ───────────────────────────────────────────────────────────── */}
       <Watermark x={719} y={2458.7} size={482.6} />
-      <Txt t="lead" y={2591.7} centerX align="center">Vous avez des questions ?</Txt>
+      <Txt t="lead" y={2591.7} centerX align="center">
+        Vous avez des questions ?
+      </Txt>
       <Txt t="h2" x={558} y={2654.7} align="center">
         {/* The design's first line carries a trailing space, which shifts the
             centred line 8px left — keep it. */}
@@ -105,7 +115,9 @@ nos services correspond le mieux à vos besoins.`}
         {[0, 1].map((col) => (
           <Box key={col} x={col * 837} y={0} w={803}>
             {FAQS.slice(col * 2, col * 2 + 2).map((f, i) => (
-              <Rise key={f.q} delay={i * 90}><FaqCard {...f} /></Rise>
+              <Rise key={f.q} delay={i * 90}>
+                <FaqCard {...f} />
+              </Rise>
             ))}
           </Box>
         ))}
@@ -132,7 +144,14 @@ nos services correspond le mieux à vos besoins.`}
           rel="noopener noreferrer"
           aria-label="LinkedIn"
           className="absolute grid place-items-center transition-opacity hover:opacity-80"
-          style={{ left: 0, top: u(154), width: u(45), height: u(45), borderRadius: u(100), backgroundColor: '#000' }}
+          style={{
+            left: 0,
+            top: u(154),
+            width: u(45),
+            height: u(45),
+            borderRadius: u(100),
+            backgroundColor: '#000',
+          }}
         >
           <LinkedInIcon style={{ width: u(13), height: u(13), color: '#fff' }} />
         </a>
@@ -165,18 +184,26 @@ function FaqCard({ q, a }: { q: string; a: string }) {
         paddingBottom: u(45),
       }}
     >
-      <Txt t="title21" flow style={{ width: u(693.2) }}>{q}</Txt>
+      <Txt t="title21" flow style={{ width: u(693.2) }}>
+        {q}
+      </Txt>
       <span
         className="absolute transition-transform"
         style={{
-          left: u(736.4), top: u(54.9), width: u(16.4), height: u(8.9),
-          color: '#fff', transform: open ? 'rotate(180deg)' : undefined,
+          left: u(736.4),
+          top: u(54.9),
+          width: u(16.4),
+          height: u(8.9),
+          color: '#fff',
+          transform: open ? 'rotate(180deg)' : undefined,
         }}
       >
         <ChevronDownIcon style={{ width: '100%', height: '100%' }} />
       </span>
       {open && (
-        <Txt t="bodyLight" flow dim style={{ marginTop: u(18), width: u(693.2) }}>{a}</Txt>
+        <Txt t="bodyLight" flow dim style={{ marginTop: u(18), width: u(693.2) }}>
+          {a}
+        </Txt>
       )}
     </button>
   )
@@ -193,8 +220,9 @@ function ContactForm({ mobile = false }: { mobile?: boolean }) {
   const [error, setError] = useState<string | null>(null)
   const guard = useFormGuard()
 
-  const set = (k: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
-    setForm((f) => ({ ...f, [k]: e.target.value }))
+  const set =
+    (k: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+      setForm((f) => ({ ...f, [k]: e.target.value }))
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -231,11 +259,43 @@ function ContactForm({ mobile = false }: { mobile?: boolean }) {
   if (mobile) {
     return (
       <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-        <MField placeholder="Votre nom" value={form.nom} onChange={set('nom')} maxLength={LIMITS.name} required />
-        <MField placeholder="Votre prénom" value={form.prenom} onChange={set('prenom')} maxLength={LIMITS.name} required />
-        <MField placeholder="Numéro de téléphone" value={form.tel} onChange={set('tel')} maxLength={LIMITS.phone} type="tel" />
-        <MField placeholder="Email" value={form.email} onChange={set('email')} maxLength={LIMITS.email} type="email" required />
-        <MField placeholder="Rédigez votre message" value={form.message} onChange={set('message')} maxLength={LIMITS.long} textarea required />
+        <MField
+          placeholder="Votre nom"
+          value={form.nom}
+          onChange={set('nom')}
+          maxLength={LIMITS.name}
+          required
+        />
+        <MField
+          placeholder="Votre prénom"
+          value={form.prenom}
+          onChange={set('prenom')}
+          maxLength={LIMITS.name}
+          required
+        />
+        <MField
+          placeholder="Numéro de téléphone"
+          value={form.tel}
+          onChange={set('tel')}
+          maxLength={LIMITS.phone}
+          type="tel"
+        />
+        <MField
+          placeholder="Email"
+          value={form.email}
+          onChange={set('email')}
+          maxLength={LIMITS.email}
+          type="email"
+          required
+        />
+        <MField
+          placeholder="Rédigez votre message"
+          value={form.message}
+          onChange={set('message')}
+          maxLength={LIMITS.long}
+          textarea
+          required
+        />
         <HoneypotField value={guard.honeypot} onChange={guard.setHoneypot} />
         <button
           type="submit"
@@ -251,11 +311,59 @@ function ContactForm({ mobile = false }: { mobile?: boolean }) {
   return (
     <Box x={1229} y={1440} w={472} h={318}>
       <form onSubmit={handleSubmit} className="h-full">
-        <Field x={0} y={0} w={229} placeholder="Votre nom" value={form.nom} onChange={set('nom')} maxLength={LIMITS.name} required />
-        <Field x={243} y={0} w={229} placeholder="Votre prénom" value={form.prenom} onChange={set('prenom')} maxLength={LIMITS.name} required />
-        <Field x={0} y={61} w={229} placeholder="Numéro de téléphone" value={form.tel} onChange={set('tel')} maxLength={LIMITS.phone} type="tel" />
-        <Field x={243} y={61} w={229} placeholder="Email" value={form.email} onChange={set('email')} maxLength={LIMITS.email} type="email" required />
-        <Field x={0} y={122} w={471} h={137} placeholder="Rédigez votre message" value={form.message} onChange={set('message')} maxLength={LIMITS.long} textarea required />
+        <Field
+          x={0}
+          y={0}
+          w={229}
+          placeholder="Votre nom"
+          value={form.nom}
+          onChange={set('nom')}
+          maxLength={LIMITS.name}
+          required
+        />
+        <Field
+          x={243}
+          y={0}
+          w={229}
+          placeholder="Votre prénom"
+          value={form.prenom}
+          onChange={set('prenom')}
+          maxLength={LIMITS.name}
+          required
+        />
+        <Field
+          x={0}
+          y={61}
+          w={229}
+          placeholder="Numéro de téléphone"
+          value={form.tel}
+          onChange={set('tel')}
+          maxLength={LIMITS.phone}
+          type="tel"
+        />
+        <Field
+          x={243}
+          y={61}
+          w={229}
+          placeholder="Email"
+          value={form.email}
+          onChange={set('email')}
+          maxLength={LIMITS.email}
+          type="email"
+          required
+        />
+        <Field
+          x={0}
+          y={122}
+          w={471}
+          h={137}
+          placeholder="Rédigez votre message"
+          value={form.message}
+          onChange={set('message')}
+          maxLength={LIMITS.long}
+          textarea
+          required
+        />
 
         <HoneypotField value={guard.honeypot} onChange={guard.setHoneypot} />
 
@@ -264,7 +372,9 @@ function ContactForm({ mobile = false }: { mobile?: boolean }) {
         </PillButton>
 
         {error && (
-          <Txt t="smallLight" x={210} y={283} color="#ff8a8a">{error}</Txt>
+          <Txt t="smallLight" x={210} y={283} color="#ff8a8a">
+            {error}
+          </Txt>
         )}
       </form>
     </Box>
@@ -273,14 +383,22 @@ function ContactForm({ mobile = false }: { mobile?: boolean }) {
 
 /** Flow-layout field for the mobile form — same shape, thumb-sized. */
 function MField({
-  placeholder, value, onChange, maxLength, type = 'text', required, textarea,
+  placeholder,
+  value,
+  onChange,
+  maxLength,
+  type = 'text',
+  required,
+  textarea,
 }: Omit<FieldProps, 'x' | 'y' | 'w' | 'h'>) {
   const cls =
     'w-full rounded-lg bg-surface px-4 font-body text-[1rem] font-light text-white placeholder:text-white/50 focus:outline-none focus:ring-1 focus:ring-white/40'
   const shared = { placeholder, value, onChange, maxLength, required, 'aria-label': placeholder }
-  return textarea
-    ? <textarea {...shared} rows={5} className={`${cls} resize-none py-3`} />
-    : <input {...shared} type={type} className={`${cls} h-12`} />
+  return textarea ? (
+    <textarea {...shared} rows={5} className={`${cls} resize-none py-3`} />
+  ) : (
+    <input {...shared} type={type} className={`${cls} h-12`} />
+  )
 }
 
 interface FieldProps {
@@ -297,7 +415,19 @@ interface FieldProps {
   textarea?: boolean
 }
 
-function Field({ x, y, w, h = 47, placeholder, value, onChange, maxLength, type = 'text', required, textarea }: FieldProps) {
+function Field({
+  x,
+  y,
+  w,
+  h = 47,
+  placeholder,
+  value,
+  onChange,
+  maxLength,
+  type = 'text',
+  required,
+  textarea,
+}: FieldProps) {
   const style: React.CSSProperties = {
     position: 'absolute',
     left: u(x),
@@ -314,10 +444,20 @@ function Field({ x, y, w, h = 47, placeholder, value, onChange, maxLength, type 
     lineHeight: u(25),
     resize: 'none',
   }
-  const shared = { placeholder, value, onChange, maxLength, required, style, 'aria-label': placeholder }
-  return textarea
-    ? <textarea {...shared} className="placeholder:text-white/50" />
-    : <input {...shared} type={type} className="placeholder:text-white/50" />
+  const shared = {
+    placeholder,
+    value,
+    onChange,
+    maxLength,
+    required,
+    style,
+    'aria-label': placeholder,
+  }
+  return textarea ? (
+    <textarea {...shared} className="placeholder:text-white/50" />
+  ) : (
+    <input {...shared} type={type} className="placeholder:text-white/50" />
+  )
 }
 
 /* ── Mobile ──────────────────────────────────────────────────────────────── */
@@ -332,7 +472,8 @@ function ContactMobile() {
       <MSection className="py-8">
         <p className="font-body text-[0.8125rem] font-light text-white/80">Contactez-nous</p>
         <MH2 className="mt-3">
-          Nous adorons les challenges, mettez-nous à contribution !. N'hésitez pas à nous contacter !
+          Nous adorons les challenges, mettez-nous à contribution !. N'hésitez pas à nous contacter
+          !
         </MH2>
         <MBody className="mt-5">
           Nous serons heureux de répondre à toutes vos questions et de vous aider à déterminer
@@ -342,8 +483,12 @@ function ContactMobile() {
         <a href="tel:+213773876214" className="mt-8 flex items-center gap-4">
           <PhoneIcon style={{ width: 38, height: 38, color: '#fff' }} />
           <span>
-            <span className="block font-body text-[0.75rem] font-light text-white/80">Appelez-nous au :</span>
-            <span className="block font-display text-[1.25rem] font-bold text-white">+213 (0) 773 87 62 14</span>
+            <span className="block font-body text-[0.75rem] font-light text-white/80">
+              Appelez-nous au :
+            </span>
+            <span className="block font-display text-[1.25rem] font-bold text-white">
+              +213 (0) 773 87 62 14
+            </span>
           </span>
         </a>
       </MSection>
@@ -353,11 +498,15 @@ function ContactMobile() {
       </MSection>
 
       <MSection className="py-12">
-        <p className="text-center font-body text-[0.9375rem] text-white">Vous avez des questions ?</p>
+        <p className="text-center font-body text-[0.9375rem] text-white">
+          Vous avez des questions ?
+        </p>
         <MH2 className="mt-2 text-center">Voici les questions fréquemment posées.</MH2>
         <div className="mt-8 flex flex-col gap-3">
           {FAQS.map((f, i) => (
-            <Rise key={f.q} delay={i * 70}><FaqCardMobile {...f} /></Rise>
+            <Rise key={f.q} delay={i * 70}>
+              <FaqCardMobile {...f} />
+            </Rise>
           ))}
         </div>
       </MSection>
@@ -402,12 +551,17 @@ function FaqCardMobile({ q, a }: { q: string; a: string }) {
           {q.split('\n').join(' ')}
         </span>
         <ChevronDownIcon
-          style={{ width: 15, height: 9, marginTop: 6, color: '#fff', flexShrink: 0,
-                   transform: open ? 'rotate(180deg)' : undefined }}
+          style={{
+            width: 15,
+            height: 9,
+            marginTop: 6,
+            color: '#fff',
+            flexShrink: 0,
+            transform: open ? 'rotate(180deg)' : undefined,
+          }}
         />
       </button>
       {open && <MBody className="mt-4">{a}</MBody>}
     </MCard>
   )
 }
-

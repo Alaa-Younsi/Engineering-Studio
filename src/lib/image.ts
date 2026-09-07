@@ -41,7 +41,7 @@ export async function compressImage(file: File): Promise<File> {
     )
     if (!blob || blob.size >= file.size) return file
 
-    const name = file.name.replace(/\.[^.]+$/, '') + '.webp'
+    const name = `${file.name.replace(/\.[^.]+$/, '')}.webp`
     return new File([blob], name, { type: 'image/webp', lastModified: Date.now() })
   } catch {
     return file

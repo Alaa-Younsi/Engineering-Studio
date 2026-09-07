@@ -36,11 +36,21 @@ export function SiteHeader() {
   if (!isDesktop) {
     return (
       <header className="fixed inset-x-0 top-0 z-40 flex h-20 items-center justify-between px-6">
-        <button type="button" onClick={goHome} aria-label="Engineering Studio — accueil" className="text-white">
+        <button
+          type="button"
+          onClick={goHome}
+          aria-label="Engineering Studio — accueil"
+          className="text-white"
+        >
           <LogoLockup style={{ width: 118, height: 'auto' }} />
         </button>
         {isFlow ? (
-          <button type="button" onClick={goHome} aria-label="Retour à l'accueil" className="text-white">
+          <button
+            type="button"
+            onClick={goHome}
+            aria-label="Retour à l'accueil"
+            className="text-white"
+          >
             <ArrowRightIcon style={{ width: 22, height: 22 }} />
           </button>
         ) : (
@@ -60,10 +70,7 @@ export function SiteHeader() {
 
   return (
     <header className="pointer-events-none fixed inset-x-0 top-0 z-40">
-      <div
-        className="relative mx-auto"
-        style={{ width: u(DESIGN_W), height: u(138) }}
-      >
+      <div className="relative mx-auto" style={{ width: u(DESIGN_W), height: u(138) }}>
         <button
           type="button"
           onClick={goHome}
@@ -92,7 +99,9 @@ export function SiteHeader() {
             className="pointer-events-auto absolute text-white transition-opacity hover:opacity-70"
             style={{ left: u(1718), top: u(56), width: u(94), height: u(26) }}
           >
-            <Txt t="body" x={0} y={0}>Menu</Txt>
+            <Txt t="body" x={0} y={0}>
+              Menu
+            </Txt>
             <Box x={70} y={1} w={24} h={24}>
               <BurgerIcon style={{ width: '100%', height: '100%' }} />
             </Box>

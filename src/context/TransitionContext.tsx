@@ -17,13 +17,10 @@ export function TransitionProvider({ children }: { children: ReactNode }) {
   const [pendingPath, setPendingPath] = useState<string | null>(null)
   const navigate = useNavigate()
 
-  const startTransition = useCallback(
-    (to: string) => {
-      setPendingPath(to)
-      setIsTransitioning(true)
-    },
-    [],
-  )
+  const startTransition = useCallback((to: string) => {
+    setPendingPath(to)
+    setIsTransitioning(true)
+  }, [])
 
   const onTransitionPeak = useCallback(() => {
     if (pendingPath) {

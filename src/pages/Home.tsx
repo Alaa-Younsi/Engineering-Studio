@@ -1,5 +1,12 @@
 import { useCallback, useEffect, useRef } from 'react'
-import { motion, useMotionValue, useMotionValueEvent, useScroll, useSpring, useTransform } from 'framer-motion'
+import {
+  motion,
+  useMotionValue,
+  useMotionValueEvent,
+  useScroll,
+  useSpring,
+  useTransform,
+} from 'framer-motion'
 import { Box, DESIGN_W, Frame, Txt, u } from '../design/canvas'
 import { CircleButton, CircleImage, PillButton, Watermark } from '../components/site/atoms'
 import { SiteFooter } from '../components/site/SiteFooter'
@@ -10,7 +17,17 @@ import { Rise } from '../design/Rise'
 import { easedFade, holdRamp, SCROLL_SPRING } from '../design/holdRamp'
 import { motionOff } from '../design/motionOff'
 import { MobileFooter } from '../components/mobile/MobileFooter'
-import { MBody, MCircleImage, MH1, MH2, MHero, MMarkButton, MPage, MPill, MSection } from '../components/mobile/kit'
+import {
+  MBody,
+  MCircleImage,
+  MH1,
+  MH2,
+  MHero,
+  MMarkButton,
+  MPage,
+  MPill,
+  MSection,
+} from '../components/mobile/kit'
 import { useSeo } from '../lib/useSeo'
 
 /**
@@ -58,8 +75,12 @@ const SERVICES: Service[] = [
 ventilation, climatisation), réseau de désenfumage, plomberie et
 évacuation, lutte contre l'incendie, aussi les réseaux électriques
 (courant fort et faibles), ingénieries énergétiques et thermiques.`,
-    tx: 973, ty: 1420, tw: 731, by: 363,
-    ix: 215, iy: 1304,
+    tx: 973,
+    ty: 1420,
+    tw: 731,
+    by: 363,
+    ix: 215,
+    iy: 1304,
     img: '/Assets/images/Accueil-MEP.png',
     href: '/prestations/mep',
   },
@@ -69,8 +90,12 @@ ventilation, climatisation), réseau de désenfumage, plomberie et
 du territoire, son expertise en génie urbain, terrassement,
 infrastructure et réseaux VRD (voiries et réseaux divers), étude de
 stabilité, travaux publics, eau et environnement.`,
-    tx: 219, ty: 2500, tw: 720, by: 363,
-    ix: 1072, iy: 2384,
+    tx: 219,
+    ty: 2500,
+    tw: 720,
+    by: 363,
+    ix: 1072,
+    iy: 2384,
     img: '/Assets/images/Accueil-VRD.png',
     href: '/prestations/vrd',
   },
@@ -81,8 +106,12 @@ topographiques de terrain à l'établissement de plans précis.
 Notre travail couvre l'ensemble des phases d'un projet, nous
 accompagnons ainsi des projets d'aménagement, de construction
 ou de rénovation.`,
-    tx: 973, ty: 3566, tw: 705, by: 389,
-    ix: 219, iy: 3464,
+    tx: 973,
+    ty: 3566,
+    tw: 705,
+    by: 389,
+    ix: 219,
+    iy: 3464,
     img: '/Assets/images/Accueil-TOPO.png',
     href: '/prestations/topo',
   },
@@ -93,8 +122,12 @@ processus de modélisation 3D. Celui-ci représente une véritable
 empreinte 3D du bâtiment (architecture et structure) et de l'ensemble
 des éléments techniques qui le composent (fluides, réseaux électriques,
 éléments de plomberie, CVC …).`,
-    tx: 219, ty: 4646, tw: 768, by: 389,
-    ix: 1072, iy: 4544,
+    tx: 219,
+    ty: 4646,
+    tw: 768,
+    by: 389,
+    ix: 1072,
+    iy: 4544,
     img: '/Assets/images/Accueil-BIM.png',
     href: '/prestations/bim',
   },
@@ -239,20 +272,41 @@ export default function Home() {
 }
 
 function ServiceSection({
-  title, body, tx, ty, tw, by, ix, iy, img, onOpen, showImage,
+  title,
+  body,
+  tx,
+  ty,
+  tw,
+  by,
+  ix,
+  iy,
+  img,
+  onOpen,
+  showImage,
 }: Service & { onOpen: () => void; showImage: boolean }) {
   return (
     <>
       {showImage && (
         <Rise>
-          <CircleImage x={ix} y={iy} size={633} src={img} alt={title.replace('\n', ' ')} onClick={onOpen} />
+          <CircleImage
+            x={ix}
+            y={iy}
+            size={633}
+            src={img}
+            alt={title.replace('\n', ' ')}
+            onClick={onOpen}
+          />
         </Rise>
       )}
       <Rise delay={90}>
         <Box x={tx} y={ty} w={tw}>
-          <Txt t="h2" x={0} y={0}>{title}</Txt>
-          <Txt t="body" x={0} y={160} dim>{body}</Txt>
-          <CircleButton x={0} y={by} onClick={onOpen} />
+          <Txt t="h2" x={0} y={0}>
+            {title}
+          </Txt>
+          <Txt t="body" x={0} y={160} dim>
+            {body}
+          </Txt>
+          <CircleButton x={0} y={by} label="Jeter un coup d'œil" onClick={onOpen} />
         </Box>
       </Rise>
     </>
@@ -278,12 +332,14 @@ function HomeMobile({ nav }: { nav: (p: string) => void }) {
 
       {SERVICES.map((s) => (
         <MSection key={s.href}>
-          <Rise><MCircleImage src={s.img} alt={s.title.replace('\n', ' ')} /></Rise>
+          <Rise>
+            <MCircleImage src={s.img} alt={s.title.replace('\n', ' ')} />
+          </Rise>
           <Rise delay={80}>
             <MH2 className="mt-10">{s.title.replace('\n', ' ')}</MH2>
             <MBody className="mt-4">{s.body}</MBody>
             <div className="mt-7">
-              <MMarkButton onClick={() => nav(s.href)}>En savoir plus</MMarkButton>
+              <MMarkButton onClick={() => nav(s.href)}>Jeter un coup d'œil</MMarkButton>
             </div>
           </Rise>
         </MSection>
