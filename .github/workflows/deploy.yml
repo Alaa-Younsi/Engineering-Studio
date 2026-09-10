@@ -28,7 +28,9 @@ jobs:
 
       - uses: pnpm/action-setup@v4
         with:
-          version: 9
+          # Match the local toolchain: pnpm-lock.yaml is lockfileVersion 6.0,
+          # which pnpm 8 reads and pnpm 9+ rejects under --frozen-lockfile.
+          version: 8
 
       - uses: actions/setup-node@v4
         with:

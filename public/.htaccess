@@ -32,7 +32,7 @@ DirectoryIndex index.html
   # Asset dirs and the media endpoint own their URLs — a miss there must 404,
   # not render the SPA shell. /media also has its own .htaccess (uploads +
   # upload.php); see octenium/README.md.
-  RewriteRule ^(assets|Assets|media)/ - [L]
+  RewriteRule ^(app|Assets|media)/ - [L]
 
   # SPA fallback: serve real files and directories as-is, route everything else
   # to index.html so React Router owns deep links.
@@ -57,11 +57,11 @@ DirectoryIndex index.html
 </IfModule>
 
 # ── 4a. Caching ──────────────────────────────────────────────────────────────
-# Vite emits content-hashed files under /assets → cache hard and forever.
+# Vite emits content-hashed files under /app → cache hard and forever.
 # /Assets holds hand-managed art that can be replaced under the same name →
 # a week, revalidating in the background. HTML and data files never cache.
 <IfModule mod_headers.c>
-  SetEnvIf Request_URI "^/assets/"  HASHED_ASSET
+  SetEnvIf Request_URI "^/app/"     HASHED_ASSET
   SetEnvIf Request_URI "^/Assets/"  ART_ASSET
 
   Header set Cache-Control "public, max-age=31536000, immutable" env=HASHED_ASSET

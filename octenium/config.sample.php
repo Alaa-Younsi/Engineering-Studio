@@ -9,10 +9,10 @@
 
 return [
     // Supabase → Project settings → API → Project URL
-    'supabase_url' => 'https://YOUR-REF.supabase.co',
+    'supabase_url' => 'https://mutcpgflaqyeibvuowfi.supabase.co',
 
     // Supabase → Project settings → API → Project API keys → `anon` `public`
-    'supabase_anon_key' => 'eyJhbGciOi...replace...',
+    'supabase_anon_key' => 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im11dGNwZ2ZsYXF5ZWlidnVvd2ZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ5MzUwNjUsImV4cCI6MjEwMDUxMTA2NX0.ojV6nb861JcYyoRppzigcZjsFcjQZGn6JWMn08IQQBk',
 
     // Absolute public base for finished files, no trailing slash.
     // This is the directory this script lives in, as seen from the web.
