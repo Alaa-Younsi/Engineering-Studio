@@ -1,0 +1,105 @@
+# ─────────────────────────────────────────────────────────────────────────────
+#  engineering-studio.net — Apache / LiteSpeed config for the Vite SPA build.
+#
+#  Replaces vercel.json now that hosting is on Octenium shared hosting. It lives
+#  in public/ so Vite copies it into dist/ on every build; upload dist/ to the
+#  domain's document root (public_html/).
+#
+#  Does four jobs: (1) canonical host + HTTPS, (2) SPA deep-link fallback,
+#  (3) security headers, (4) caching + compression.
+# ─────────────────────────────────────────────────────────────────────────────
+
+Options -Indexes -MultiViews
+DirectoryIndex index.html
+
+# ── 1 + 2. Rewrites ──────────────────────────────────────────────────────────
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # www → apex. The canonical <link> in index.html / useSeo points at the bare
+  # domain, so Google must only ever see that one.
+  RewriteCond %{HTTP_HOST} ^www\.engineering-studio\.net$ [NC]
+  RewriteRule ^ https://engineering-studio.net%{REQUEST_URI} [L,R=301]
+
+  # http → https. If this causes a redirect loop (some hosts terminate TLS at a
+  # proxy and never set HTTPS=on), delete this block and use cPanel's
+  # "Force HTTPS Redirect" toggle instead.
+  RewriteCond %{HTTPS} off
+  RewriteCond %{HTTP:X-Forwarded-Proto} !https
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+  # Asset dirs and the media endpoint own their URLs — a miss there must 404,
+  # not render the SPA shell. /media also has its own .htaccess (uploads +
+  # upload.php); see octenium/README.md.
+  RewriteRule ^(assets|Assets|media)/ - [L]
+
+  # SPA fallback: serve real files and directories as-is, route everything else
+  # to index.html so React Router owns deep links.
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+  RewriteRule ^ /index.html [L]
+</IfModule>
+
+# ── 3. Security headers (mirror of the former vercel.json set) ────────────────
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()"
+  Header always set Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
+
+  # Content-Security-Policy. If video ever moves off Supabase Storage (e.g. to
+  # Bunny Stream or Cloudflare R2), add that host to img-src / media-src /
+  # connect-src here.
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob: https://*.supabase.co; media-src 'self' blob: https://*.supabase.co; connect-src 'self' https://*.supabase.co wss://*.supabase.co; worker-src 'self' blob:; frame-ancestors 'self'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests"
+</IfModule>
+
+# ── 4a. Caching ──────────────────────────────────────────────────────────────
+# Vite emits content-hashed files under /assets → cache hard and forever.
+# /Assets holds hand-managed art that can be replaced under the same name →
+# a week, revalidating in the background. HTML and data files never cache.
+<IfModule mod_headers.c>
+  SetEnvIf Request_URI "^/assets/"  HASHED_ASSET
+  SetEnvIf Request_URI "^/Assets/"  ART_ASSET
+
+  Header set Cache-Control "public, max-age=31536000, immutable" env=HASHED_ASSET
+  Header set Cache-Control "public, max-age=604800, stale-while-revalidate=86400" env=ART_ASSET
+
+  <FilesMatch "\.(?:html|json|xml|txt)$">
+    Header set Cache-Control "public, max-age=0, must-revalidate"
+  </FilesMatch>
+</IfModule>
+
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType image/webp                 "access plus 1 year"
+  ExpiresByType image/avif                 "access plus 1 year"
+  ExpiresByType image/png                  "access plus 1 year"
+  ExpiresByType image/jpeg                 "access plus 1 year"
+  ExpiresByType image/svg+xml              "access plus 1 year"
+  ExpiresByType font/woff2                 "access plus 1 year"
+  ExpiresByType application/font-woff2     "access plus 1 year"
+  ExpiresByType text/css                   "access plus 1 year"
+  ExpiresByType application/javascript     "access plus 1 year"
+  ExpiresByType application/pdf            "access plus 1 month"
+</IfModule>
+
+# ── 4b. Compression ──────────────────────────────────────────────────────────
+<IfModule mod_brotli.c>
+  AddOutputFilterByType BROTLI_COMPRESS text/html text/plain text/css text/xml \
+    application/javascript application/json application/xml image/svg+xml \
+    font/ttf font/otf application/vnd.ms-fontobject
+</IfModule>
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/css text/xml \
+    application/javascript application/json application/xml image/svg+xml \
+    font/ttf font/otf application/vnd.ms-fontobject
+</IfModule>
+
+# ── UTF-8 for text types ─────────────────────────────────────────────────────
+AddDefaultCharset utf-8
+<IfModule mod_mime.c>
+  AddCharset utf-8 .html .css .js .json .xml .svg .txt
+</IfModule>

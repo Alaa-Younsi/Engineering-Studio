@@ -34,3 +34,6 @@ Thumbs.db
 
 # Vite
 .vite/
+
+# Octenium backend — local copy of the deployed config
+octenium/config.php

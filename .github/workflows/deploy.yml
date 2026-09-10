@@ -1,0 +1,68 @@
+name: Deploy to Octenium
+
+# Builds the SPA and uploads dist/ to the Octenium document root over FTPS.
+# Vercel used to build on push; this replaces it. Required repo secrets
+# (Settings → Secrets and variables → Actions):
+#
+#   VITE_SUPABASE_URL        Supabase project URL      (baked into the bundle)
+#   VITE_SUPABASE_ANON_KEY   Supabase anon/public key  (baked into the bundle)
+#   FTP_SERVER               e.g. ftp.engineering-studio.net  (or the host's IP)
+#   FTP_USERNAME             cPanel / FTP account user
+#   FTP_PASSWORD             cPanel / FTP account password
+#   FTP_SERVER_DIR           target dir, usually /public_html/  (keep the slashes)
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-octenium
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Type-check and lint
+        run: pnpm lint
+
+      - name: Build
+        run: pnpm build
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+
+      - name: Deploy dist/ over FTPS
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          local-dir: ./dist/
+          server-dir: ${{ secrets.FTP_SERVER_DIR }}
+          # Keep server-side files the build doesn't manage. `media/` holds
+          # uploaded video + upload.php (deployed by hand, see octenium/README.md);
+          # `downloads/` holds large static files. The action must never sync or
+          # delete inside them.
+          dangerous-clean-slate: false
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            media/**
+            downloads/**

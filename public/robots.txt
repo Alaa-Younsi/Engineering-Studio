@@ -4,4 +4,4 @@ Disallow: /admin
 Disallow: /devis
 Disallow: /reunion
 
-Sitemap: https://engineering-studio-eight.vercel.app/sitemap.xml
+Sitemap: https://engineering-studio.net/sitemap.xml

@@ -1,0 +1,51 @@
+# ─────────────────────────────────────────────────────────────────────────────
+#  Deploy this file as  <docroot>/media/.htaccess  (rename on upload).
+#
+#  This directory holds uploaded project video plus the chunked upload endpoint
+#  (upload.php). Nothing here is part of the Vite build — the CI deploy is told
+#  to leave  media/**  alone (.github/workflows/deploy.yml).
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Let PHP see the Authorization header (LiteSpeed / CGI / FCGI can strip it).
+CGIPassAuth On
+<IfModule mod_setenvif.c>
+  SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1
+</IfModule>
+
+# Real files here are served directly; never fall through to the SPA shell in
+# the parent .htaccess.
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{REQUEST_FILENAME} -f
+  RewriteRule ^ - [L]
+</IfModule>
+
+Options -Indexes -ExecCGI
+
+# Assembled video: cacheable forever (names are random and immutable),
+# and range requests so the player can seek.
+<FilesMatch "\.(mp4|webm|mov|m4v)$">
+  Require all granted
+  <IfModule mod_headers.c>
+    Header set Cache-Control "public, max-age=31536000, immutable"
+    Header set Accept-Ranges bytes
+  </IfModule>
+</FilesMatch>
+
+# The uploader script may run…
+<FilesMatch "^upload\.php$">
+  Require all granted
+</FilesMatch>
+
+# …every other script or working file may not be fetched.
+<FilesMatch "^(?!upload\.php$).*\.(php[0-9]?|phtml|phar|pl|py|cgi|sh|part|idx)$">
+  Require all denied
+</FilesMatch>
+<FilesMatch "^\.">
+  Require all denied
+</FilesMatch>
+
+AddType video/mp4 .mp4
+AddType video/webm .webm
+AddType video/quicktime .mov
+AddType video/x-m4v .m4v

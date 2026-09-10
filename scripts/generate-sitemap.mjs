@@ -11,7 +11,7 @@ import { fileURLToPath } from 'node:url'
 import { dirname, resolve } from 'node:path'
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..')
-const SITE_URL = 'https://engineering-studio-eight.vercel.app'
+const SITE_URL = 'https://engineering-studio.net'
 
 const STATIC_ROUTES = [
   { loc: '/', priority: '1.0' },

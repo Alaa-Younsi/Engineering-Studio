@@ -1,6 +1,7 @@
 import { useRef, useState, type ReactNode } from 'react'
 import { uploadMedia } from '../../lib/content/store'
 import { compressImage, responsiveSrcSet } from '../../lib/image'
+import { uploadLargeMedia } from '../../lib/octeniumUpload'
 
 /* ── Buttons ──────────────────────────────────────────────────────────────── */
 
@@ -175,29 +176,34 @@ export function MediaUploader({
   onChange: (url: string | undefined) => void
   className?: string
   /**
-   * Show a "paste a URL" field alongside the uploader. Used for video so the
-   * client can move hosting off Supabase (Cloudinary/Bunny) with no code change
-   * when egress becomes the constraint.
+   * Show a "paste a URL" field alongside the uploader. Enabled for video so a
+   * file that's already hosted elsewhere (or too large for the endpoint) can be
+   * wired in by URL.
    */
   allowUrl?: boolean
 }) {
   const inputRef = useRef<HTMLInputElement>(null)
   const [busy, setBusy] = useState(false)
+  const [progress, setProgress] = useState(0)
   const [error, setError] = useState<string | null>(null)
 
   const pick = async (file: File | undefined) => {
     if (!file) return
     setBusy(true)
     setError(null)
+    setProgress(0)
     try {
-      // Re-encode images to a web-sized WebP before upload; video passes through.
-      const optimised = await compressImage(file)
-      const url = await uploadMedia(optimised)
+      // Video → chunked upload to the hosting account (/media/). Images →
+      // re-encode to a web-sized WebP, then up to Supabase Storage.
+      const url = video
+        ? await uploadLargeMedia(file, setProgress)
+        : await uploadMedia(await compressImage(file))
       onChange(url)
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Échec du téléversement')
     } finally {
       setBusy(false)
+      setProgress(0)
     }
   }
 
@@ -226,7 +232,11 @@ export function MediaUploader({
       </div>
       <div className="flex flex-wrap gap-2 mt-3">
         <AdminButton variant="ghost" onClick={() => inputRef.current?.click()} disabled={busy}>
-          {value ? 'Remplacer' : 'Téléverser'}
+          {busy && progress > 0
+            ? `Téléversement… ${Math.round(progress * 100)}%`
+            : value
+              ? 'Remplacer'
+              : 'Téléverser'}
         </AdminButton>
         {value && (
           <AdminButton variant="ghost" onClick={() => onChange(undefined)} disabled={busy}>
@@ -245,7 +255,7 @@ export function MediaUploader({
         <TextInput
           value={value ?? ''}
           onChange={(e) => onChange(e.target.value || undefined)}
-          placeholder="…ou coller une URL (Cloudinary, Bunny, YouTube…)"
+          placeholder="…ou coller une URL (fichier déjà en ligne, YouTube, Vimeo…)"
           className="mt-2"
         />
       )}
