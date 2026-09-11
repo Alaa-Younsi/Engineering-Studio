@@ -17,8 +17,8 @@ export const SITE_NAME = 'Engineering Studio'
 export const DEFAULT_TITLE = 'Solutions Globales en Ingénierie | Engineering Studio'
 
 export const DEFAULT_DESCRIPTION =
-  'Bureau d’études en ingénierie basé à Sétif, Algérie : études MEP/CET, VRD, ' +
-  'topographie et BIM, en régie ou clé en main, pour bureaux d’études et entreprises.'
+  'Études techniques en ingénierie basées à Sétif, Algérie : études MEP/CET, VRD, ' +
+  'topographie et BIM, clé en main, pour bureaux d’études et entreprises.'
 
 export const OG_IMAGE = `${SITE_URL}/og-image.png`
 
