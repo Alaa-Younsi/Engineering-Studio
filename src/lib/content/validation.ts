@@ -116,7 +116,6 @@ export const ATTACHMENTS = {
     'skp',
     'zip',
     'rar',
-    'par',
     'doc',
     'docx',
     'xls',

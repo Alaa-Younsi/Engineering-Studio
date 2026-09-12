@@ -137,7 +137,7 @@ export default function Home() {
   useSeo({
     title: 'Solutions Globales en Ingénierie | Engineering Studio',
     description:
-      'Bureau d’études à Sétif : MEP/CET, VRD, topographie et BIM, en régie ou clé en main, pour bureaux d’études et entreprises partout en Algérie.',
+      'Solutions Globales en Ingénierie, Études Techniques d’Ingénierie du Bâtiment, MEP/CET, VRD, BIM, Topographie. Étude Clé en Main.',
     path: '/',
   })
   const { startTransition } = useTransition()

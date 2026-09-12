@@ -532,7 +532,7 @@ export default function Devis() {
                 </ul>
               )}
               <p className="font-body text-white/30 text-xs mt-4 leading-relaxed">
-                PDF, DWG, DXF, RVT, IFC, ZIP, PAR, images — {ATTACHMENTS.maxFiles} fichiers max.
+                PDF, DWG, DXF, RVT, IFC, ZIP, RAR, images
                 <br />
                 Vous avez un retour sous 24h
               </p>
