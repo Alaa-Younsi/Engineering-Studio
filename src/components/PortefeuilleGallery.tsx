@@ -1,4 +1,6 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
+import { useScroll, useTransform } from 'framer-motion'
+import { HeroShape } from './HeroShape'
 import { MediaFrame, Tag } from './MediaPlaceholder'
 import { Reveal, RevealText } from './Reveal'
 import { useProjects } from '../lib/content/hooks'
@@ -10,7 +12,7 @@ function ProjectCard({ project }: { project: Project }) {
   const posterSrc = project.media.find((m) => m.type === 'image')?.src
 
   return (
-    <div className="bg-[#131313] rounded-2xl sm:rounded-3xl p-5 sm:p-7 lg:p-8 flex flex-col lg:flex-row gap-6 lg:gap-8">
+    <div className="bg-[#131313] rounded-2xl sm:rounded-3xl p-6 sm:p-9 lg:p-12 flex flex-col lg:flex-row gap-8 lg:gap-10">
       {/* Title / location / tags */}
       <div className="lg:w-[24%] lg:flex-shrink-0 flex flex-col gap-6">
         <h3 className="font-display font-bold text-white text-xl sm:text-2xl leading-tight">
@@ -74,21 +76,38 @@ function ProjectCard({ project }: { project: Project }) {
 export function PortefeuilleGallery() {
   const { data: projects, loading } = useProjects()
 
+  const heroRef = useRef<HTMLElement>(null)
+  const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] })
+  const heroLogoY = useTransform(scrollYProgress, [0, 1], ['0px', '-80px'])
+
   return (
     <>
-      <section className="relative flex items-center justify-center overflow-hidden py-32 px-6">
+      {/* ── Hero ────────────────────────────────────────────────────────── */}
+      <section ref={heroRef} className="relative h-screen flex items-center overflow-hidden">
+        <div className="px-6 sm:px-10 lg:px-gutter relative z-10">
+          <h1 className="font-display font-bold text-[2.5rem] sm:text-6xl lg:text-[5.375rem] text-white leading-none lg:leading-none">
+            Portefeuille
+          </h1>
+        </div>
+        <HeroShape y={heroLogoY} />
+      </section>
+
+      {/* ── Intro ───────────────────────────────────────────────────────── */}
+      <section className="relative flex items-center justify-center overflow-hidden py-24 sm:py-32 lg:py-40 px-6">
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
           <img
             src="/Assets/logo/Logo-seul.png"
             alt=""
-            className="w-[min(60vw,300px)] h-[min(60vw,300px)] object-contain"
+            className="w-[min(45vw,420px)] h-[min(45vw,420px)] object-contain"
             style={{ opacity: 0.14 }}
             draggable={false}
           />
         </div>
         <RevealText className="relative z-10">
-          <h2 className="font-display font-bold text-2xl sm:text-4xl lg:text-5xl text-white text-center leading-tight max-w-[20ch]">
-            Découvrez quelques-unes de nos réalisations
+          <h2 className="font-display font-medium text-2xl sm:text-4xl lg:text-5xl text-white text-center leading-tight">
+            Découvrez quelques-unes
+            <br />
+            de nos réalisations
           </h2>
         </RevealText>
       </section>
