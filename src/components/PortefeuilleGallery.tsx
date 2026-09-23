@@ -112,7 +112,7 @@ export function PortefeuilleGallery() {
         </RevealText>
       </section>
 
-      <section className="px-6 sm:px-10 lg:px-gutter pb-32 flex flex-col gap-10 lg:gap-16">
+      <section className="px-6 sm:px-10 lg:px-gutter pb-32 flex flex-col gap-16 sm:gap-24 lg:gap-[29rem]">
         {!loading && projects.length === 0 && (
           <p className="font-body text-secondary text-sm text-center">
             Aucune réalisation pour le moment.
