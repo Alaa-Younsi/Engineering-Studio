@@ -89,11 +89,11 @@ export function PortefeuilleGallery() {
             Portefeuille
           </h1>
         </div>
-        <HeroShape y={heroLogoY} />
+        <HeroShape y={heroLogoY} opacity={0.14} />
       </section>
 
       {/* ── Intro ───────────────────────────────────────────────────────── */}
-      <section className="relative flex items-center justify-center overflow-hidden py-24 sm:py-32 lg:py-40 px-6">
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden px-6">
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
           <img
             src="/Assets/logo/Logo-seul.png"
