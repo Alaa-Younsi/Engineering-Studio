@@ -87,7 +87,13 @@
 
   body {
     @apply bg-bg text-white font-body;
-    overflow-x: hidden;
+    /*
+     * `clip`, not `hidden`: html already has overflow-x: hidden, so body's
+     * overflow doesn't propagate to the viewport — `hidden` would turn body
+     * into a second scroll container (overflow-y computes to auto) and draw a
+     * double scrollbar. `clip` hides horizontal overflow without scrolling.
+     */
+    overflow-x: clip;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
